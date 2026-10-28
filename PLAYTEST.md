@@ -1,21 +1,24 @@
-# Alpha 0.83 — Installed Update Check
+# Alpha 0.84 — Clear Update Status
 
-Target: S21 Ultra / Brave, installed Alpha 0.82 at https://crazy5150760.github.io/last-stand-after-dark/. This build changes only six native build labels and the PWA version label. All game logic, art, sound, inputs and save data remain byte-identical after label normalization. The CI branch filter now covers future alpha source branches. No new mechanic is part of this update test.
+Target: S21 Ultra / Brave. This batch separates active and downloaded versions, removes fixed Alpha 0.80 setup labels, and adds restart help while an update waits. Status also refreshes on visible return, page-history restoration and controller changes. These events only query status; they do not check the network, download, activate, read records or reload a game.
 
-## Before publication
+Robert confirmed Alpha 0.83 activated after Android Settings → Apps → Brave → Force stop. He then confirmed retained records/settings and offline play worked. This is a tested fallback on his phone, not a universal browser requirement.
 
-Keep a real exported JSON backup. Start a run in the installed Alpha 0.82, note its elapsed time/HP, Pause, and leave that game window open. The owner has confirmed readiness. Wait for confirmation that GitHub Pages published Alpha 0.83 before checking for the update.
+## Install this build
 
-## Phone checklist after publication
+1. Keep a real JSON backup. At https://crazy5150760.github.io/last-stand-after-dark/install/ choose Check for Updates. The active 0.83 setup page stays old until this update activates; do not expect the new layout immediately after download.
+2. When Alpha 0.84 is ready, finish your run, close every Last Stand game/setup tab and the installed window, then reopen the home-screen icon. If it still says 0.83, use the tested Brave Force stop fallback after finishing the run. Leave storage/app data untouched. Confirm the game main menu says ALPHA 0.84.
 
-- [ ] With the old paused game still open, open https://crazy5150760.github.io/last-stand-after-dark/install/ in Brave and choose CHECK FOR UPDATES. Keep the existing app installed.
-- [ ] Wait for Update ready: Alpha 0.83. Return to the old game: the same run should still be paused, with its time/HP/level intact. It must not reload, reset or silently resume.
-- [ ] Finish that run when ready. Closing does not preserve a live run. Close every Last Stand game/app window and its setup tab, then reopen the home-screen icon. Check the title says Alpha 0.83.
-- [ ] Check best time, Run Log and settings against the earlier state/backup. A normal update at the same address should keep them without an import, reinstall or storage clear.
-- [ ] Finish/close again, enable airplane mode and reopen the icon. Alpha 0.83, art/audio and a short run should work. Reconnect afterward.
+## Build checklist
 
-If setup still shows 0.82 or an incomplete download, keep the old run intact and report the exact message. We will distinguish CDN propagation, an old open client and a genuine update problem rather than claim success from unit tests. No forced activation, cache wipe, record import or reinstall is part of the update procedure.
+- [ ] Reopen setup at the same address. It says SETUP & UPDATES, has no fixed Alpha 0.80 labels, and reports Active offline copy: Alpha 0.84. No downloaded-update row or restart-help panel appears when no update waits.
+- [ ] Switch away and return; use browser Back/Forward to return to setup. The active version stays correct. Returning does not reload a game or start a new download by itself.
+- [ ] How updates work remains available. A future waiting update will have its own Downloaded update label, say it is not active, and reveal Update still waiting in Brave? with the tested Force stop steps. This state is tested in automated fixtures; 0.84 is the newest release, so a second newer live update is not claimed as phone-tested yet.
+- [ ] Best time, Journal and settings still match. Play briefly: hold the joystick while tapping Pause, resume, and check normal results/retry. Combat and balance should feel identical to 0.83; report any difference.
+- [ ] Finish/close, enable airplane mode and reopen the icon. Play briefly and open setup offline to confirm Active offline copy: Alpha 0.84. Reconnect afterward.
 
-## Verification and limits
+## Verification limits
 
-Readable JS and the entire standalone compare exactly to Alpha 0.82 after the six label substitutions. The existing 27 offline-package cases exercise integrity rejection, prior-cache retention and the waiting lifecycle; generated caches and build IDs are distinct between the actual 0.82 and 0.83 payloads. GitHub CI runs the full existing game suite for the new alpha branch. Final counts and archive/hash verification accompany the artifacts. These checks do not establish real Android lifecycle behavior: the checklist above is the remaining device gate.
+The worker template, manifest identity/scope, game save keys, media, combat and input code are unchanged. The readable main script and entire standalone normalize exactly to Alpha 0.83 after six native label replacements. No forced activation, reload, claim, unregister, cache wipe or import is added.
+
+Five new UI cases cover active/waiting labels, controller/visibility/history refresh without downloads, and delayed-response ordering. The 32-case offline suite retains cache-integrity and previous-copy protection checks. GitHub CI also runs the existing full native suite and packaging checks. Device UI and browser lifecycle still require the owner checklist. Release artifacts record hashes, tests and publication provenance.

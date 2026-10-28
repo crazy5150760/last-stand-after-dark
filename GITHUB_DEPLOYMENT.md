@@ -1,4 +1,4 @@
-> Current release status: Alpha 0.83 is the label-only installed-update check following the successfully published Alpha 0.82. The owner accepts public game and public GitHub source for now. Pages uses Deploy from a branch → gh-pages → /(root); the manual Actions template below remains an optional alternative. The original Site remains untouched. The Alpha 0.82 source-backup provenance below is historical, not a hash manifest for later changed releases.
+> Current release: Alpha 0.84 · Clear Update Status. Prepare source CI and publish verified static output to the existing gh-pages branch at the same address. The owner accepts public game and GitHub source. Pages uses Deploy from a branch → gh-pages → /(root); the manual Actions template below is historical/optional. The original Site and main/conversion branches remain unchanged. Earlier 0.82 backup hashes describe that snapshot, not this later release.
 
 # Alpha 0.82 source backup and web deployment preparation
 

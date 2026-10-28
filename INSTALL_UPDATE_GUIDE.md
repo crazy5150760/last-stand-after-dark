@@ -1,4 +1,4 @@
-> Current status: the public Alpha 0.82 Pages preview is deployed at https://crazy5150760.github.io/last-stand-after-dark/, and Robert reports the installed flow works. Alpha 0.83 is a label-only same-address waiting-update test. Keep the installed old paused run open until publication is confirmed, then follow PLAYTEST.md. Public GitHub source is accepted for now; the original Site remains unchanged. The historical Alpha 0.80 design below remains the implementation policy.
+> Current release: Alpha 0.84 · Clear Update Status. Robert accepted the 0.83 update after Brave Force stop and confirmed records/settings and offline reopening. This release makes active and downloaded versions distinct, removes fixed 0.80 labels and adds the tested restart fallback. Follow PLAYTEST.md after publication to the same approved public Pages address. The original Site remains unchanged. Historical Alpha 0.80 policy below still applies; no forced activation or reload is added.
 
 # Alpha 0.80 — installable web preview for review
 

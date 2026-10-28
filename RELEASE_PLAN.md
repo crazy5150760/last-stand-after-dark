@@ -1,7 +1,7 @@
 # Last Stand: After Dark — first-release plan
 
 Owner and lead tester: Robert Kenny. Development/design lead: Codex.
-Updated: 2026-10-28. Current build: **Alpha 0.83 · Installed Update Check**. Robert reports the installed Alpha 0.82 flow works and asks to proceed. Prepare a label-only update at the same Pages address to verify a waiting update preserves an open paused run and records, then applies after all old windows close. Robert has confirmed Alpha 0.82 is open on a paused run with a JSON backup retained. No gameplay/art/audio/input/save change. Public preview and public GitHub source are explicitly accepted for now; the original Site identity remains untouched. Actual two-version Android update acceptance remains pending until the owner completes the checklist.
+Updated: 2026-10-28. Current build: **Alpha 0.84 · Clear Update Status**. Robert accepted 0.83 activation after Brave Force stop, retained records/settings and offline play. Improve active versus downloaded labels, replace stale setup text and add restart help, with status refresh on return. Keep the default waiting lifecycle and gameplay/saves intact. Publish to the same approved public Pages address after source CI. Real 0.84 UI acceptance remains pending; main/conversion branches and original Site remain unchanged.
 
 ## Product goal
 
