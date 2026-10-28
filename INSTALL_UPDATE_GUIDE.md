@@ -1,4 +1,4 @@
-> Current status (2026-10-28): Alpha 0.82 is a local downloadable build. Private hosting remains authorized but parked because the workspace network approval prompt did not appear. No upload/publication retry is made for this build. The Alpha 0.80 installation design below remains prepared, and the optional hosted package is rebuilt with current game/version bytes. No installable deployment has been verified.
+> Current status: the public Alpha 0.82 Pages preview is deployed at https://crazy5150760.github.io/last-stand-after-dark/, and Robert reports the installed flow works. Alpha 0.83 is a label-only same-address waiting-update test. Keep the installed old paused run open until publication is confirmed, then follow PLAYTEST.md. Public GitHub source is accepted for now; the original Site remains unchanged. The historical Alpha 0.80 design below remains the implementation policy.
 
 # Alpha 0.80 — installable web preview for review
 

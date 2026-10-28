@@ -1,7 +1,7 @@
 # Last Stand: After Dark — first-release plan
 
 Owner and lead tester: Robert Kenny. Development/design lead: Codex.
-Updated: 2026-10-28. Current build: **Alpha 0.82 · Phone Settings Cleanup**, developed locally. Robert asks to start the next step after delivery of Alpha 0.81; no new device benchmark or detailed Alpha 0.81 playtest is inferred. Finish the current phone-menu usability group: organize Settings, bring its existing Back action near the heading and retain open sections/scroll while changing an option. No gameplay, tuning, artwork, music, save schema or Site identity change. Private installation remains parked after Robert confirmed no workspace network approval prompt appears; do not repeat that upload command.
+Updated: 2026-10-28. Current build: **Alpha 0.83 · Installed Update Check**. Robert reports the installed Alpha 0.82 flow works and asks to proceed. Prepare a label-only update at the same Pages address to verify a waiting update preserves an open paused run and records, then applies after all old windows close. Robert has confirmed Alpha 0.82 is open on a paused run with a JSON backup retained. No gameplay/art/audio/input/save change. Public preview and public GitHub source are explicitly accepted for now; the original Site identity remains untouched. Actual two-version Android update acceptance remains pending until the owner completes the checklist.
 
 ## Product goal
 
@@ -412,3 +412,12 @@ Acceptance: Robert reads correct current vitals/exit requirements, sees all cloc
 Group the existing Settings controls into four native expandable sections: Audio & Volume, Controls & Warnings, Visuals & Effects, and Upgrade Highlight. Keep diagnostics and menu/results-only backups. Move the single existing Back action near the heading. Capture section openness and scroll from the current Settings DOM only, render the same open attributes before native focus restoration, then restore scroll. No persistent or global section state; reopening Settings starts compact. Existing option IDs, handlers, validation and persistence remain intact.
 
 Acceptance: Robert finds existing controls quickly, opens a group, changes several options without it collapsing or jumping, returns safely to Pause/held results and retains comfortable portrait/landscape navigation. Defaults, combat balance, assets and save behavior stay unchanged. Use existing focused menu/audio/control/storage/Back cases plus source-equivalence and prepared-package checks; do not demand another long benchmark for a presentation-only change. Broad production art and installation remain separate decisions/gates.
+
+
+## Alpha 0.83 — prove the installed update path
+
+The public GitHub Pages Alpha 0.82 deployment succeeded. Robert reports the installation/launch flow works. Record functional acceptance without inventing detailed offline measurements or every physical lifecycle result. GitHub was made public by the owner during Pages setup; he explicitly confirms public source is fine for now.
+
+Use the smallest possible distinct release to test waiting updates: six native build labels become 0.83, the generated worker reports Alpha 0.83 and gets a distinct content-derived cache/build ID. Native JS and complete standalone normalize exactly to accepted Alpha 0.82. Save keys, cache scope, stable manifest ID, registration and default worker lifecycle remain untouched. Prepare/review source and tests, publish after the owner's paused-old-run readiness, then check waiting 0.83, unchanged old run, close-all activation, retained records and offline reopening. Do not add features or alter balance during this distribution gate.
+
+The CI workflow's alpha branch filter broadens to alpha-* so this and future alpha source branches get the existing full-game/offline checks. No unrelated branches or the preserved original Site are overwritten. After owner acceptance, resume the next focused release-polish batch using the installed delivery route.

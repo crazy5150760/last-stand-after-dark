@@ -2,7 +2,7 @@ name: Verify and package web preview
 
 on:
   push:
-    branches: [main, alpha-0.82-source-backup]
+    branches: [main, 'alpha-*']
   pull_request:
     branches: [main]
   workflow_dispatch:

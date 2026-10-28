@@ -1555,3 +1555,12 @@ Final view-state review includes the existing Phone Performance section: give it
 
 
 Final Alpha 0.82 validation: 185/185 selected native checks pass (77,509.782989 ms), including the extended focus/open-section/scroll check, and 27/27 prepared-package checks pass (314.248757 ms). Both deterministic builders, syntax and whitespace checks pass. Source comparison verifies 648 other top-level functions and all other game AST nodes exact after build-label normalization; the diagnostics helper differs only in its opening details tag, existing Settings handlers/options/persistence remain exact, and embedded assets/template remain exact except one scoped CSS rule. Standalone: 12,579,589 bytes, 3,323 bytes below 12 MiB. Full Alpha 0.81 results remain separate baseline evidence, not a claimed full rerun. No network operation or real browser/Android test was performed.
+
+
+## Alpha 0.83 — Installed Update Check
+
+Robert reports the installed Alpha 0.82 flow works and asks what comes next. Public Pages deployment is verified by GitHub run 40734857357 and deploy-job URL https://crazy5150760.github.io/last-stand-after-dark/. Source repository visibility was changed to public by the owner; after clarification he explicitly accepts public source for now. Original Site appgprj_6ad44e1d8fa48191b59d8c10b22c7a86 remains untouched. Code transfer/publication uses the GitHub connector; command-network EPERM is not claimed fixed.
+
+Prepare the required two-build phone update check with no new gameplay. Change only the six native version/report/backup filename labels and PWA config.version to 0.83; update current-version test assertions. Main readable JS and whole standalone normalize byte-exactly to 0.82. Art/audio/CSS/controls/schemas/cache registration/update policy remain exact. Actual root response hash creates build 9af87ff2adc01745, different from installed 0.82 build ef14ba832059faa0. Native waiting lifecycle still cannot force a game reload. The GitHub preparation workflow branch pattern changes from the first backup branch to alpha-* for alpha release validation.
+
+The owner confirms the installed 0.82 has a run paused and remains open, with a JSON backup. This is test setup, not renewed publishing permission. Finish validation and Pages publication, then provide the five-step phone checklist. Until the actual old-run/waiting/close/reopen/records/offline sequence is reported, keep the update gate open. No benchmark retake or new power/content/art is required for this test.

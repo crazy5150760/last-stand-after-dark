@@ -1,19 +1,21 @@
-# Last Stand: After Dark — Alpha 0.82 · Phone Settings Cleanup
+# Alpha 0.83 — Installed Update Check
 
-Phone target: Samsung Galaxy S21 Ultra / Brave. Keep Alpha 0.81 and an external JSON record backup. Open **Last_Stand_After_Dark_Alpha_0_82.html** from Downloads. If Brave gives the new file separate storage, use your existing reviewed JSON import only when records are missing. Installation/publication remains parked; this build makes no network retry.
+Target: S21 Ultra / Brave, installed Alpha 0.82 at https://crazy5150760.github.io/last-stand-after-dark/. This build changes only six native build labels and the PWA version label. All game logic, art, sound, inputs and save data remain byte-identical after label normalization. The CI branch filter now covers future alpha source branches. No new mechanic is part of this update test.
 
-## Owner checklist
+## Before publication
 
-- [ ] **Find your settings.** Open Settings from the title. Find four collapsed groups: AUDIO & VOLUME, CONTROLS & WARNINGS, VISUALS & EFFECTS, and UPGRADE HIGHLIGHT. Phone Performance and Record Backups stay available. Main Menu / Back is now near the top.
-- [ ] **Stay in place.** Open Visuals & Effects, scroll down and toggle Screen Shake, Damage Numbers or Reduced Effects. The group should stay open, your scroll position should remain steady, and the changed button should retain keyboard focus. Change a HUD/actor/scenery selector: the same section should remain open. These section/scroll choices reset on leaving and reopening Settings.
-- [ ] **Sound and controls.** Open Audio & Volume; try a slider, mute and a short sound test. Open Controls & Warnings; try Left-handed controls, then set your preferred layout back. Existing values should save as before. Upgrade Highlight still changes card highlighting only, not upgrade probabilities.
-- [ ] **Return safely.** Enter Settings from Pause and return with the top button or phone Back. The run must stay paused until Resume. Enter Settings from held results and return: the run/stats should remain finished and frozen. Paused Settings still cannot start a record restore.
-- [ ] **Phone comfort.** Repeat opening/scrolling/changing settings in portrait and landscape. Check normal movement, second-finger Pause/Dash, upgrades, extraction, results/replay and records. You do not need to repeat a long benchmark capture for this menu update.
+Keep a real exported JSON backup. Start a run in the installed Alpha 0.82, note its elapsed time/HP, Pause, and leave that game window open. The owner has confirmed readiness. Wait for confirmation that GitHub Pages published Alpha 0.83 before checking for the update.
 
-Report jumping scroll, a group closing after a change, missing controls, accidental navigation/resume, lost settings, cramped labels or Back problems. Set any test preferences back to your preferred values afterward.
+## Phone checklist after publication
 
-## Verification scope
+- [ ] With the old paused game still open, open https://crazy5150760.github.io/last-stand-after-dark/install/ in Brave and choose CHECK FOR UPDATES. Keep the existing app installed.
+- [ ] Wait for Update ready: Alpha 0.83. Return to the old game: the same run should still be paused, with its time/HP/level intact. It must not reload, reset or silently resume.
+- [ ] Finish that run when ready. Closing does not preserve a live run. Close every Last Stand game/app window and its setup tab, then reopen the home-screen icon. Check the title says Alpha 0.83.
+- [ ] Check best time, Run Log and settings against the earlier state/backup. A normal update at the same address should keep them without an import, reinstall or storage clear.
+- [ ] Finish/close again, enable airplane mode and reopen the icon. Alpha 0.83, art/audio and a short run should work. Reconnect afterward.
 
-Existing settings/audio/preferences/Back/focus/benchmark/pause cases are selected from the native suite. The existing focus-redraw check is extended for an open section and retained scroll; no new tests mirror the section labels. The full Alpha 0.81 baseline has 1,333 passing game checks. A source comparison verifies all game code outside Settings/diagnostics presentation and six build labels is exact; listeners and save/selection behavior are also compared. The optional prepared offline package is rebuilt and its 27 checks are run, without publication.
+If setup still shows 0.82 or an incomplete download, keep the old run intact and report the exact message. We will distinguish CDN propagation, an old open client and a genuine update problem rather than claim success from unit tests. No forced activation, cache wipe, record import or reinstall is part of the update procedure.
 
-Final current-build results: 185/185 selected native checks and 27/27 prepared-package checks passed. Source comparisons and ZIP verification are recorded in BUILD_INFO.json and the included logs. This is Node VM/mock verification, not real Android rendering. Phone layout, native details expansion, touch scrolling and physical lifecycle behavior remain owner checks. Core gameplay, artwork, music, saves, Pause briefing and original Site identity remain unchanged.
+## Verification and limits
+
+Readable JS and the entire standalone compare exactly to Alpha 0.82 after the six label substitutions. The existing 27 offline-package cases exercise integrity rejection, prior-cache retention and the waiting lifecycle; generated caches and build IDs are distinct between the actual 0.82 and 0.83 payloads. GitHub CI runs the full existing game suite for the new alpha branch. Final counts and archive/hash verification accompany the artifacts. These checks do not establish real Android lifecycle behavior: the checklist above is the remaining device gate.

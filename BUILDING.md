@@ -1,6 +1,6 @@
 # Building the standalone game
 
-Alpha 0.82 keeps the existing offline HTML/Canvas game and Site identity. There is no npm install, framework, server, new engine, repository synchronization or publication step.
+Alpha 0.83 keeps the existing offline HTML/Canvas game and Site identity. There is no npm install, framework, server, new engine, repository synchronization or publication step.
 
 The readable main JavaScript is now **src/game.js**. **dist/index.html** remains the HTML/CSS/embedded-media template and ready-to-play standalone file; its main inline script is generated from that source. The original media source files and asset tools remain under dist/assets and tools.
 
@@ -59,3 +59,8 @@ The owner accepted Alpha 0.80. The source-upload network approval did not appear
 ## Alpha 0.82 validation scope
 
 Only Settings presentation and six native version labels change. Preserve the full passing Alpha 0.81 regression log as baseline evidence; run the focused menu/control/audio/record-navigation cases above plus node tests/pwa.test.cjs and both builder checks. Current-build counts and the AST/template comparison accompany the release. The full 1,333-case suite remains available when gameplay, save behavior, runtime state or a new concern justifies it. Publication is still parked; these commands need no network or dependency installation.
+
+
+## Alpha 0.83 label-only update gate
+
+Build and package as before. Current main JS and standalone must normalize exactly to Alpha 0.82 after replacing 0.83/0_83 build labels. The PWA build ID must differ, while the manifest identity/scope and worker policy stay the same. GitHub CI now runs on alpha-* branches. The original SOURCE_BACKUP_MANIFEST.json describes the immutable Alpha 0.82 import, not subsequent releases; use the release's SOURCE_CHECKS.json/BUILD_INFO.json and Git commit/tree for current provenance. Owner update acceptance uses PLAYTEST.md; an installed app is not reinstalled or cleared for the test.
