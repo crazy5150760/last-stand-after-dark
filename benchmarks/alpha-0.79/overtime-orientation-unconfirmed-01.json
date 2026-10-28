@@ -1,0 +1,122 @@
+{
+  "game": "Last Stand: After Dark",
+  "version": "Alpha 0.79",
+  "receivedDate": "2026-10-26",
+  "rawFile": "benchmarks/alpha-0.79/overtime-orientation-unconfirmed-01.txt",
+  "rawBytes": 2438,
+  "rawSha256": "9aed570a4ff2681db875ec717c31c2ebf0b5377d0cf7ee7a23aec1b2d09eb520",
+  "chatContext": {
+    "device": "Samsung Galaxy S21 Ultra",
+    "browser": "Brave",
+    "deviceSource": "Owner previously confirmed for this release-check session",
+    "ownerMessage": "Lamdscape",
+    "claimedOrientation": "landscape",
+    "clarification": "Owner replied: It became wide, but I rotated back before capturing"
+  },
+  "rawDeviceAndNotesFields": "Not supplied; preserved unchanged",
+  "reported": {
+    "scene": "Overtime",
+    "training": true,
+    "activeTestAge": "05:00",
+    "targetPopulation": 220,
+    "targetXpGems": 600,
+    "viewportCss": [
+      411,
+      781
+    ],
+    "orientation": "portrait",
+    "dpr": 1.75,
+    "actors": "Field; listed modules ready at capture",
+    "scenery": "Street",
+    "hud": "composed",
+    "reduced": false,
+    "mirrored": false,
+    "build": "Gun x5; all four evolved paths",
+    "measuredIntervals": 19847,
+    "sampledSeconds": 295.23,
+    "averageFps": 67.22,
+    "recentIntervals": 300,
+    "recentFps": 62.21,
+    "recentP95Ms": 16.7,
+    "intervalsOver50Ms": 0,
+    "maximumIntervalMs": 49.7,
+    "counts": {
+      "enemies": {
+        "current": 182,
+        "peak": 220
+      },
+      "xpGems": {
+        "current": 600,
+        "peak": 600
+      },
+      "gunShots": {
+        "current": 20,
+        "peak": 45
+      },
+      "hostileShots": {
+        "current": 0,
+        "peak": 1
+      },
+      "particles": {
+        "current": 583,
+        "peak": 598
+      },
+      "floatingText": {
+        "current": 99,
+        "peak": 100
+      },
+      "lightning": {
+        "current": 0,
+        "peak": 8
+      },
+      "bottles": {
+        "current": 0,
+        "peak": 2
+      },
+      "fires": {
+        "current": 2,
+        "peak": 2
+      },
+      "bladeCooldowns": {
+        "current": 9,
+        "peak": 24
+      },
+      "burnCooldowns": {
+        "current": 40,
+        "peak": 123
+      }
+    }
+  },
+  "derived": {
+    "recentWindowSecondsApprox": 4.82
+  },
+  "classification": {
+    "orientationConfirmed": false,
+    "landscapeGateClosed": false,
+    "reason": "Owner confirmed game became wide, then rotated back before capture. Portrait capture dimensions are explained; exact orientation history of sampled intervals remains unrecorded.",
+    "status": "owner-confirmed landscape play; portrait capture followed by landscape recapture of same measurement",
+    "ownerConfirmedWideGameDuringPlay": true,
+    "sampleWindowOrientationIsolated": false,
+    "landscapeCaptureVerifiedByFollowup": true
+  },
+  "assessment": "Useful owner-confirmed landscape-play evidence with 67.22 FPS overall / 62.21 recent and no >50-ms intervals across 295.23 sampled seconds. Portrait dimensions reflect capture after rotating back. Do not assign the entire sample or recent window exclusively to landscape without a reset/capture sequence kept in that orientation.",
+  "captureBehaviorChecks": "orientation-capture-checks.json: three actual-source VM cases passed. New live captures use current viewport; existing/finished reports retain earlier viewport. Owner confirmed rotation back before capture, consistent with the portrait context; no viewport bug is demonstrated.",
+  "limits": [
+    "No measured temperature, refresh/power state, exact input sequence or recorded orientation/reset timeline. Owner confirms wide play followed by rotation back before capture.",
+    "Viewport is captured context, not an orientation history for all sampled frames.",
+    "Recent p95/FPS are latest 300 intervals (~4.82 seconds); not whole-capture distribution.",
+    "Safe-HP controlled fixture does not establish natural scored-run balance/performance.",
+    "No Android rendering/input/browser rotation fault is confirmed by local VM checks."
+  ],
+  "landscapeReexport": {
+    "file": "benchmarks/alpha-0.79/overtime-landscape-reexport-01.txt",
+    "rawSha256": "d6d8ea6b415646dadf8a6da9a0a4f95b864e826ae9651d435bfdf4f002c1476f",
+    "viewportCss": [
+      838,
+      331
+    ],
+    "orientation": "landscape",
+    "samePerformanceObservation": true,
+    "onlyViewportLineChanged": true
+  }
+}

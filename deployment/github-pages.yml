@@ -1,0 +1,55 @@
+# Preparation template: this is deliberately outside .github/workflows/.
+# Publishing creates a publicly accessible game URL even from a private repo.
+# Review GITHUB_DEPLOYMENT.md and obtain the owner's audience decision first.
+name: Publish public GitHub Pages preview (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      approve_public_preview:
+        description: 'I approve publishing the game at a new publicly accessible GitHub Pages address'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: ${{ inputs.approve_public_preview == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - run: node tools/build_game.cjs --check
+      - run: node tools/build_pwa.cjs
+      - name: Verify game and offline package
+        env:
+          LS_TEST_GC: '1'
+        run: |
+          node --expose-gc --max-old-space-size=512 tests/game.test.cjs
+          node tests/pwa.test.cjs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web-dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy approved public preview
+        id: deployment
+        uses: actions/deploy-pages@v4

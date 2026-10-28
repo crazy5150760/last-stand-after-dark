@@ -1,0 +1,46 @@
+name: Verify and package web preview
+
+on:
+  push:
+    branches: [main, alpha-0.82-source-backup]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Use the validated Node runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - name: Verify readable source and standalone match
+        run: node tools/build_game.cjs --check
+      - name: Build installable static output
+        run: node tools/build_pwa.cjs
+      - name: Verify native game behavior
+        env:
+          LS_TEST_GC: '1'
+        run: node --expose-gc --max-old-space-size=512 tests/game.test.cjs
+      - name: Verify offline preparation and update behavior
+        run: node tests/pwa.test.cjs
+      - name: Package the verified output
+        run: python3 tools/package_web_preview.py --output "$RUNNER_TEMP/last-stand-release"
+      - name: Save private build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-stand-web-preview-${{ github.sha }}
+          path: ${{ runner.temp }}/last-stand-release/
+          if-no-files-found: error
+          retention-days: 14

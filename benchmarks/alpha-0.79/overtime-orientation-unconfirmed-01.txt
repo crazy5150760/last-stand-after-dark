@@ -1,0 +1,44 @@
+LAST STAND: AFTER DARK — ALPHA 0.79 PHONE BENCHMARK
+Device/browser (owner supplied): Not supplied
+Observations (owner supplied): Not supplied
+Context: Training · unscored · 05:00 active test time · level 40
+Survivor · Downtown · Standard
+Build at capture: Gun ×5 · Railstorm (EVOLVED) · Thunderweb (EVOLVED) · Reaper Ring (EVOLVED) · Wildfire (EVOLVED)
+MAIN GAME PERFORMANCE TEST: Overtime · UNSCORED · HP SAFE
+Controlled initial scene clock: 10:00 · active test age: 05:00
+Target population: 220 · replenished XP: 600 · fixed synthetic loadout
+Test presentation: field actors · street scenery · composed HUD · Reduced OFF
+Warm-up: first 5 active seconds excluded; art readiness and manual resets affect samples.
+Measured intervals: 19847 · sampled seconds: 295.23 · average FPS: 67.22 · p95 ms: 16.70
+Controlled pressure fixture; native AI/weapons/rendering, not proof of natural run difficulty.
+Presentation at capture: Main game performance test · overhead
+Actor art at capture: Field actors ready · survivor, Shambler, Runner and Brute. · Riot Guard art ready. · Spitter art ready. · Howler art ready. · Lobber art ready. · Blackout Hunter art ready.
+Scenery at capture: Performance test · Street materials
+Viewport at capture: 411 × 781 CSS px · portrait · canvas DPR 1.75
+Reduced effects: OFF · Mirrored controls: OFF
+Measuring at capture: ON
+Measured intervals: 19847 · sampled active seconds: 295.23
+Capture average: 67.22 FPS
+Recent window: 300 intervals · 62.21 FPS · p95 16.70 ms
+Capture intervals over 50 ms: 0 · maximum 49.70 ms
+
+SCENE OBJECT COUNTS (current / capture peak; not memory bytes)
+enemies: 182 / 220
+xpGems: 600 / 600
+gunShots: 20 / 45
+hostileShots: 0 / 1
+particles: 583 / 598
+floatingText: 99 / 100
+lightning: 0 / 8
+bottles: 0 / 2
+fires: 2 / 2
+bladeCooldowns: 9 / 24
+burnCooldowns: 40 / 123
+
+Raw requestAnimationFrame intervals; simulation delta remains capped at 35 ms.
+Only active play, including unscored practice when used. Modal/background gaps excluded.
+Recent FPS/p95 uses at most 300 intervals; totals/peaks are since reset or new run.
+No samples means unavailable, not an assumed frame rate. Reset between orientations/test conditions.
+Counts do not measure JavaScript heap, GPU memory, temperature or battery.
+Diagnostic overhead is included; use the same setting when comparing builds.
+This temporary report is not saved to Run Log or backup. Share it yourself.
