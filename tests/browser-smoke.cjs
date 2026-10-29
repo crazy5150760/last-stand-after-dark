@@ -150,12 +150,13 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const saved=await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort()));
    let navigations=0;game.on('framenavigated',frame=>{if(frame===game.mainFrame())navigations++});
    updateWorker=null;
-   // Only Date advances; native timers/RAF and the paused gameplay remain real.
-   await game.clock.setFixedTime(Date.now()+16*60*1000);
-   await game.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
+   // Another ordinary game launch discovers B while the first run remains open.
+   // Exercise real multi-window behavior without altering browser/game clocks.
+   const checker=await context.newPage();await checker.goto(base,{waitUntil:'networkidle'});
    await game.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'},undefined,{timeout:90000});
    const workerBuild=(page,slot)=>page.evaluate(async slot=>{
-    const worker=(await navigator.serviceWorker.getRegistration())[slot];
+    const reg=await navigator.serviceWorker.getRegistration(),worker=reg[slot];
+    if(!worker)throw Error('Missing worker slot '+slot+': '+JSON.stringify({url:location.href,controller:navigator.serviceWorker.controller?.state,active:reg.active?.state,waiting:reg.waiting?.state,installing:reg.installing?.state}));
     return new Promise((resolve,reject)=>{const c=new MessageChannel();const timer=setTimeout(()=>reject(Error('Worker status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])});
    },slot);
    assert.equal((await workerBuild(game,'active')).build,older);
@@ -166,6 +167,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
    let nextWorker;
    for(const w of context.serviceWorkers())try{if(await w.evaluate(()=>CONFIG.build)===current)nextWorker=w}catch{}
    assert.ok(nextWorker,'new real worker is present');
+   await checker.close();assert.equal((await workerBuild(game,'active')).build,older);
    await game.close();
    await nextWorker.evaluate(async()=>{for(let i=0;i<150;i++){if(!self.registration.waiting&&self.registration.active?.state==='activated')return;await new Promise(ok=>setTimeout(ok,100))}throw Error('Worker did not activate after natural client closure')});
    await context.setOffline(true);
