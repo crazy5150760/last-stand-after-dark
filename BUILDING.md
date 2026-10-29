@@ -1,3 +1,5 @@
+> Current release: Alpha 0.85 · Clear Upgrade Choices. Local targeted checks and the source AST comparison cover a read-only preview helper and upgrade presentation; all native choice effects/odds/guards remain unchanged. See PLAYTEST.md and release artifacts for current counts and publication status. Older validation sections below describe their named snapshots.
+
 # Building the standalone game
 
 Alpha 0.84 keeps the existing offline HTML/Canvas game and Site identity. There is no npm install, framework, server, new engine, repository synchronization or publication step.

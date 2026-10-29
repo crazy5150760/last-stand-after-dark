@@ -1,7 +1,7 @@
 # Last Stand: After Dark — first-release plan
 
 Owner and lead tester: Robert Kenny. Development/design lead: Codex.
-Updated: 2026-10-28. Current build: **Alpha 0.84 · Clear Update Status**. Robert accepted 0.83 activation after Brave Force stop, retained records/settings and offline play. Improve active versus downloaded labels, replace stale setup text and add restart help, with status refresh on return. Keep the default waiting lifecycle and gameplay/saves intact. Publish to the same approved public Pages address after source CI. Real 0.84 UI acceptance remains pending; main/conversion branches and original Site remain unchanged.
+Updated: 2026-10-29. Current build: **Alpha 0.85 · Clear Upgrade Choices**. Robert confirmed 0.84 updated successfully and asked to proceed. Improve card rank progress, immediate support-stat changes and the optional current-build reference. Preserve random draws, gesture guards, combat, balance and saves. Publish at the same approved public Pages address after source CI. Actual 0.85 phone layout and natural choice readability remain owner checks; main/conversion history and original Site remain unchanged.
 
 ## Product goal
 

@@ -1,4 +1,4 @@
-> Current release: Alpha 0.84 · Clear Update Status. Robert accepted the 0.83 update after Brave Force stop and confirmed records/settings and offline reopening. This release makes active and downloaded versions distinct, removes fixed 0.80 labels and adds the tested restart fallback. Follow PLAYTEST.md after publication to the same approved public Pages address. The original Site remains unchanged. Historical Alpha 0.80 policy below still applies; no forced activation or reload is added.
+> Current release: Alpha 0.85 · Clear Upgrade Choices. The 0.84 active/downloaded labels and Brave restart help stay unchanged. Update the existing home-screen app at the same public Pages address, then follow PLAYTEST.md. Robert confirmed the 0.84 update worked. No manifest/save change, forced activation or reinstall is added; the original Site remains untouched. The historical Alpha 0.80 implementation policy below still applies.
 
 # Alpha 0.80 — installable web preview for review
 

@@ -1,4 +1,4 @@
-> Current release: Alpha 0.84 · Clear Update Status. Prepare source CI and publish verified static output to the existing gh-pages branch at the same address. The owner accepts public game and GitHub source. Pages uses Deploy from a branch → gh-pages → /(root); the manual Actions template below is historical/optional. The original Site and main/conversion branches remain unchanged. Earlier 0.82 backup hashes describe that snapshot, not this later release.
+> Current release: Alpha 0.85 · Clear Upgrade Choices. Back up source, run full CI, then publish verified static output to existing gh-pages at the same approved public game address. Public source is accepted by the owner. Main/conversion history and the original Site remain unchanged. Earlier 0.82 backup hashes are historical; current release manifests and Git trees record this build.
 
 # Alpha 0.82 source backup and web deployment preparation
 
