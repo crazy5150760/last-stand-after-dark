@@ -45,45 +45,18 @@ branch was deleted and no Site or domain change occurred. Future routine verifie
 merges use the owner's standing authority in AGENTS.md, without another routine
 approval prompt. Inspect intervening changes and required checks each time.
 
-## Rehearse publication without publishing
+## Current Pages release preparation
 
-The workflow is now on default main. On a supported authenticated client, run
-**Publish verified game to existing Pages branch** with:
+The former manual/PAT branch publisher is preserved under deployment/history,
+not active in .github/workflows. The preferred publisher now uses official Pages
+actions with GitHub's built-in identity and a reviewed pages-release.json request.
+The initial request has publish=false and reproduces the accepted original
+Alpha 0.86 package; neither the source merge nor the rehearsal replaces the game.
 
-- source_ref: the exact reviewed 40-character source commit.
-- expected_live_commit: the freshly read gh-pages commit.
-- publish_verified_build: **false** (the default).
-
-The preflight rejects malformed identifiers before checkout. Verification then
-checks the exact checkout, builds, runs all native and real-browser suites and
-saves verified-pages-output. The publish job is skipped; no publishing secret,
-protected production environment or gh-pages checkout is used. The summary
-explicitly distinguishes verification from publication. In this mode the live
-SHA is only syntax-checked, not queried for equality. Dry run is not an Android
-acceptance result, live deployment, or check of the publishing credential.
-
-This manual path is prepared but has not been dispatched: the connected tools
-do not expose workflow dispatch. Ordinary source CI exercises the same build
-and regression commands. Do not claim an actual manual rehearsal passed until
-its run is observed; default-branch integration alone does not establish that.
-
-## One-time hosting configuration still required
-
-Keep Pages on gh-pages/(root), the current URL and any CNAME. The publishing job
-requires PAGES_PUBLISH_TOKEN with repository Contents write, or a separately
-approved GitHub App identity. Existing secret configuration is unverified; no
-token was created, read or requested in chat. Native branch-based Pages ignores
-GITHUB_TOKEN pushes, so the workflow deliberately has no misleading fallback.
-An administrator can configure required reviewers for pages-production.
-
-Only after owner acceptance, source review, successful final CI and publishing
-identity setup should publish_verified_build be true. The publisher then checks
-the expected live SHA, copies the exact allowed files, preserves other content
-and CNAME, and uses a normal Git push. A changed live branch aborts publication;
-identical output causes no new commit. Verify the actual subsequent Pages build
-and phone URL before calling a future deployment successful. No source/domain
-setting change is part of this plan.
-
-The current live head remains ac9580725c4b25bfe74c653f51b09603b1a519f5. All 11
-production files remain Alpha 0.86, build 7cf8f34890269ad6. This infrastructure
-work does not create an Alpha 0.87 update or a new playable preview.
+See DEPLOYMENT.md for exact current instructions. After the prepared rehearsal
+passes, a repository administrator must change GitHub Settings -> Pages -> Source
+to GitHub Actions. The existing URL and any custom domain must stay unchanged.
+Connected source tools can then trigger reviewed releases through normal merges;
+no manual workflow-dispatch API, personal token or extra player update link is
+required. No account setting change or actual publication is claimed until
+verified. The original gh-pages baseline stays protected for rollback.

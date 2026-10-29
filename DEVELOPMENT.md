@@ -124,3 +124,9 @@ supported repository host for complete local ancestry.
 See docs/REMOTE_REVIEW.md and docs/REVIEW.md for evidence; docs/INTEGRATION.md for
 completed source integration and the separate Pages rehearsal; docs/ENVIRONMENT.md
 for actual access limits. Earlier development notes remain in docs/history/.
+
+Pages release preparation: `npm run test:release` verifies the real package
+composer, preserved content/CNAME and rejected inputs. The active release workflow
+is driven by deployment/pages-release.json, initially publish=false. It can run
+through normal reviewed source merges without a workflow-dispatch API or PAT;
+GitHub’s one-time Pages Source setting remains an administrator action.

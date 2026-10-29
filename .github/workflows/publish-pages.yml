@@ -1,140 +1,98 @@
-# Manual only. Existing Pages source remains gh-pages/(root); no domain change.
-name: Publish verified game to existing Pages branch
+name: Release verified game with GitHub Pages
 on:
+  push:
+    branches: [main]
+    paths: ['deployment/pages-release.json', '.github/workflows/publish-pages.yml']
   workflow_dispatch:
-    inputs:
-      source_ref:
-        description: 'Reviewed source commit SHA (40 hex characters)'
-        required: true
-        type: string
-      expected_live_commit:
-        description: 'Current gh-pages commit SHA; reject a changed live baseline'
-        required: true
-        type: string
-      publish_verified_build:
-        description: 'Publish after Android acceptance; false runs verification only'
-        required: true
-        type: boolean
-        default: false
 permissions:
   contents: read
 concurrency:
   group: last-stand-pages-production
   cancel-in-progress: false
 jobs:
-  preflight:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Require immutable commit identifiers before checkout
-        env:
-          SOURCE_SHA: ${{ inputs.source_ref }}
-          LIVE_SHA: ${{ inputs.expected_live_commit }}
-        run: |
-          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$LIVE_SHA" =~ ^[0-9a-f]{40}$ ]]
   verify:
-    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    outputs:
+      publish: ${{ steps.release.outputs.publish }}
+      expected_live_commit: ${{ steps.release.outputs.expected_live_commit }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_ref }}
+          path: automation
           persist-credentials: false
-      - name: Confirm the exact source checkout
-        env:
-          SOURCE_SHA: ${{ inputs.source_ref }}
-        run: |
-          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
       - uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
-      - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npm run validate
-      - run: npm run setup:browser
-      - run: npx playwright install-deps chromium
-      - run: npm run test:browser
-      - uses: actions/upload-artifact@v4
+          node-version-file: automation/.nvmrc
+      - name: Validate the reviewed release request
+        id: release
+        run: node automation/scripts/pages-release.cjs config automation/deployment/pages-release.json
+      - uses: actions/checkout@v4
         with:
-          name: verified-pages-output
-          path: web-dist/
-          if-no-files-found: error
-      - name: Record verification and publication mode
+          ref: ${{ steps.release.outputs.source_ref }}
+          path: candidate
+          persist-credentials: false
+      - name: Confirm immutable source checkout
         env:
-          SOURCE_SHA: ${{ inputs.source_ref }}
-          LIVE_SHA: ${{ inputs.expected_live_commit }}
-          PUBLISH_REQUESTED: ${{ inputs.publish_verified_build }}
-        run: |
-          {
-            echo '### Pages candidate verification passed'
-            echo "Source: $SOURCE_SHA"
-            echo "Expected live branch: $LIVE_SHA"
-            if [ "$PUBLISH_REQUESTED" = 'true' ]; then
-              echo 'Publication requested; the separate protected publish job must still succeed.'
-            else
-              echo 'Verification only. No publishing identity was used and no live files were changed.'
-              echo 'The expected live SHA was validated as input, but live branch equality is checked only by the publish job.'
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
-  publish:
-    needs: verify
-    if: ${{ inputs.publish_verified_build == true }}
-    runs-on: ubuntu-latest
-    environment: pages-production
-    permissions:
-      contents: read
-    steps:
-      - name: Require the configured Pages publishing identity
-        env:
-          PUBLISH_TOKEN: ${{ secrets.PAGES_PUBLISH_TOKEN }}
-        run: |
-          if [ -z "$PUBLISH_TOKEN" ]; then
-            echo 'Configure PAGES_PUBLISH_TOKEN with repository Contents write permission. GITHUB_TOKEN branch pushes do not trigger the native Pages build.'
-            exit 1
-          fi
+          SOURCE_SHA: ${{ steps.release.outputs.source_ref }}
+        run: test "$(git -C candidate rev-parse HEAD)" = "$SOURCE_SHA"
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: candidate
+      - run: npm run doctor
+        working-directory: candidate
+      - run: npm run validate
+        working-directory: candidate
+      - run: npm run setup:browser
+        working-directory: candidate
+      - run: npx playwright install-deps chromium
+        working-directory: candidate
+      - run: npm run test:browser
+        working-directory: candidate
       - uses: actions/checkout@v4
         with:
           ref: gh-pages
-          fetch-depth: 1
-          token: ${{ secrets.PAGES_PUBLISH_TOKEN }}
-      - name: Verify live branch has not changed
+          path: current-site
+          persist-credentials: false
+      - name: Check the preserved site baseline
         env:
-          EXPECTED_LIVE_SHA: ${{ inputs.expected_live_commit }}
-        run: test "$(git rev-parse HEAD)" = "$EXPECTED_LIVE_SHA"
-      - uses: actions/download-artifact@v4
+          LIVE_SHA: ${{ steps.release.outputs.expected_live_commit }}
+        run: test "$(git -C current-site rev-parse HEAD)" = "$LIVE_SHA"
+      - name: Compose the exact game while preserving CNAME and existing content
+        run: node automation/scripts/pages-release.cjs compose automation/deployment/pages-release.json current-site candidate/web-dist "$RUNNER_TEMP/pages-site"
+      - name: Package the verified Pages site
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: verified-pages-output
-          path: ${{ runner.temp }}/verified-game
-      - name: Commit generated files without removing existing content or CNAME
+          path: ${{ runner.temp }}/pages-site
+      - name: Record rehearsal result
         env:
-          SOURCE_SHA: ${{ inputs.source_ref }}
+          PUBLISH: ${{ steps.release.outputs.publish }}
         run: |
-          python3 - <<'PYCODE'
-          import hashlib, json, os, shutil
-          from pathlib import Path
-          source = Path(os.environ['RUNNER_TEMP']) / 'verified-game'
-          allowed = {'index.html', 'manifest.webmanifest', 'sw.js', 'install/index.html', 'install.js', 'install.css', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', '_headers', 'build-info.json'}
-          assert not any(p.is_symlink() for p in source.rglob('*'))
-          assert {p.relative_to(source).as_posix() for p in source.rglob('*') if p.is_file()} == allowed
-          info = json.loads((source / 'build-info.json').read_text())
-          for entry in info['cacheAssets']:
-              name = 'install/index.html' if entry['key'] == 'install/' else entry['key']
-              assert name in allowed
-              assert hashlib.sha256((source / name).read_bytes()).hexdigest() == entry['sha256']
-          for name in sorted(allowed):
-              target = Path(name)
-              target.parent.mkdir(parents=True, exist_ok=True)
-              shutil.copyfile(source / name, target)
-          PYCODE
-          touch .nojekyll
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- index.html manifest.webmanifest sw.js install/ install.js install.css icons/ _headers build-info.json .nojekyll
-          if git diff --cached --quiet; then
-            echo 'Production output already matches; no publication needed.'
+          if [ "$PUBLISH" = 'true' ]; then
+            echo 'Verified artifact ready. The separate Pages deployment must still succeed.' >> "$GITHUB_STEP_SUMMARY"
           else
-            git commit -m "Publish verified source $SOURCE_SHA"
-            git push origin HEAD:gh-pages
+            echo 'Rehearsal passed. No deployment, credential setup or live-site change performed.' >> "$GITHUB_STEP_SUMMARY"
           fi
+  deploy:
+    needs: verify
+    if: ${{ needs.verify.outputs.publish == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Recheck the site baseline immediately before deployment
+        uses: actions/github-script@v7
+        env:
+          EXPECTED: ${{ needs.verify.outputs.expected_live_commit }}
+        with:
+          script: |
+            const {data} = await github.rest.git.getRef({...context.repo, ref: 'heads/gh-pages'});
+            if (data.object.sha !== process.env.EXPECTED) throw new Error('Preserved site baseline changed; review before publishing.');
+      - name: Deploy using GitHub's built-in identity
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -85,3 +85,8 @@ Automatic game-link updates are implemented in the hosted-only PWA shell; see
 docs/AUTOMATIC_UPDATES.md for behavior, validation and publication status. This
 changes the web build identity while preserving the Alpha 0.86 standalone and all
 gameplay. It does not imply the new shell has been deployed to the public game.
+
+The credential-free Pages release workflow uses a reviewed release request and
+GitHub’s built-in deployment identity. It starts with a non-publishing rehearsal;
+GitHub Pages still needs its one-time Source setting changed by an account admin.
+See docs/DEPLOYMENT.md. No personal token or separate player update link is needed.

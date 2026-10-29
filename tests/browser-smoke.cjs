@@ -153,14 +153,19 @@ const {root,json}=require('../scripts/lib/project.cjs');
    // Another ordinary game launch discovers B while the first run remains open.
    // Exercise real multi-window behavior without altering browser/game clocks.
    const checker=await context.newPage();await checker.goto(base,{waitUntil:'networkidle'});
-   await game.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'},undefined,{timeout:90000});
+   // Retain the worker observed by the predicate. Re-reading a registration's
+   // waiting slot in another evaluation can race its proxy's state delivery.
+   const pending=await game.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'?r.waiting:null},undefined,{timeout:90000});
    const workerBuild=(page,slot)=>page.evaluate(async slot=>{
     const reg=await navigator.serviceWorker.getRegistration(),worker=reg[slot];
     if(!worker)throw Error('Missing worker slot '+slot+': '+JSON.stringify({url:location.href,controller:navigator.serviceWorker.controller?.state,active:reg.active?.state,waiting:reg.waiting?.state,installing:reg.installing?.state}));
     return new Promise((resolve,reject)=>{const c=new MessageChannel();const timer=setTimeout(()=>reject(Error('Worker status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])});
    },slot);
    assert.equal((await workerBuild(game,'active')).build,older);
-   const waiting=await workerBuild(game,'waiting');assert.equal(waiting.build,current);assert.equal(waiting.ready,true);
+   assert.equal(await pending.evaluate(worker=>worker.state),'installed');
+   const waiting=await pending.evaluate(worker=>new Promise((resolve,reject)=>{const c=new MessageChannel(),timer=setTimeout(()=>reject(Error('Waiting status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])}));
+   assert.equal(waiting.build,current);assert.equal(waiting.ready,true);
+   assert.equal(await pending.evaluate(worker=>worker.state),'installed','downloaded worker must stay waiting during the paused run');
    assert.equal(navigations,0,'automatic download must not reload an open run');
    assert.equal(await game.locator('#time').textContent(),clock);await game.locator('#resume').waitFor();
    assert.equal(await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort())),saved,'records unchanged during update');
@@ -168,6 +173,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
    for(const w of context.serviceWorkers())try{if(await w.evaluate(()=>CONFIG.build)===current)nextWorker=w}catch{}
    assert.ok(nextWorker,'new real worker is present');
    await checker.close();assert.equal((await workerBuild(game,'active')).build,older);
+   assert.equal(await pending.evaluate(worker=>worker.state),'installed','one remaining game window must still block activation');
    await game.close();
    await nextWorker.evaluate(async()=>{for(let i=0;i<150;i++){if(!self.registration.waiting&&self.registration.active?.state==='activated')return;await new Promise(ok=>setTimeout(ok,100))}throw Error('Worker did not activate after natural client closure')});
    await context.setOffline(true);
