@@ -5,6 +5,7 @@ let chromium;
 try{({chromium}=require('playwright'))}catch{throw Error('Browser tooling missing. Run npm run setup:browser in an environment with approved network access.');}
 const {createServer}=require('../scripts/serve.cjs');
 const {root,json}=require('../scripts/lib/project.cjs');
+const {waitForAsyncState}=require('./lib/browser-state.cjs');
 (async()=>{
  let browser,server;
  const output=path.join(root,'test-results');fs.mkdirSync(output,{recursive:true});
@@ -37,7 +38,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
     probeContext=await browser.newContext({...options,serviceWorkers:'allow'});
     const installer=await probeContext.newPage();await installer.goto(url+prefix.slice(1));
     await installer.evaluate(async()=>{await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready});
-    await installer.waitForFunction(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
+    await waitForAsyncState(installer,async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
     const client=await probeContext.newPage();const response=await client.goto(url+prefix.slice(1));
     const controlled=await client.evaluate(()=>!!navigator.serviceWorker.controller);
     console.log(JSON.stringify({phase:'independent-worker-probe',mode,controlled,fromServiceWorker:response.fromServiceWorker()}));
@@ -100,12 +101,12 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const setupPage=await offlineContext.newPage();
    await setupPage.goto(base+'install/',{waitUntil:'networkidle'});
    await setupPage.locator('#prepare').click();
-   await setupPage.waitForFunction(async()=>{
+   await waitForAsyncState(setupPage,async()=>{
     const registration=await navigator.serviceWorker.getRegistration();
     return registration?.active?.state==='activated'&&document.getElementById('status').textContent.includes('Offline play is ready');
    },undefined,{timeout:90000});
    const expected=json('web-dist/build-info.json').build;
-   await setupPage.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
+   await waitForAsyncState(setupPage,async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
    const controlledPage=await offlineContext.newPage();
    const offlineCdp=await offlineContext.newCDPSession(controlledPage);
    await offlineCdp.send('Network.enable');
@@ -137,7 +138,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const current=json('web-dist/build-info.json').build,older='1111111111111111';assert.notEqual(current,older);
    updateWorker=fs.readFileSync(path.join(root,'web-dist/sw.js'),'utf8').replace('"build":"'+current+'"','"build":"'+older+'"');
    const first=await context.newPage();await first.goto(base,{waitUntil:'networkidle'});
-   await first.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.active?.state==='activated'},{},{timeout:90000});
+   await waitForAsyncState(first,async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.active?.state==='activated'},undefined,{timeout:90000});
    await first.close();
    const game=await context.newPage();
    const updateCdp=await context.newCDPSession(game);await updateCdp.send('Network.enable');await updateCdp.send('Network.setBypassServiceWorker',{bypass:false});
@@ -153,19 +154,15 @@ const {root,json}=require('../scripts/lib/project.cjs');
    // Another ordinary game launch discovers B while the first run remains open.
    // Exercise real multi-window behavior without altering browser/game clocks.
    const checker=await context.newPage();await checker.goto(base,{waitUntil:'networkidle'});
-   // Retain the worker observed by the predicate. Re-reading a registration's
-   // waiting slot in another evaluation can race its proxy's state delivery.
-   const pending=await game.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'?r.waiting:null},undefined,{timeout:90000});
+   await waitForAsyncState(game,async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'},undefined,{timeout:90000});
    const workerBuild=(page,slot)=>page.evaluate(async slot=>{
     const reg=await navigator.serviceWorker.getRegistration(),worker=reg[slot];
     if(!worker)throw Error('Missing worker slot '+slot+': '+JSON.stringify({url:location.href,controller:navigator.serviceWorker.controller?.state,active:reg.active?.state,waiting:reg.waiting?.state,installing:reg.installing?.state}));
     return new Promise((resolve,reject)=>{const c=new MessageChannel();const timer=setTimeout(()=>reject(Error('Worker status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])});
    },slot);
    assert.equal((await workerBuild(game,'active')).build,older);
-   assert.equal(await pending.evaluate(worker=>worker.state),'installed');
-   const waiting=await pending.evaluate(worker=>new Promise((resolve,reject)=>{const c=new MessageChannel(),timer=setTimeout(()=>reject(Error('Waiting status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])}));
-   assert.equal(waiting.build,current);assert.equal(waiting.ready,true);
-   assert.equal(await pending.evaluate(worker=>worker.state),'installed','downloaded worker must stay waiting during the paused run');
+   const waiting=await workerBuild(game,'waiting');assert.equal(waiting.build,current);assert.equal(waiting.ready,true);
+   assert.equal(await game.evaluate(async()=>(await navigator.serviceWorker.getRegistration()).waiting?.state),'installed','downloaded worker must stay waiting during the paused run');
    assert.equal(navigations,0,'automatic download must not reload an open run');
    assert.equal(await game.locator('#time').textContent(),clock);await game.locator('#resume').waitFor();
    assert.equal(await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort())),saved,'records unchanged during update');
@@ -173,7 +170,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
    for(const w of context.serviceWorkers())try{if(await w.evaluate(()=>CONFIG.build)===current)nextWorker=w}catch{}
    assert.ok(nextWorker,'new real worker is present');
    await checker.close();assert.equal((await workerBuild(game,'active')).build,older);
-   assert.equal(await pending.evaluate(worker=>worker.state),'installed','one remaining game window must still block activation');
+   assert.equal(await game.evaluate(async()=>(await navigator.serviceWorker.getRegistration()).waiting?.state),'installed','one remaining game window must still block activation');
    await game.close();
    await nextWorker.evaluate(async()=>{for(let i=0;i<150;i++){if(!self.registration.waiting&&self.registration.active?.state==='activated')return;await new Promise(ok=>setTimeout(ok,100))}throw Error('Worker did not activate after natural client closure')});
    await context.setOffline(true);

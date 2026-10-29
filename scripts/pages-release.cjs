@@ -46,7 +46,7 @@ function compose({baseline,candidate,output,release}){
 if(require.main===module){
  const [command,configPath,baseline,candidate,output]=process.argv.slice(2),release=config(JSON.parse(fs.readFileSync(configPath,'utf8')));
  if(command==='config'){
-  const lines=['source_ref='+release.source_ref,'expected_live_commit='+release.expected_live_commit,'publish='+release.publish].join('\n')+'\n';
+  const lines=['source_ref='+release.source_ref,'expected_live_commit='+release.expected_live_commit,'expected_build='+release.expected_build,'expected_game_sha256='+release.expected_game_sha256,'publish='+release.publish].join('\n')+'\n';
   if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,lines);else process.stdout.write(lines);
  }else if(command==='compose')console.log(JSON.stringify(compose({baseline,candidate,output,release})));
  else throw Error('Usage: pages-release.cjs config CONFIG | compose CONFIG BASELINE CANDIDATE OUTPUT');

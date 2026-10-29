@@ -21,6 +21,6 @@
     "package": "python3 tools/package_web_preview.py --output artifacts/release",
     "setup:browser": "npm install --no-save --package-lock=false --ignore-scripts playwright@1.62.1 && npx playwright install chromium",
     "test:server": "node tests/server.test.cjs",
-    "test:release": "node tests/pages-release.test.cjs"
+    "test:release": "node tests/pages-release.test.cjs && node tests/browser-state.test.cjs"
   }
 }

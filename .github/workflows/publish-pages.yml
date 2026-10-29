@@ -16,6 +16,8 @@ jobs:
     outputs:
       publish: ${{ steps.release.outputs.publish }}
       expected_live_commit: ${{ steps.release.outputs.expected_live_commit }}
+      expected_build: ${{ steps.release.outputs.expected_build }}
+      expected_game_sha256: ${{ steps.release.outputs.expected_game_sha256 }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -76,6 +78,7 @@ jobs:
     needs: verify
     if: ${{ needs.verify.outputs.publish == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       actions: read
@@ -96,3 +99,31 @@ jobs:
       - name: Deploy using GitHub's built-in identity
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify the public game and every cached asset
+        uses: actions/github-script@v7
+        env:
+          EXPECTED_BUILD: ${{ needs.verify.outputs.expected_build }}
+          EXPECTED_GAME: ${{ needs.verify.outputs.expected_game_sha256 }}
+        with:
+          script: |
+            const {createHash} = require('node:crypto');
+            const base = new URL('https://crazy5150760.github.io/last-stand-after-dark/');
+            const fresh = url => {const u = new URL(url, base); if (u.origin !== base.origin || !u.pathname.startsWith(base.pathname)) throw new Error('Unexpected asset URL'); u.searchParams.set('release-check', String(context.runId)); return u;};
+            let info;
+            for (let attempt = 0; attempt < 8; attempt++) {
+              try {
+                const r = await fetch(fresh('build-info.json'), {cache: 'no-store', signal: AbortSignal.timeout(8000)});
+                if (!r.ok) throw new Error('Build metadata HTTP ' + r.status);
+                const data = await r.json();
+                if (data.build === process.env.EXPECTED_BUILD && data.standaloneSha256 === process.env.EXPECTED_GAME) {info = data; break;}
+              } catch (error) {core.info('Waiting for matching public metadata: ' + error.message);}
+              await new Promise(resolve => setTimeout(resolve, 2500));
+            }
+            if (!info || !Array.isArray(info.cacheAssets) || info.cacheAssets.length !== 8) throw new Error('The public build did not match the verified release');
+            for (const asset of info.cacheAssets) {
+              const r = await fetch(fresh(asset.url), {cache: 'no-store', signal: AbortSignal.timeout(10000)});
+              if (!r.ok) throw new Error('Asset HTTP ' + r.status + ': ' + asset.key);
+              const actual = createHash('sha256').update(Buffer.from(await r.arrayBuffer())).digest('hex');
+              if (actual !== asset.sha256) throw new Error('Public asset hash mismatch: ' + asset.key);
+            }
+            core.info('Public game verified: ' + info.version + ' / ' + info.build);

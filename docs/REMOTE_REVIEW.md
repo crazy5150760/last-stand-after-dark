@@ -67,3 +67,11 @@ release request; the old token-based branch workflow is archived. The first
 rehearsal is non-publishing and uses the accepted original game. No personal token
 is needed. The remaining account operation is Pages Source -> GitHub Actions; no
 connected tool exposes that setting. See DEPLOYMENT.md before any switch/release.
+
+The first attempted fixture correction still failed (run 40964649334). Inspection
+of the pinned Playwright poller showed that an async predicate's Promise is tested
+for truthiness before its resolved boolean. The corrected fixture now awaits each
+browser evaluation explicitly via tests/lib/browser-state.cjs. Three focused
+regressions prove false/null cannot pass, timeouts fail and exceptions are not
+swallowed. Earlier registration-proxy timing explanations were provisional and
+are superseded by this verified polling cause. No production code changed.
