@@ -9,8 +9,9 @@ filesystem permissions or make a cloud workspace permanent.
 
 - Infrastructure task: preserve Alpha 0.86 gameplay, art, audio, timing, saves and
   performance characteristics. No engine migration, rebalancing or new features.
-- Work on a dedicated branch. Keep main, gh-pages, the original root Alpha 0.82
-  HTML and legacy/alpha-0.86 unchanged. Never force-push or delete working builds.
+- Work on a dedicated branch and integrate verified changes through reviewed PRs.
+  Keep gh-pages, the original root Alpha 0.82 HTML and legacy/alpha-0.86 protected.
+  Never force-push or delete working builds. A source merge does not deploy a game.
 - Current public game: https://crazy5150760.github.io/last-stand-after-dark/ .
   Public preview/source were approved. Preserve existing Pages path and CNAME.
 - Original Site identity remains in .openai/hosting.json. Do not replace its
@@ -51,7 +52,7 @@ filesystem permissions or make a cloud workspace permanent.
   change in future sessions; repository config, not that path, is authoritative.
 - Direct proxy access and Chromium sockets were blocked in the initial session;
   initial write requests stalled. A later branch/source transfer succeeded and
-  draft PR #6 is open; see docs/REMOTE_REVIEW.md. Do not repeatedly retry a stalled
+  PR #6 is merged into main; see docs/REMOTE_REVIEW.md. Do not repeatedly retry a stalled
   approval flow or transfer generated 12 MB HTML through it.
   Finish reviewable local work, report limits, and use a normal authorized checkout
   or the delivered Git bundle. Repository instructions cannot bypass permissions.
@@ -59,8 +60,18 @@ filesystem permissions or make a cloud workspace permanent.
   separate publish-pages workflow is manual, requires reviewed commit identifiers
   and PAGES_PUBLISH_TOKEN (Contents write) to trigger native branch-based Pages.
   It preserves gh-pages history and existing CNAME/content; never use --delete.
-- No live replacement until validation and owner phone acceptance. Keep a draft
-  review until browser/device gaps are resolved. Do not merge automatically.
+- Owner authorization, 2026-10-29: "yes you are allowed to merge automatically..
+  i want you to be free to do what you need for this game without my constant input".
+  Routine development, commits and automatic merges of verified changes are
+  authorized. Do not ask again for each routine merge or repository operation.
+  Review the actual diff, pass appropriate checks and inspect current heads before
+  merging; use the expected source SHA and retain normal Git history. This does
+  not bypass required platform permissions or failing checks. Bring the owner in
+  for testing and major decisions that materially risk the working game.
+- No live replacement until validation and applicable owner phone acceptance.
+  Alpha 0.86 functional acceptance is recorded in docs/PHONE_ACCEPTANCE.md.
+  Keep source integration separate from publication; do not invent credentials,
+  change Site identity/domain, or treat authority as a measured performance result.
 - Every playable delivery gets a short Android checklist with expected results,
   version, link, actual test results and untested items. Keep commentary regular;
   avoid asking Robert to approve routine work already authorized.

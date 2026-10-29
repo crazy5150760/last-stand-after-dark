@@ -1,16 +1,18 @@
-# Default-branch integration and Pages rehearsal
+# Completed source integration and Pages rehearsal
 
-This is an integration review plan, not authorization to merge automatically or
-publish. The owner has now reported passing the phone checks; PHONE_ACCEPTANCE.md
-records the exact statement. PR #6 was retargeted from Alpha 0.86 to main. Its
-previous source-head push and PR runs both passed; the final main-targeted checks
-and review remain required before merging.
+PR #6 merged into main at 73071cf86a93a8ab85fa61a72681b59bf5729fb5 after owner
+phone acceptance, passing source/main-targeted CI and explicit merge authorization.
+Its tree ed41f7d72e92426f66fb08f8cf73c4585bf51e32 exactly equals the reviewed
+candidate. The owner also authorizes future routine verified automatic merges;
+AGENTS.md records the instruction. This does not create hosting credentials or
+change the live game.
 
 ## Verified source ancestry
 
 GitHub commit metadata confirms that each release below directly parents the
-next release. The five historical PRs remain open drafts; no source merge was
-performed. PR #6's current review state/checks are authoritative on GitHub.
+next release. The normal PR #6 merge retains this complete ancestry. Historical
+release/baseline branches are retained. Superseded PR reviews can be closed after
+confirming their heads are in main; no second historical source merge is needed.
 
 | PR | Source branch | Exact head | Current base |
 |---|---|---|---|
@@ -21,42 +23,31 @@ performed. PR #6's current review state/checks are authoritative on GitHub.
 | #5 | alpha-0.86-health-feedback | eedabcf9ac85951671e9e0c20f0b7794ce6fc4c9 | alpha-0.85-upgrade-clarity |
 | #6 | refactor/modular-development | See the current PR head | main |
 
-Main is still 0478a42c73c1ff63b6b86d49b71b11cacd3c4ca1. Its complete two-file tree
+Before integration, main was 0478a42c73c1ff63b6b86d49b71b11cacd3c4ca1. Its two-file tree
 was inspected: the original Alpha 0.82 HTML is retained at its original path;
 the original README blob ca59b041f44eb054e975c0f2f6e79d7d9067ac34 is retained
 unchanged as docs/history/README.md. The new README describes the actual project.
 The preserved Alpha 0.86 source branch remains
 baseline/alpha-0.86-preserved at eedabcf9ac85951671e9e0c20f0b7794ce6fc4c9.
 
-## Proposed integration after the gates pass
+## Completed integration checks
 
-The release branches form one ancestry chain. A single reviewed integration of
-the restructuring head into main can therefore include the complete source
-history; merging each historical draft separately is unnecessary. Before doing
-so:
+Owner S21 Ultra / Brave acceptance is recorded in PHONE_ACCEPTANCE.md. The focused
+refactoring diff and broader main integration were reviewed. GitHub confirmed main
+was the merge base, with no divergent main changes or removed original main files.
+Runs 40951381229 and 40951392724 passed 1,410 core cases and real Chromium checks.
+No unresolved review threads remained. Fresh source/main/live heads were checked,
+and the merge used the expected source SHA and normal merge method. The returned
+main merge tree exactly matches the tested candidate; no main history was rewritten.
 
-1. Owner Alpha 0.86 S21 Ultra / Brave acceptance is recorded in PHONE_ACCEPTANCE.md.
-   It followed the checklist and is not inferred from an unspecified continuation.
-2. Review PR #6's focused restructuring diff and the historical PR descriptions.
-   Confirm no unexpected source changes, failed checks or unresolved review.
-3. Re-read main, development, baseline and gh-pages heads. If any moved, compare
-   the intervening changes before proceeding; never force a branch back.
-4. PR #6 now provides the main-targeted integration review. GitHub's comparison
-   confirmed main is the merge base, zero commits behind, and no removed original
-   main files. Review the broader diff, original files and Site identity, then
-   require CI on this actual main merge candidate. Re-read all heads at merge time.
-5. Merge only after the required acceptance and review gates are met. Prefer a
-   normal merge retaining source ancestry. Do not delete release/baseline
-   branches. Close superseded historical PRs only after confirming their work
-   and history are present in main.
-
-Retargeting only changed the PR base. No main merge, branch deletion or automatic
-closure was performed. A completed main merge is not claimed; consult PR checks
-for the final integration candidate's actual test results.
+The live head remains ac9580725c4b25bfe74c653f51b09603b1a519f5. No release/baseline
+branch was deleted and no Site or domain change occurred. Future routine verified
+merges use the owner's standing authority in AGENTS.md, without another routine
+approval prompt. Inspect intervening changes and required checks each time.
 
 ## Rehearse publication without publishing
 
-Once the workflow is available on the default branch, run
+The workflow is now on default main. On a supported authenticated client, run
 **Publish verified game to existing Pages branch** with:
 
 - source_ref: the exact reviewed 40-character source commit.
@@ -71,9 +62,10 @@ explicitly distinguishes verification from publication. In this mode the live
 SHA is only syntax-checked, not queried for equality. Dry run is not an Android
 acceptance result, live deployment, or check of the publishing credential.
 
-This manual path is prepared but has not been dispatched: the workflow is not
-yet integrated into main. Ordinary source CI already exercises the same build
-and regression commands. Do not claim a new Actions button exists today.
+This manual path is prepared but has not been dispatched: the connected tools
+do not expose workflow dispatch. Ordinary source CI exercises the same build
+and regression commands. Do not claim an actual manual rehearsal passed until
+its run is observed; default-branch integration alone does not establish that.
 
 ## One-time hosting configuration still required
 

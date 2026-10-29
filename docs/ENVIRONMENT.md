@@ -3,7 +3,7 @@
 ## What works here
 
 The working checkout is /workspace/sites/last-stand-restructure on the dedicated
-refactor/modular-development branch. Local filesystem editing, ordinary local Git
+current feature branch (the restructuring is merged into main). Local filesystem editing, ordinary local Git
 objects/branches/commits, Node/npm, the full VM suites and production builds work.
 Node 24.19.0, npm 11.9.0, Python 3 and Chromium are present. No game runtime npm
 packages are needed. npm ci --ignore-scripts --offline succeeds for the core lock.
@@ -21,8 +21,8 @@ bypass was attempted.
 - The first GitHub connector create-branch request stalled and did not create a
   branch. A later authorized attempt succeeded: the development branch/source and
   draft PR #6 are confirmed. One batched request transferred about 668 KB of changed
-  text and reused existing artwork/release blobs. No merge/live publication was
-  performed. Do not repeatedly retry a stalled approval request.
+  text and reused existing artwork/release blobs. PR #6 was subsequently merged
+  with explicit owner authorization; no live publication was performed. Do not repeatedly retry a stalled approval request.
 - System Chromium launch and the optional Playwright launch both failed at
   crashpad socket.cc setsockopt: Operation not permitted. No browser page or HTTP
   socket can launch locally. Remote Chromium evidence is tracked separately in
@@ -52,7 +52,7 @@ is lost by making dist a generated directory.
 ## Future Codex sessions
 
 Prefer starting a repository-attached task against crazy5150760/last-stand-after-dark,
-selecting the now-published development branch. Configure the environment's
+selecting current main and creating a new task branch. Configure the environment's
 setup command to run `bash scripts/setup.sh` and provide Node 24.19.0. Reuse/cache
 packages or Playwright browsers only through supported environment controls.
 AGENTS.md and the setup scripts travel with Git; they do not guarantee the same
@@ -63,7 +63,7 @@ An ordinary authorized machine can use:
 ```sh
 git clone https://github.com/crazy5150760/last-stand-after-dark.git
 cd last-stand-after-dark
-git switch refactor/modular-development
+git switch -c feature/short-description
 bash scripts/setup.sh
 npm test
 ```
