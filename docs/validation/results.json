@@ -100,11 +100,14 @@
   "gitPush": "unavailable/unverified; proxy failure and aborted permission check",
   "remoteBranchCreate": "confirmed; refactor/modular-development",
   "newCiRun": {
-    "initialRunId": 40933415231,
-    "sourceCommit": "804f563299cbaeebc8b267a4005a63a25f43451f",
-    "coreSuites": "passed",
-    "initialBrowser": "failed offline navigation; fixture activation/control race corrected; follow-up pending",
-    "prUrl": "https://github.com/crazy5150760/last-stand-after-dark/pull/6"
+    "initialCoreRunId": 40933415231,
+    "initialCoreCommit": "804f563299cbaeebc8b267a4005a63a25f43451f",
+    "coreTestsPassed": 1410,
+    "coreFailures": 0,
+    "browserStepEvidenceRunId": 40939796438,
+    "browserStepConclusion": "success",
+    "latestReviewHeadChecks": "https://github.com/crazy5150760/last-stand-after-dark/pull/6/checks",
+    "note": "Initial fixture failures retained in CI history. Latest full gate is observed separately; this records already completed step evidence."
   },
   "newDeploy": "not performed",
   "physicalPhone": "pending",
@@ -134,5 +137,33 @@
   "gitObjectConnectivity": {
     "status": "passed",
     "note": "No missing/corrupt objects reported; dangling objects from prior local staging are not errors."
+  },
+  "remoteBrowser": {
+    "step": "passed",
+    "imageDecodes": 21,
+    "audioDecode": "48 second stereo original OGG",
+    "mobileViewports": [
+      [
+        412,
+        915
+      ],
+      [
+        915,
+        412
+      ]
+    ],
+    "mobileChecks": [
+      "startup",
+      "width",
+      "touch joystick with second-finger Pause",
+      "frozen clock",
+      "Settings return"
+    ],
+    "offlineChecks": [
+      "standard Chromium offline reload",
+      "fresh offline page at both viewport sizes"
+    ],
+    "setup": "Wait fully activated/ready, use normal online reload before offline if uncontrolled; no claim/skipWaiting/unregister",
+    "physicalAndroid": "not tested"
   }
 }

@@ -2,43 +2,57 @@
 
 Draft PR: https://github.com/crazy5150760/last-stand-after-dark/pull/6
 Branch: refactor/modular-development
-Base: alpha-0.86-health-feedback (protected Alpha 0.86)
-Initial remote commit: 804f563299cbaeebc8b267a4005a63a25f43451f
-Initial source tree: 464917745d405ce374af02e596f86149d63c3817
+Base: alpha-0.86-health-feedback
+Latest checks: https://github.com/crazy5150760/last-stand-after-dark/pull/6/checks
 
-The branch and source are confirmed on GitHub. The complete initial remote tree
-exactly matches the local 2344d837bc3e71f9ece5409af22cd846ab0f10ec commit. The
-initial request reused 71 existing blobs and transferred about 668 KB of changed
-text. The game HTML/art was not re-uploaded. Main and live gh-pages are unchanged.
+The development source is confirmed on GitHub. Its initial tree
+464917745d405ce374af02e596f86149d63c3817 exactly matched the locally verified
+2344d837bc3e71f9ece5409af22cd846ab0f10ec commit. The initial transfer reused 71
+existing blobs and sent about 668 KB of changed text. Later transfers changed
+only test/CI/documentation text. No complete game HTML or artwork was re-uploaded.
 
-Initial push CI:
+## Verified remote evidence
+
+- Run 40933415231 completed all 1,410 core tests with zero failures, as well as
+  setup, syntax/assets, build and stale-output checks. Its first browser fixture
+  failed during offline navigation; it is not reported as an entirely passed run.
+- Run 40939796438 completed the real Chromium browser step successfully: mobile
+  portrait/landscape startup, all 21 image decodes and the original stereo OGG,
+  joystick with second-finger Pause, frozen clock, Settings return, offline reload
+  and a fresh offline page. Browser evidence was observed before recording these
+  notes; consult the PR's latest checks for the complete final pipeline result.
+- Mobile layout/touch uses mobile-emulated Chromium. Worker/offline integration
+  uses separate standard Chromium contexts at both viewport sizes. Neither is a
+  physical S21 Ultra / Brave result or a device performance benchmark.
+
+Core evidence:
 https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40933415231
-PR CI:
-https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40933672209
+Browser-step evidence:
+https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40939796438
 
-Initial remote run: core regression/build checks passed. Chromium launched and
-completed portrait touch, Pause clock and Settings checks. Its first offline
-navigation failed because the fixture waited only for a populated registration
-active slot, which can still be activating, then went offline from an unclaimed
-installer client. The game deliberately never calls clients.claim.
+The offline fixture now waits for full worker activation/readiness and performs
+an ordinary online reload if its new document is still uncontrolled, before
+cutting network access. It does not call clients.claim, skipWaiting, unregister,
+or change the worker. Early timing/setup experiments failed and remain visible
+in CI history; those failures were not hidden or converted into skipped passes.
+The final gate repeats browser and full core tests on the review head.
 
-The fixture now waits for fully activated/ready status, navigates online to a
-controlled game client, then checks offline reload and a fresh offline page.
-It also decodes all 21 embedded images and the original OGG soundtrack in real
-Chromium. These are test-only changes; the PWA/game code and output stay untouched.
-Browser checks now run before the long VM suite in CI, so a browser fixture
-failure is found promptly; all core regressions still run before packaging.
-The next run decoded all media and passed portrait/input checks, but its reused
-page did not report a controller after normal navigation. The fixture now uses
-separate fresh installer/game tabs, records registration/controller/cache state,
-and retains partial results explicitly marked failed if a later assertion fails.
-Further remote validation outcome: pending observation.
+All production game/PWA files retain Alpha 0.86 bytes and build ID
+7cf8f34890269ad6. Main, alpha-0.86-health-feedback, gh-pages, the existing domain,
+original Site and protected releases are unchanged. No game update or replacement
+preview was deployed. The PR remains draft for owner phone acceptance and review
+of the older source PR chain before any main merge.
 
-The local workspace still cannot connect to its required Git proxy or launch
-Chromium/localhost sockets. GitHub Actions provides the supported checkout,
-setup/build/regression/browser runner alternative; it does not make this local
-machine permanent or grant it Git CLI credentials. Future repository sessions
-can reuse .nvmrc, AGENTS.md, scripts/setup.sh, package commands and the optional
-devcontainer. The PR is not merged and no new game update is expected from this
-byte-preserving restructuring. Physical phone acceptance and the optional Pages
-publishing identity/default-branch integration remain separate gates.
+## Environment boundary
+
+The local workspace still cannot reach its required shell Git proxy or launch
+Chromium/localhost sockets. The connected GitHub app now supports source review
+and small batched text transfers. GitHub Actions supplies the working ordinary
+repository checkout, pinned setup, builds and browser runner. It does not make
+this local machine permanent or grant it CLI credentials. Future repository tasks
+can reuse AGENTS.md, .nvmrc, scripts/setup.sh, package commands and the optional
+devcontainer. Container startup and future APK packaging remain untested.
+
+Normal direct Git and the optional Pages publishing identity/default-branch
+integration remain separate environment/hosting setup work. No new consent is
+needed for the already-authorized source work or approved public game/source.

@@ -2,8 +2,8 @@
 
 The locally restructured project is validated for review, not declared a completed
 browser/Android release. No gameplay change, new version or live replacement was
-performed. The source is now on GitHub in draft PR #6; follow-up remote browser
-validation is tracked in REMOTE_REVIEW.md. Machine-readable evidence is in validation/results.json; full raw logs
+performed. The source is now on GitHub in draft PR #6; successful remote browser-step
+evidence and final pipeline checks are tracked in REMOTE_REVIEW.md. Machine-readable evidence is in validation/results.json; full raw logs
 and probe outputs are retained in the separate validation artifact bundle.
 
 | Check | Baseline | Restructured result |
@@ -23,9 +23,9 @@ and probe outputs are retained in the separate validation artifact bundle.
 | npm offline core lock/setup | n/a | npm ci --ignore-scripts --offline passed |
 | Clean source archive extraction | n/a | CRC, setup, build, 42 fast tests and stale checks passed |
 | Local Git object connectivity | n/a | Passed |
-| Chromium / real browser / phone | Blocked locally | Remote portrait/touch passed; corrected offline fixture pending; phone pending |
+| Chromium / real browser / phone | Blocked locally | Remote mobile portrait/landscape touch/media and separate offline tests passed; phone pending |
 | Local HTTP socket listen | Not available here | EPERM, not passed |
-| New remote CI / normal Git push / deployment | Existing Alpha 0.86 CI/deploy succeeded | Core CI passed; browser follow-up pending; shell Git blocked; no deployment |
+| New remote CI / normal Git push / deployment | Existing Alpha 0.86 CI/deploy succeeded | Core and browser-step evidence passed; latest full gate in PR checks; shell Git blocked; no deployment |
 
 There are **1,410 passing tests** in the four full restructured suites, plus the
 separate focused runner smoke. Three independent deterministic probes emitted six
@@ -73,24 +73,26 @@ Chromium failed before opening a page at crashpad socket.cc setsockopt: Operatio
 not permitted. Playwright using the installed Chromium reproduced that failure.
 The local server also failed to bind 127.0.0.1:8000 with listen EPERM. No network
 permission workaround or sandbox bypass was used to make those checks appear to
-pass. No browser screenshot, physical touch, Android frame rate, GPU/memory/heat,
-audio perception, OS lifecycle, persistent storage durability or APK was verified.
+pass. No browser screenshot was produced locally. Remote Chromium now produces
+screenshots/evidence through CI. Physical touch, Android frame rate/GPU/memory/
+heat, audio perception, OS lifecycle, storage durability and APK remain unverified.
 
 The real-browser test now runs on GitHub Actions and checks initialization/loading errors,
 portrait/landscape width, multi-touch joystick with second-finger Pause, frozen
 clock, Settings return and real service-worker offline launch in disposable
-Chromium contexts. It fails if unavailable; it is not skipped as a success. The first remote run
-launched Chromium and passed portrait/input/Pause/Settings checks, then exposed a
-fixture activation race at offline navigation. The corrected fixture and full
-media decoding checks are under follow-up validation. Do not merge based on
-syntax/VM checks alone; see REMOTE_REVIEW.md for the final observed outcome.
+Chromium contexts. It fails if unavailable; it is not skipped as a success. The corrected fixture has now passed real Chromium startup, portrait/landscape
+mobile touch/Pause/Settings, all 21 image decodes, original OGG decode, and separate
+standard-browser offline reload/new-page checks. The fixture uses an ordinary
+online reload before cutting network access; no worker force-activation or claim
+was added. Early failed fixture runs remain in CI history. See REMOTE_REVIEW.md
+and the latest PR checks for exact evidence and the complete review-head gate.
 
 ## Remaining gates
 
 1. The source/dev branch and draft PR #6 are confirmed. Normal shell Git still
    needs working proxy access/authentication in a repository-based environment.
-2. Run the new CI and Chromium checks; fix any real-browser fixture or runtime
-   failures before treating the new workflow as verified.
+2. Review the latest complete PR gate, including the now-successful browser
+   fixture. Retain draft status for remaining device/default-branch review gates.
 3. Complete docs/MANUAL_TEST.md on S21 Ultra / Brave against the candidate bytes.
 4. Review the source PR chain/default-branch setup and publishing identity. Only
    then publish a changed candidate, retaining the current live game and domain.

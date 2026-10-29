@@ -12,7 +12,7 @@ requests, and manual dispatch. It checks the pinned toolchain, builds, runs the
 native/PWA/preservation/URL suites, runs real Chromium mobile/offline tests, then
 packages output. Its artifacts include web-dist and browser evidence. Uploads
 marked always() can contain partial output after failure: only a fully successful
-run is a release candidate. The revised workflow is running on the development branch; see docs/REMOTE_REVIEW.md for the verified outcome.
+run is a release candidate. The revised workflow now runs on the development branch. Core and real-browser step evidence has passed; see docs/REMOTE_REVIEW.md and the latest PR checks for full-gate results.
 
 publish-pages.yml is manual only, not a push trigger. After the reviewed source
 has passed the Android checklist, it takes a 40-character immutable source commit,
