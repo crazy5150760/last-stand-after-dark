@@ -67,12 +67,16 @@ docs/VALIDATION.md for evidence/limits, docs/DEPLOYMENT.md for Pages, and
 docs/ANDROID.md for future APK preparation. AGENTS.md carries persistent Codex
 instructions. Prior documentation is preserved under docs/history/.
 
-Development review: [PR #6](https://github.com/crazy5150760/last-stand-after-dark/pull/6)
-on `refactor/modular-development`. The remote source tree was verified against
-the local restructuring commit. See docs/REMOTE_REVIEW.md for current CI evidence
-and remaining integration/environment gates. The owner reported passing S21
-Ultra / Brave testing; see docs/PHONE_ACCEPTANCE.md. PR #6 now targets main for
-integration review. Main and the live game remain unchanged pending that review.
-Direct shell Git still cannot reach this workspace's required proxy; the initial
-source transfer used one batched tree request with about 668 KB of changed text
-and reused existing artwork/release blobs. No complete game HTML was re-uploaded.
+The restructuring is merged into main through [PR #6](https://github.com/crazy5150760/last-stand-after-dark/pull/6),
+commit `73071cf86a93a8ab85fa61a72681b59bf5729fb5`. Its tree exactly matches the
+reviewed candidate. Both source and main-targeted PR CI passed 1,410 core tests
+plus real Chromium checks. The owner reported passing S21 Ultra / Brave testing;
+see docs/PHONE_ACCEPTANCE.md. The live game and original Site are unchanged.
+
+Start future work from current main on a dedicated branch. The owner authorizes
+routine verified merges without repeated confirmation; AGENTS.md records that
+standing instruction. See docs/REMOTE_REVIEW.md for evidence and remaining
+hosting/environment limits. Direct shell Git still cannot reach this workspace's
+required proxy; small source transfers through the connected GitHub app and
+Actions checkout/build/browser verification work. No complete game HTML/artwork
+was re-uploaded for the restructuring.

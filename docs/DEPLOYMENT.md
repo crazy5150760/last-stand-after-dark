@@ -2,7 +2,8 @@
 
 The current approved public URL is
 https://crazy5150760.github.io/last-stand-after-dark/ . Pages uses gh-pages/(root).
-Main is an older imported snapshot; do not deploy it merely because it is main.
+Main now contains the verified modular source through merged PR #6; merging source
+does not publish the game. The live branch remains separate.
 The original ChatGPT Site and its hosting project ID are unchanged.
 
 ## Prepared automation
@@ -38,9 +39,10 @@ GitHub App credential can be used instead by updating the checkout identity.
 Do not paste tokens into a chat or repository. The pages-production environment
 may additionally be configured for required reviewers using GitHub settings.
 
-Manual workflows become dispatchable once present on the repository's default
-branch. Since this work remains isolated and main is unchanged, no new publish
-button or active default-branch workflow is claimed today. An alternative future
+The manual workflow is now committed on default main through PR #6. GitHub Actions
+workflow metadata can be checked without changing Pages. No manual dispatch was
+performed: the connected tool set does not expose workflow dispatch. A repository
+operator can use Run workflow in GitHub Actions on a supported authenticated client. An alternative future
 setup is official upload-pages-artifact/deploy-pages with Pages source switched
 to GitHub Actions; the old deployment/github-pages.yml is only a historical
 template, not the active configuration. Do not switch sources/custom domains
@@ -48,32 +50,37 @@ casually or activate two publishing paths.
 
 ## What has and has not changed
 
-No new deployment was performed. Existing source/main/live branches and domain
-settings were not overwritten. The remote dev branch/source and PR #6 are confirmed; direct shell Git remains unavailable.
+No new deployment was performed. PR #6 was merged into main with owner authorization;
+the actual merge tree exactly matches the tested candidate. The live branch, domain
+and original Site remain unchanged. Direct shell Git remains unavailable.
 The local production build is byte-identical to the current Alpha 0.86 and has
 the same PWA build ID. This is intentionally not Alpha 0.87 or a waiting update.
 
 For this preservation release, the existing HTTPS game is the same playable
 payload; it is not a newly deployed preview proving this new CI configuration.
 Browser CI has passed and owner phone acceptance is recorded in PHONE_ACCEPTANCE.md.
-Keep the PR unmerged until its main-targeted integration checks and review are
-complete. No publishing identity or live deployment is established by those gates.
+The source and main-targeted checks passed and source integration is complete.
+No publishing identity or live deployment is established by those gates.
 
-## Review and publication checklist
+## Publication checklist after completed integration
 
-1. The dev source and PR #6 are uploaded. Future pushes should use normal
-   authorized Git when the workspace proxy/authentication is working; never force.
-2. Review PR #6 against alpha-0.86-health-feedback and its new full CI,
-   including Chromium. Resolve every failure before promotion.
-3. Export the owner's JSON backup, then complete docs/MANUAL_TEST.md on S21 Ultra /
-   Brave. Automated browser contexts must remain disposable.
-4. Reconcile the existing source PR chain and review the default-branch workflow
-   changes without replacing main with the old game. Configure the publishing
-   identity/environment once. Leave CNAME untouched.
-5. Dispatch the guarded workflow using the exact tested source/live commit SHAs.
-   Verify the actual Pages build/deployment result and returned normal HTTPS URL.
-6. Check the deployed version, records/settings, both orientations and offline
-   setup/update behavior. With unchanged Alpha 0.86 bytes, no new update is expected.
+1. Start from the exact reviewed main source commit; inspect the current source
+   and gh-pages heads. Never force-push historical output over newer live content.
+2. Owner functional acceptance and all 1,410 core/Chromium checks passed for the
+   unchanged Alpha 0.86 payload. A later changed playable candidate needs its
+   appropriate verification and phone checklist, not a recycled acceptance claim.
+3. On a supported authenticated GitHub client, dispatch a rehearsal with
+   publish_verified_build false. Verify the actual result/artifact. This connection
+   cannot dispatch it and no successful rehearsal is claimed here.
+4. Configure/verify PAGES_PUBLISH_TOKEN or an approved publishing identity once.
+   Keep it in repository/environment secrets, never chat/source/remotes. Required
+   reviewer settings depend on actual repository administration access.
+5. When publication is needed, dispatch the guarded workflow with the reviewed
+   source SHA, freshly read expected live SHA and publish_verified_build true.
+   Verify the actual subsequent Pages deployment and normal HTTPS URL.
+6. Check the deployed version, records/settings, orientations and offline behavior.
+   Identical Alpha 0.86 output causes no publication commit or new waiting update.
 
-A Git push, workflow file, passing VM suite or generated archive alone does not
-establish successful public hosting, browser launch or Android acceptance.
+The owner permits routine verified source merges without repeated approval.
+Required platform permissions, hosting credentials and game verification still
+apply. A merge or artifact alone is not evidence of a successful deployment.

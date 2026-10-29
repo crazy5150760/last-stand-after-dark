@@ -95,22 +95,32 @@ edit/push main or gh-pages as part of feature work. Once normal network and Git
 authentication are available, the intended push is:
 
 ```sh
-git push -u origin refactor/modular-development
+git push -u origin HEAD
 ```
 
-The remote development branch and PR #6 now exist. Inspect the current
-remote head before pushing; never force-push over intervening work. The local
-tracking branch was aligned to the exact remote commit using SHA-verified public
-commit metadata because the proxy prevents a normal fetch. Ordinary Git network
-and CLI authentication are still unverified here. For the focused restructuring
-diff, compare alpha-0.86-health-feedback with the development branch. PR #6 now
-targets main for complete integration review: main is an older imported snapshot,
-and the development ancestry includes all five historical source releases. Owner
-phone acceptance is recorded in docs/PHONE_ACCEPTANCE.md. No main merge has been
-performed; final integration checks and review remain required.
-See docs/REMOTE_REVIEW.md and docs/REVIEW.md for actual review/CI evidence.
-docs/INTEGRATION.md records the checked source ancestry, proposed main review
-and verification-only Pages rehearsal; none of those steps publishes implicitly.
+PR #6 is merged into main at 73071cf86a93a8ab85fa61a72681b59bf5729fb5. The
+complete historical source chain is retained, and the merged tree exactly equals
+the verified integration candidate. Owner phone acceptance is recorded in
+docs/PHONE_ACCEPTANCE.md. Future tasks should start from current main and use a
+new branch, for example `git switch -c feature/short-description`; push the current
+branch with `git push -u origin HEAD` once normal network/authentication works.
+The earlier refactor branch and baseline remain preserved.
 
-The environment and Git delivery limits are in docs/ENVIRONMENT.md. This task's
-full earlier development notes are preserved byte-for-byte in docs/history/.
+The owner has authorized automatic merging of routine verified changes. Follow
+AGENTS.md: review the actual diff, require appropriate checks, inspect current
+heads and use the expected source SHA. Do not request repeated routine approval.
+Publication still requires its actual hosting identity and release validation;
+source integration does not change gh-pages or the original Site.
+
+This workspace's local tracking refs were aligned to SHA-verified public commit
+metadata because the required proxy prevents normal fetch. Ordinary Git network
+and CLI authentication remain unverified. GitHub's signed merge commit was
+reconstructed from its public verified payload/signature and accepted only after
+its exact Git SHA matched; no guessed metadata was written into a ref. The isolated
+checkout retains shallow boundaries at the preserved Alpha 0.86 baseline and the
+original main commit. Full remote history is preserved; use a normal clone on a
+supported repository host for complete local ancestry.
+
+See docs/REMOTE_REVIEW.md and docs/REVIEW.md for evidence; docs/INTEGRATION.md for
+completed source integration and the separate Pages rehearsal; docs/ENVIRONMENT.md
+for actual access limits. Earlier development notes remain in docs/history/.

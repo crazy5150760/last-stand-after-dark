@@ -2,7 +2,7 @@
 
 The locally restructured project is validated for review, not declared a completed
 browser/Android release. No gameplay change, new version or live replacement was
-performed. The source is now on GitHub in integration PR #6; successful remote browser-step
+performed. The source is merged into main through PR #6; successful remote browser-step
 evidence and final pipeline checks are tracked in REMOTE_REVIEW.md. Machine-readable evidence is in validation/results.json; full raw logs
 and probe outputs are retained in the separate validation artifact bundle.
 
@@ -88,20 +88,22 @@ online reload before cutting network access; no worker force-activation or claim
 was added. Early failed fixture runs remain in CI history. See REMOTE_REVIEW.md
 and the latest PR checks for exact evidence and the complete review-head gate.
 
-## Acceptance and remaining gates
+## Acceptance and remaining environment/hosting work
 
-The owner has explicitly reported that the Alpha 0.86 checklist test works well
-on the established S21 Ultra / Brave setup. See PHONE_ACCEPTANCE.md for the exact
-statement and scope. This satisfies the preservation task's owner functional
-acceptance gate, without inventing individual observations or measured FPS.
+The owner explicitly reported that the Alpha 0.86 checklist works well on the
+established S21 Ultra / Brave setup. PHONE_ACCEPTANCE.md records the exact report
+and scope. The owner then authorized automatic verified merges; PR #6 is merged
+into main at 73071cf86a93a8ab85fa61a72681b59bf5729fb5. Both complete source and
+main-targeted CI runs passed, and the actual merge tree equals the tested tree.
+No gameplay bytes changed and no new device test is required for documentation.
 
-1. PR #6 now targets main. Require its final complete integration CI and review
-   of the broader source-history diff before merging. Do not merge automatically.
-2. Normal shell Git still needs working proxy/authentication in a repository-based
-   environment; local edits/commits and the GitHub app/Actions fallback work.
-3. Default-branch integration and the publishing identity are still required for
-   the manual Pages rehearsal/publisher. No live replacement is performed here.
+Normal shell Git still needs a working proxy/authentication in a repository-based
+environment. Local edits/commits and the GitHub app/Actions fallback work. Portable
+configuration is committed; same-machine permanence is not promised.
 
-The immutable legacy provenance records the earlier Alpha 0.85 acceptance because
-that was the last known result when the snapshot was protected. It is retained
-unchanged; the later Alpha 0.86 owner report is recorded separately.
+Default-branch integration is complete. The manual Pages rehearsal/publisher is
+available in source but not dispatched through this connection. Publishing identity
+configuration remains unverified. No live replacement was performed.
+
+Immutable legacy provenance retains what was known when the snapshot was protected;
+the later Alpha 0.86 owner report and merge authority are recorded separately.

@@ -170,6 +170,17 @@
   "integrationReview": {
     "pr": 6,
     "base": "main",
-    "status": "pending final main-targeted CI/review; no merge performed"
+    "status": "merged after passing source/main-targeted CI and explicit owner authorization",
+    "mergeCommit": "73071cf86a93a8ab85fa61a72681b59bf5729fb5",
+    "tree": "ed41f7d72e92426f66fb08f8cf73c4585bf51e32",
+    "sourceRun": 40951381229,
+    "prRun": 40951392724,
+    "productionChanged": false
+  },
+  "developmentAuthority": {
+    "date": "2026-10-29",
+    "routineVerifiedAutomaticMerges": true,
+    "source": "explicit owner conversation; recorded in AGENTS.md",
+    "platformPermissionsBypassed": false
   }
 }
