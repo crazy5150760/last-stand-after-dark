@@ -21,6 +21,11 @@ site content and CNAME from the preserved branch. Symlinks, unexpected payloads,
 wrong hashes, stale archive SHAs and destructive output overlap are rejected.
 The baseline is never overwritten or deleted.
 
+Release-workflow/config changes also run a rehearsal on pull requests. The deploy
+job explicitly rejects pull_request events even if that PR sets publish=true.
+Only the non-privileged verification job runs there; no publishing token/OIDC
+permission is available to it. This tests the complete preparation before merge.
+
 With publish=false, it uploads a verified Pages artifact and skips deployment.
 With publish=true, the separate github-pages environment job rechecks the archive
 SHA and deploys using pages:write/id-token:write. Existing required reviewers and

@@ -3,6 +3,8 @@ on:
   push:
     branches: [main]
     paths: ['deployment/pages-release.json', '.github/workflows/publish-pages.yml']
+  pull_request:
+    paths: ['deployment/pages-release.json', '.github/workflows/publish-pages.yml', 'scripts/pages-release.cjs', 'tests/pages-release.test.cjs']
   workflow_dispatch:
 permissions:
   contents: read
@@ -76,7 +78,7 @@ jobs:
           fi
   deploy:
     needs: verify
-    if: ${{ needs.verify.outputs.publish == 'true' }}
+    if: ${{ github.event_name != 'pull_request' && needs.verify.outputs.publish == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
