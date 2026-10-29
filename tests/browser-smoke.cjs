@@ -132,14 +132,19 @@ const {root,json}=require('../scripts/lib/project.cjs');
   }
   // Two real worker versions, installed and updated through the game URL alone.
   const context=await browser.newContext({serviceWorkers:'allow'});
+  const updateErrors=[];context.on('page',page=>page.on('pageerror',e=>updateErrors.push(e.message)));
   try{
    const current=json('web-dist/build-info.json').build,older='1111111111111111';assert.notEqual(current,older);
    updateWorker=fs.readFileSync(path.join(root,'web-dist/sw.js'),'utf8').replace('"build":"'+current+'"','"build":"'+older+'"');
    const first=await context.newPage();await first.goto(base,{waitUntil:'networkidle'});
    await first.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.active?.state==='activated'},{},{timeout:90000});
    await first.close();
-   const game=await context.newPage();await game.goto(base,{waitUntil:'networkidle'});
+   const game=await context.newPage();
+   const updateCdp=await context.newCDPSession(game);await updateCdp.send('Network.enable');await updateCdp.send('Network.setBypassServiceWorker',{bypass:false});
+   await game.goto(base,{waitUntil:'networkidle'});
    if(!await game.evaluate(()=>!!navigator.serviceWorker.controller))await game.reload({waitUntil:'networkidle'});
+   await game.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
+   console.log(JSON.stringify({phase:'automatic-update-controlled-client',state:await game.evaluate(async()=>({controller:navigator.serviceWorker.controller?.scriptURL,scope:(await navigator.serviceWorker.getRegistration()).scope}))}));
    await game.locator('#start').click();await game.locator('#deploy').click();await game.waitForTimeout(300);await game.locator('#pause').click();
    const clock=await game.locator('#time').textContent();
    const saved=await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort()));
@@ -167,6 +172,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const reopened=await context.newPage();await reopened.goto(base,{waitUntil:'load'});await reopened.locator('#start').waitFor();
    const active=await workerBuild(reopened,'active');assert.equal(active.build,current);assert.equal(active.ready,true);
    assert.equal(await reopened.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort())),saved);
+   assert.deepEqual(updateErrors,[],'no page errors in automatic update migration');
    automaticUpdates={gameUrlOnly:true,downloadedWithoutSetupPage:true,openRunNotReloaded:true,recordsUnchanged:true,activatedAfterNaturalClose:true,reopenedOffline:true};
   }finally{updateWorker=null;await context.close()}
   fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,automaticUpdates,limits:'Synthetic mobile Chromium touch plus separate standard Chromium offline/update integration; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
