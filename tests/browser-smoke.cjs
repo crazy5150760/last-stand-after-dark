@@ -116,6 +116,9 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const worker=offlineContext.serviceWorkers().find(w=>w.url().endsWith('/sw.js'));
    const workerState=worker?await worker.evaluate(async()=>({scope:self.registration.scope,routes:[...routes],clients:(await self.clients.matchAll({includeUncontrolled:true,type:'window'})).map(c=>({url:c.url,id:c.id,frameType:c.frameType}))})):null;
    console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state,workerVersions,workerState}));
+   // A prepared worker does not claim an already loaded document. Perform the
+   // normal online reload before asserting control; do not force worker activation.
+   if(!await controlledPage.evaluate(()=>!!navigator.serviceWorker.controller))await controlledPage.reload({waitUntil:'networkidle'});
    await controlledPage.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
    await offlineContext.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
    const coldPage=await offlineContext.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
