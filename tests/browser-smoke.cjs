@@ -60,24 +60,32 @@ const {root,json}=require('../scripts/lib/project.cjs');
    await page.locator('#pause').tap();
    assert.deepEqual(errors,[],'no initialization/loading errors');
    results.push({width,height,launch:true,touchJoystickAndPause:true,pauseClockFrozen:true,settingsReturn:true,media,errors});
-   // Verify actual browser registration, cache population and offline navigation.
-   await page.goto(base+'install/',{waitUntil:'networkidle'});
-   await page.locator('#prepare').click();
-   await page.waitForFunction(async()=>{
+   fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'running',results},null,2)+'\n');
+   // Use fresh tabs: keep the gameplay History/Back drill out of installer setup.
+   const setupPage=await context.newPage();
+   await setupPage.goto(base+'install/',{waitUntil:'networkidle'});
+   await setupPage.locator('#prepare').click();
+   await setupPage.waitForFunction(async()=>{
     const registration=await navigator.serviceWorker.getRegistration();
     return registration?.active?.state==='activated'&&document.getElementById('status').textContent.includes('Offline play is ready');
    },undefined,{timeout:90000});
    const expected=json('web-dist/build-info.json').build;
-   await page.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
-   // The installer deliberately does not claim its open client. Navigate online
-   // once after activation, confirm control, then test offline reload/new launch.
-   await page.goto(base,{waitUntil:'networkidle'});
-   await page.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
-   await context.setOffline(true);await page.reload({waitUntil:'load'});await page.locator('#start').waitFor();
+   await setupPage.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
+   const controlledPage=await context.newPage();
+   const response=await controlledPage.goto(base,{waitUntil:'networkidle'});
+   const state=await controlledPage.evaluate(async()=>({
+    url:location.href,controller:navigator.serviceWorker.controller?.scriptURL||null,
+    controllerState:navigator.serviceWorker.controller?.state||null,
+    registrations:(await navigator.serviceWorker.getRegistrations()).map(r=>({scope:r.scope,active:r.active?.scriptURL,state:r.active?.state})),
+    caches:await caches.keys()
+   }));
+   console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state}));
+   await controlledPage.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
+   await context.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
    const coldPage=await context.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
    results.at(-1).offlineReload=true;results.at(-1).offlineLaunch=true;await context.close();
   }
-  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({results,limits:'Synthetic Chromium touch; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
+  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,limits:'Synthetic Chromium touch; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
   console.log(JSON.stringify({browser:'Chromium',viewports:results.length,results}));
- }finally{if(browser)await browser.close();if(server)await new Promise(ok=>server.close(ok));}
+ }catch(error){fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'failed',results,error:error.message},null,2)+'\n');throw error;}finally{if(browser)await browser.close();if(server)await new Promise(ok=>server.close(ok));}
 })().catch(error=>{console.error(error);process.exitCode=1});

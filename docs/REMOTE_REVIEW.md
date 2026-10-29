@@ -28,7 +28,11 @@ It also decodes all 21 embedded images and the original OGG soundtrack in real
 Chromium. These are test-only changes; the PWA/game code and output stay untouched.
 Browser checks now run before the long VM suite in CI, so a browser fixture
 failure is found promptly; all core regressions still run before packaging.
-Follow-up remote validation outcome: pending observation.
+The next run decoded all media and passed portrait/input checks, but its reused
+page did not report a controller after normal navigation. The fixture now uses
+separate fresh installer/game tabs, records registration/controller/cache state,
+and retains partial results explicitly marked failed if a later assertion fails.
+Further remote validation outcome: pending observation.
 
 The local workspace still cannot connect to its required Git proxy or launch
 Chromium/localhost sockets. GitHub Actions provides the supported checkout,
