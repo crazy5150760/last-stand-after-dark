@@ -1,0 +1,25 @@
+{
+  "title": "Night Watch",
+  "composer": "Original score composed for Last Stand: After Dark",
+  "license": "Project-original synthesized composition; no third-party samples",
+  "bpm": 80,
+  "duration_seconds": 48.0,
+  "sample_rate": 24000,
+  "channels": 2,
+  "bars": 16,
+  "key": "D minor",
+  "progression": [
+    "Dm",
+    "Bb",
+    "F",
+    "C"
+  ],
+  "notes": 116,
+  "peak_before_encoding": 0.072,
+  "rms_before_encoding": 0.01606448348512827,
+  "loop_seam_pcm_delta": 0.0005374259219022345,
+  "sha256": "99a1be540712cf022a6467568b377cc92377bd1e36dfcfc20001900151da78e5",
+  "bytes": 177918,
+  "source": "tools/compose_music.py",
+  "rebuild": "python tools/compose_music.py (Python/numpy and ffmpeg libvorbis)"
+}

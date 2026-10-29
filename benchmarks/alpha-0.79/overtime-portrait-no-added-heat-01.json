@@ -1,0 +1,132 @@
+{
+  "game": "Last Stand: After Dark",
+  "version": "Alpha 0.79",
+  "receivedDate": "2026-10-26",
+  "rawFile": "benchmarks/alpha-0.79/overtime-portrait-no-added-heat-01.txt",
+  "rawBytes": 2438,
+  "rawSha256": "fe7ecb7bbe64d89ff92a87b839aba9cc69d5b5389b91b2695671fcc98551f6f0",
+  "rawDeviceAndNotesFields": "Not supplied; preserved unchanged",
+  "chatContext": {
+    "device": "Samsung Galaxy S21 Ultra",
+    "browser": "Brave",
+    "deviceSource": "Owner previously confirmed in this release-check session",
+    "condition": "Owner identifies this as portrait without added dashboard heat",
+    "ownerMessage": "This is another report In portrait without  the added heat from dash i will do landscape next",
+    "measuredTemperature": null,
+    "browserVersionRefreshPowerChargingInputs": "Not supplied"
+  },
+  "reported": {
+    "scene": "Overtime",
+    "training": true,
+    "activeTestAge": "05:00",
+    "initialFixtureClock": "10:00",
+    "targetPopulation": 220,
+    "targetXpGems": 600,
+    "viewportCss": [
+      411,
+      781
+    ],
+    "orientation": "portrait",
+    "dpr": 1.75,
+    "actorArt": "Field; listed modules ready at capture",
+    "scenery": "Street",
+    "hud": "composed",
+    "reduced": false,
+    "mirrored": false,
+    "build": "Gun x5; all four evolved paths",
+    "measuredIntervals": 20007,
+    "sampledSeconds": 295.15,
+    "averageFps": 67.79,
+    "recentIntervals": 300,
+    "recentFps": 71.28,
+    "recentP95Ms": 24.9,
+    "intervalsOver50Ms": 2,
+    "maximumIntervalMs": 58.4,
+    "counts": {
+      "enemies": {
+        "current": 164,
+        "peak": 220
+      },
+      "xpGems": {
+        "current": 600,
+        "peak": 600
+      },
+      "gunShots": {
+        "current": 19,
+        "peak": 45
+      },
+      "hostileShots": {
+        "current": 0,
+        "peak": 2
+      },
+      "particles": {
+        "current": 570,
+        "peak": 599
+      },
+      "floatingText": {
+        "current": 97,
+        "peak": 100
+      },
+      "lightning": {
+        "current": 0,
+        "peak": 8
+      },
+      "bottles": {
+        "current": 0,
+        "peak": 2
+      },
+      "fires": {
+        "current": 2,
+        "peak": 2
+      },
+      "bladeCooldowns": {
+        "current": 5,
+        "peak": 25
+      },
+      "burnCooldowns": {
+        "current": 43,
+        "peak": 145
+      }
+    }
+  },
+  "derived": {
+    "recentWindowSecondsApprox": 4.21,
+    "intervalsOver50MsPercent": 0.0099965012245714
+  },
+  "comparisonToHotPortrait": {
+    "sameBuildSceneViewportAndPresentation": true,
+    "sameRecordedObjectCounts": false,
+    "hotRawSha256": "a0fa631c7bcdbae9a05186c609fa4e689f9b2dbe99ffc2f0c8d992e0f3cd6c04",
+    "averageFps": [
+      60.07,
+      67.79
+    ],
+    "recentFps": [
+      59.87,
+      71.28
+    ],
+    "recentP95Ms": [
+      16.7,
+      24.9
+    ],
+    "over50Ms": [
+      0,
+      2
+    ],
+    "controlledThermalComparison": false
+  },
+  "assessment": "Higher overall/recent FPS than hot-dashboard sample, with less even recent frame pacing (p95 24.90 vs 16.70 ms) and two intervals >50 ms across 295.15 sampled seconds. Useful nearly-five-minute portrait pressure evidence; no aggregate indication of sustained slowdown or identified renderer bottleneck.",
+  "limits": [
+    "No measured temperature or controlled thermal/refresh/power procedure; without added heat is not a measured cool baseline.",
+    "Recent p95/FPS are latest 300 intervals (~4.21 seconds), not entire 295.15-second distribution.",
+    "Different durations, evolving counts and unknown inputs/refresh state prevent causal attribution to temperature.",
+    "Controlled unscored safe-HP Overtime fixture does not close natural scored play or landscape gates.",
+    "Two >50-ms intervals cannot locate an explosion, asset decode, garbage collection, GPU/CPU/OS cause or subjective hitch severity.",
+    "Object counts are not heap/GPU-memory/temperature or battery readings."
+  ],
+  "remainingGates": [
+    "Landscape pressure reports with movement/Dash",
+    "Ordinary scored portrait/landscape measurements",
+    "Actual owner backup/reopen and lifecycle acceptance"
+  ]
+}

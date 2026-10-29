@@ -1,0 +1,320 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "legacy": "dist/assets/bestiary-portraits.json",
+      "file": "assets/metadata/bestiary-portraits.json",
+      "sha256": "dd707dc05491a7144c444d6926c8336c06ee8f967dec34af62dcd3a0783cc567"
+    },
+    {
+      "legacy": "dist/assets/bestiary-portraits.webp",
+      "file": "assets/images/bestiary-portraits.webp",
+      "sha256": "9bc0caebd506d9aaf399d526eb8059cb04b5b775a98b488876ff778bdb7a8965"
+    },
+    {
+      "legacy": "dist/assets/breaker-combat.json",
+      "file": "assets/metadata/breaker-combat.json",
+      "sha256": "bf1d72859bd202cf4f4db487a9bab3f0e3d0a8e02c3ea6488d2ea3673abfc6c2"
+    },
+    {
+      "legacy": "dist/assets/breaker-combat.png",
+      "file": "assets/images/breaker-combat.png",
+      "sha256": "13a317cd763b61849eb3761f49e05cd712aac36c94d7cfc9bb1ace0ad098de29"
+    },
+    {
+      "legacy": "dist/assets/breaker-combat.webp",
+      "file": "assets/images/breaker-combat.webp",
+      "sha256": "6f4fde24b427ec0b2b4e986c944bc1c98cf044655b433885185e039c5ad6f2b3"
+    },
+    {
+      "legacy": "dist/assets/breaker-walk.json",
+      "file": "assets/metadata/breaker-walk.json",
+      "sha256": "6766df90282a7851cb3b57ce8252ac49b49512ce6207ad9af4c7081ec4742d93"
+    },
+    {
+      "legacy": "dist/assets/breaker-walk.png",
+      "file": "assets/images/breaker-walk.png",
+      "sha256": "3d1c24a2fef5d588e421b5767d2c89e66f1bf22ecbf15fcd516ca45bf0990891"
+    },
+    {
+      "legacy": "dist/assets/breaker-walk.webp",
+      "file": "assets/images/breaker-walk.webp",
+      "sha256": "164ee26483867cb6c5f5ad24fc3be561d98c732e8f475c0b7b923c509588153d"
+    },
+    {
+      "legacy": "dist/assets/brute-walk.json",
+      "file": "assets/metadata/brute-walk.json",
+      "sha256": "4f7c0139b403491b1c0eb737104f43a09d1a0bf3752243c7865875230e94c4c5"
+    },
+    {
+      "legacy": "dist/assets/brute-walk.png",
+      "file": "assets/images/brute-walk.png",
+      "sha256": "d2a3fa5976c2709765aa92c8d03c707ac1fabf39b087e16d9570bb4826ce6718"
+    },
+    {
+      "legacy": "dist/assets/brute-walk.webp",
+      "file": "assets/images/brute-walk.webp",
+      "sha256": "43e07c8a16a0fbc6ecf1fce268dda53c987aca45245317a7ab67112a339784c2"
+    },
+    {
+      "legacy": "dist/assets/enemies.png",
+      "file": "assets/images/enemies.png",
+      "sha256": "b9942b651a52479ac7e8406f57c6c642131ad2c7d969df3dbc4954527d6db2af"
+    },
+    {
+      "legacy": "dist/assets/enemies.webp",
+      "file": "assets/images/enemies.webp",
+      "sha256": "d50839c944aaa68d96ccc5e09d16e83fbbec7b1a2e8fb03692c01036ffec0a97"
+    },
+    {
+      "legacy": "dist/assets/environment-materials.json",
+      "file": "assets/metadata/environment-materials.json",
+      "sha256": "f36425afb33b2171e3785f39ca9f182750dfca43bc3e9cc68bf55c64fc88b07b"
+    },
+    {
+      "legacy": "dist/assets/environment-materials.png",
+      "file": "assets/images/environment-materials.png",
+      "sha256": "c810b06329becf3a468ca4ffd33078fdcf386e96ce8484526d9e1f32f11425e5"
+    },
+    {
+      "legacy": "dist/assets/environment-materials.webp",
+      "file": "assets/images/environment-materials.webp",
+      "sha256": "4489ae480abef34f89696d3e1145e12a54dc03543871ad12980a9c73edd5b575"
+    },
+    {
+      "legacy": "dist/assets/harvester-field.json",
+      "file": "assets/metadata/harvester-field.json",
+      "sha256": "d9ff7e9ea86d3f7f4ed93cc9e19e1602de89deab605b19a13c0d5a4c13ac81ab"
+    },
+    {
+      "legacy": "dist/assets/harvester-field.png",
+      "file": "assets/images/harvester-field.png",
+      "sha256": "5100a7ac655eadb8058ad43bd6104c695dc0b0d558f6c9750795b4f2e731df04"
+    },
+    {
+      "legacy": "dist/assets/harvester-field.webp",
+      "file": "assets/images/harvester-field.webp",
+      "sha256": "286cf255502a2ef6cfaf5448f79bca74ec1d7ad235875944efc28f0ae081b4f5"
+    },
+    {
+      "legacy": "dist/assets/howler-field.json",
+      "file": "assets/metadata/howler-field.json",
+      "sha256": "e83cfbd4f44e8c51a949c91182e3451d86ec2f3b1713a0c468967988aa674fbf"
+    },
+    {
+      "legacy": "dist/assets/howler-field.png",
+      "file": "assets/images/howler-field.png",
+      "sha256": "3faff62a4afe684d3a160ba8ef553c9202616a7bd9fa8df4c491707376790fb4"
+    },
+    {
+      "legacy": "dist/assets/howler-field.webp",
+      "file": "assets/images/howler-field.webp",
+      "sha256": "05f7d00eeab8511a742b8688b421be270d3c4c5bd4394dcb1d103cdc03e94810"
+    },
+    {
+      "legacy": "dist/assets/hunter-field.json",
+      "file": "assets/metadata/hunter-field.json",
+      "sha256": "05a1edfb731cb780a3cc3d24705b28b89ec84d8f091f29d0c5d8f609f760208b"
+    },
+    {
+      "legacy": "dist/assets/hunter-field.png",
+      "file": "assets/images/hunter-field.png",
+      "sha256": "f22a72c5dfd31434cc9170a017b15bd91c423e60e72eedd1fb1fa318e6e6d516"
+    },
+    {
+      "legacy": "dist/assets/hunter-field.webp",
+      "file": "assets/images/hunter-field.webp",
+      "sha256": "583fae6b65923953d7a6162fd63ac2cc4e23a6a0d2fae8383cadde374c2130b4"
+    },
+    {
+      "legacy": "dist/assets/intersection.json",
+      "file": "assets/metadata/intersection.json",
+      "sha256": "e2679ee358a983bf8584c7a6744b40cf2bff20b7044cfcd29dfef74984660a9c"
+    },
+    {
+      "legacy": "dist/assets/intersection.png",
+      "file": "assets/images/intersection.png",
+      "sha256": "da937c3b3674e6c3aa89b81c9ee57f2d6a29ca0f12e213bda014ab686b35d922"
+    },
+    {
+      "legacy": "dist/assets/intersection.webp",
+      "file": "assets/images/intersection.webp",
+      "sha256": "9e6834ec6b0a53ab3276550c27c3f54b4dc261d0b3d12687e41e33742b53726d"
+    },
+    {
+      "legacy": "dist/assets/lobber-field.json",
+      "file": "assets/metadata/lobber-field.json",
+      "sha256": "df5b9dc759619ca5ac111f91882832540a36fded3d68fd92b0d759672480ab88"
+    },
+    {
+      "legacy": "dist/assets/lobber-field.png",
+      "file": "assets/images/lobber-field.png",
+      "sha256": "fc1cb2814350f55b720fd957a5ffff371a247ec50e6b3d15778c8c65d90dccb2"
+    },
+    {
+      "legacy": "dist/assets/lobber-field.webp",
+      "file": "assets/images/lobber-field.webp",
+      "sha256": "95c3d25071a6908e8f05b6fb22aa63f097733259ea0aa2281f3ed71797e1d7d2"
+    },
+    {
+      "legacy": "dist/assets/manifest.json",
+      "file": "assets/metadata/manifest.json",
+      "sha256": "c8b70e703514bf2996505690c7a12a073807be9f38f2369e8fa76668c056688c"
+    },
+    {
+      "legacy": "dist/assets/music.json",
+      "file": "assets/metadata/music.json",
+      "sha256": "22ee2743cd11455fea58d18cb5bc38e5be16530f85fd6dc4a57200b71836ebe1"
+    },
+    {
+      "legacy": "dist/assets/night-watch.ogg",
+      "file": "assets/audio/night-watch.ogg",
+      "sha256": "99a1be540712cf022a6467568b377cc92377bd1e36dfcfc20001900151da78e5"
+    },
+    {
+      "legacy": "dist/assets/riot-field.json",
+      "file": "assets/metadata/riot-field.json",
+      "sha256": "11da1c372b1e443b9ce7c92e15c4742d644f8169335eaa0f0c3cfc62e08084ca"
+    },
+    {
+      "legacy": "dist/assets/riot-field.png",
+      "file": "assets/images/riot-field.png",
+      "sha256": "ab037896b298d050610298e548ab10e89672ffdb856e436dc45437f568ece16a"
+    },
+    {
+      "legacy": "dist/assets/riot-field.webp",
+      "file": "assets/images/riot-field.webp",
+      "sha256": "01adcb802a336d5779f9e2ef1fd3d70c416c4c4317e4db18cc13bce871df5c3b"
+    },
+    {
+      "legacy": "dist/assets/runner-run.json",
+      "file": "assets/metadata/runner-run.json",
+      "sha256": "38ba7d14319802bcae4248d23716097935dde56ffcff3578dc5d4721f9a0512a"
+    },
+    {
+      "legacy": "dist/assets/runner-run.png",
+      "file": "assets/images/runner-run.png",
+      "sha256": "dac951cf15cc11a79a38517546f2600924d0d580d2298d0a85a15fdb1b40177b"
+    },
+    {
+      "legacy": "dist/assets/runner-run.webp",
+      "file": "assets/images/runner-run.webp",
+      "sha256": "093389399a3c025727b02599c2b5ee555fe11c118754a805044aa940f7313493"
+    },
+    {
+      "legacy": "dist/assets/runtime-formats.json",
+      "file": "assets/metadata/runtime-formats.json",
+      "sha256": "a4144e1d5619eb73dc0b82233a65bd824589e638a2f1d0b22afe6f32acd4fc0b"
+    },
+    {
+      "legacy": "dist/assets/shambler-walk.json",
+      "file": "assets/metadata/shambler-walk.json",
+      "sha256": "6aaf6d6ff8c30a7ceabf7b45c8a38d0ebff855a18d80aa8936bf154981bddcab"
+    },
+    {
+      "legacy": "dist/assets/shambler-walk.png",
+      "file": "assets/images/shambler-walk.png",
+      "sha256": "c39504df80f2b47f1ef3cc4cc9b020bafab07860841e23dc6bbfd61043be7dce"
+    },
+    {
+      "legacy": "dist/assets/shambler-walk.webp",
+      "file": "assets/images/shambler-walk.webp",
+      "sha256": "de830db9a087c6ba0a994ed9dabb8e23b7d7c8d5d82b5db3448f24618f91ffb3"
+    },
+    {
+      "legacy": "dist/assets/spitter-field.json",
+      "file": "assets/metadata/spitter-field.json",
+      "sha256": "c23f7973442d892fcf65009388a0642949c9cc997fdf021a63b13e1e53aa88d6"
+    },
+    {
+      "legacy": "dist/assets/spitter-field.png",
+      "file": "assets/images/spitter-field.png",
+      "sha256": "1302a447f0e5b8852bacec158e6ad99a0aea1185ba6eef935237da7328e1a106"
+    },
+    {
+      "legacy": "dist/assets/spitter-field.webp",
+      "file": "assets/images/spitter-field.webp",
+      "sha256": "f291dffd0f0570b3df7c31bda571b5c07c3c240696d313d3223a3e8d6390574f"
+    },
+    {
+      "legacy": "dist/assets/street.png",
+      "file": "assets/images/street.png",
+      "sha256": "ffa5a90892d383c50b3686be0c60e9a0b8c65842bc1bb434495304872452052a"
+    },
+    {
+      "legacy": "dist/assets/street.webp",
+      "file": "assets/images/street.webp",
+      "sha256": "6d052dd9a6a0d735b6c0815166f98988f58b0125244031b7c5ba789f94648958"
+    },
+    {
+      "legacy": "dist/assets/survivor-aim.json",
+      "file": "assets/metadata/survivor-aim.json",
+      "sha256": "1a4919d4348ca8deaadb1e2a0a6742fdbc90196b6a727b714707dd2654589b62"
+    },
+    {
+      "legacy": "dist/assets/survivor-aim.png",
+      "file": "assets/images/survivor-aim.png",
+      "sha256": "636dabc522e200514e13da7491d2a7463789e621dc67920d6de181c8364a9a3c"
+    },
+    {
+      "legacy": "dist/assets/survivor-aim.webp",
+      "file": "assets/images/survivor-aim.webp",
+      "sha256": "4411e62ed04465c9e73c794068a9d72d6200fd839c8a3721b3a913dffdb9d906"
+    },
+    {
+      "legacy": "dist/assets/survivor-walk.json",
+      "file": "assets/metadata/survivor-walk.json",
+      "sha256": "ad807b73250aee0e89271be49f2bc00ff0254fde1e4702afdc2c11b303200d1c"
+    },
+    {
+      "legacy": "dist/assets/survivor-walk.png",
+      "file": "assets/images/survivor-walk.png",
+      "sha256": "149fd499a7e074e840b1b9366e620f8d25e2b1e99781bbeb2d5d7463246f9b22"
+    },
+    {
+      "legacy": "dist/assets/survivor-walk.webp",
+      "file": "assets/images/survivor-walk.webp",
+      "sha256": "7a10760aeb5e9df617cd9189e32d59a796b981fd6090356f99287468b5d2b985"
+    },
+    {
+      "legacy": "dist/assets/survivor.png",
+      "file": "assets/images/survivor.png",
+      "sha256": "6300ad9fce337421ea13823c5548e7428bf15e126aa33e9b29873735f8a82b90"
+    },
+    {
+      "legacy": "dist/assets/survivor.webp",
+      "file": "assets/images/survivor.webp",
+      "sha256": "29917547d6212ef8f9bf19bdda47dc2310e69d560a386fa88a5416032342e48c"
+    },
+    {
+      "legacy": "dist/assets/title-night.json",
+      "file": "assets/metadata/title-night.json",
+      "sha256": "598ac1777d95841625a3a715618a7129c22e192d0a0479f6dc05166e8ec41e36"
+    },
+    {
+      "legacy": "dist/assets/title-night.png",
+      "file": "assets/images/title-night.png",
+      "sha256": "e59f923736e6775b1e0973494a8686bd38e054871e7a4adf28e1a181f33d4365"
+    },
+    {
+      "legacy": "dist/assets/title-night.webp",
+      "file": "assets/images/title-night.webp",
+      "sha256": "1517a7397e1b5138ffde2a0e8e38bf21e109ff3c06f68851461741b0e4aecf49"
+    },
+    {
+      "legacy": "dist/assets/warden-field.json",
+      "file": "assets/metadata/warden-field.json",
+      "sha256": "c6e56a9063abf841e52604b217c295a819db375200d37fc0a79d22d76be51ac1"
+    },
+    {
+      "legacy": "dist/assets/warden-field.png",
+      "file": "assets/images/warden-field.png",
+      "sha256": "8be8586641e24bab56572335cd4c564facafd8c7eda89f2f16bc6343a02e722b"
+    },
+    {
+      "legacy": "dist/assets/warden-field.webp",
+      "file": "assets/images/warden-field.webp",
+      "sha256": "6619b4e7a2ca9216ea1d96f6e15465e4614640d5f8d77af23ec967d6df3adf9d"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "format": 1,
+  "assets": [
+    {
+      "marker": "@@LSAD_ASSET_01@@",
+      "mime": "image/webp",
+      "file": "assets/images/survivor.webp",
+      "sha256": "29917547d6212ef8f9bf19bdda47dc2310e69d560a386fa88a5416032342e48c"
+    },
+    {
+      "marker": "@@LSAD_ASSET_02@@",
+      "mime": "image/webp",
+      "file": "assets/images/street.webp",
+      "sha256": "6d052dd9a6a0d735b6c0815166f98988f58b0125244031b7c5ba789f94648958"
+    },
+    {
+      "marker": "@@LSAD_ASSET_03@@",
+      "mime": "image/webp",
+      "file": "assets/images/enemies.webp",
+      "sha256": "d50839c944aaa68d96ccc5e09d16e83fbbec7b1a2e8fb03692c01036ffec0a97"
+    },
+    {
+      "marker": "@@LSAD_ASSET_04@@",
+      "mime": "image/webp",
+      "file": "assets/images/intersection.webp",
+      "sha256": "9e6834ec6b0a53ab3276550c27c3f54b4dc261d0b3d12687e41e33742b53726d"
+    },
+    {
+      "marker": "@@LSAD_ASSET_05@@",
+      "mime": "image/webp",
+      "file": "assets/images/survivor-walk.webp",
+      "sha256": "7a10760aeb5e9df617cd9189e32d59a796b981fd6090356f99287468b5d2b985"
+    },
+    {
+      "marker": "@@LSAD_ASSET_06@@",
+      "mime": "image/webp",
+      "file": "assets/images/shambler-walk.webp",
+      "sha256": "de830db9a087c6ba0a994ed9dabb8e23b7d7c8d5d82b5db3448f24618f91ffb3"
+    },
+    {
+      "marker": "@@LSAD_ASSET_07@@",
+      "mime": "image/webp",
+      "file": "assets/images/runner-run.webp",
+      "sha256": "093389399a3c025727b02599c2b5ee555fe11c118754a805044aa940f7313493"
+    },
+    {
+      "marker": "@@LSAD_ASSET_08@@",
+      "mime": "image/webp",
+      "file": "assets/images/brute-walk.webp",
+      "sha256": "43e07c8a16a0fbc6ecf1fce268dda53c987aca45245317a7ab67112a339784c2"
+    },
+    {
+      "marker": "@@LSAD_ASSET_09@@",
+      "mime": "image/webp",
+      "file": "assets/images/breaker-walk.webp",
+      "sha256": "164ee26483867cb6c5f5ad24fc3be561d98c732e8f475c0b7b923c509588153d"
+    },
+    {
+      "marker": "@@LSAD_ASSET_10@@",
+      "mime": "image/webp",
+      "file": "assets/images/survivor-aim.webp",
+      "sha256": "4411e62ed04465c9e73c794068a9d72d6200fd839c8a3721b3a913dffdb9d906"
+    },
+    {
+      "marker": "@@LSAD_ASSET_11@@",
+      "mime": "image/webp",
+      "file": "assets/images/environment-materials.webp",
+      "sha256": "4489ae480abef34f89696d3e1145e12a54dc03543871ad12980a9c73edd5b575"
+    },
+    {
+      "marker": "@@LSAD_ASSET_12@@",
+      "mime": "image/webp",
+      "file": "assets/images/breaker-combat.webp",
+      "sha256": "6f4fde24b427ec0b2b4e986c944bc1c98cf044655b433885185e039c5ad6f2b3"
+    },
+    {
+      "marker": "@@LSAD_ASSET_13@@",
+      "mime": "image/webp",
+      "file": "assets/images/warden-field.webp",
+      "sha256": "6619b4e7a2ca9216ea1d96f6e15465e4614640d5f8d77af23ec967d6df3adf9d"
+    },
+    {
+      "marker": "@@LSAD_ASSET_14@@",
+      "mime": "image/webp",
+      "file": "assets/images/harvester-field.webp",
+      "sha256": "286cf255502a2ef6cfaf5448f79bca74ec1d7ad235875944efc28f0ae081b4f5"
+    },
+    {
+      "marker": "@@LSAD_ASSET_15@@",
+      "mime": "image/webp",
+      "file": "assets/images/riot-field.webp",
+      "sha256": "01adcb802a336d5779f9e2ef1fd3d70c416c4c4317e4db18cc13bce871df5c3b"
+    },
+    {
+      "marker": "@@LSAD_ASSET_16@@",
+      "mime": "image/webp",
+      "file": "assets/images/spitter-field.webp",
+      "sha256": "f291dffd0f0570b3df7c31bda571b5c07c3c240696d313d3223a3e8d6390574f"
+    },
+    {
+      "marker": "@@LSAD_ASSET_17@@",
+      "mime": "image/webp",
+      "file": "assets/images/howler-field.webp",
+      "sha256": "05f7d00eeab8511a742b8688b421be270d3c4c5bd4394dcb1d103cdc03e94810"
+    },
+    {
+      "marker": "@@LSAD_ASSET_18@@",
+      "mime": "image/webp",
+      "file": "assets/images/lobber-field.webp",
+      "sha256": "95c3d25071a6908e8f05b6fb22aa63f097733259ea0aa2281f3ed71797e1d7d2"
+    },
+    {
+      "marker": "@@LSAD_ASSET_19@@",
+      "mime": "image/webp",
+      "file": "assets/images/bestiary-portraits.webp",
+      "sha256": "9bc0caebd506d9aaf399d526eb8059cb04b5b775a98b488876ff778bdb7a8965"
+    },
+    {
+      "marker": "@@LSAD_ASSET_20@@",
+      "mime": "image/webp",
+      "file": "assets/images/hunter-field.webp",
+      "sha256": "583fae6b65923953d7a6162fd63ac2cc4e23a6a0d2fae8383cadde374c2130b4"
+    },
+    {
+      "marker": "@@LSAD_ASSET_21@@",
+      "mime": "audio/ogg",
+      "file": "assets/audio/night-watch.ogg",
+      "sha256": "99a1be540712cf022a6467568b377cc92377bd1e36dfcfc20001900151da78e5"
+    },
+    {
+      "marker": "@@LSAD_ASSET_22@@",
+      "mime": "image/webp",
+      "file": "assets/images/title-night.webp",
+      "sha256": "1517a7397e1b5138ffde2a0e8e38bf21e109ff3c06f68851461741b0e4aecf49"
+    }
+  ]
+}

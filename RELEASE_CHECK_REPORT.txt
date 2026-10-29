@@ -1,0 +1,48 @@
+LAST STAND: AFTER DARK — ALPHA 0.79 RELEASE CHECK
+Phone model: Samsung Galaxy S21 Ultra
+Browser: Brave
+Browser version (if known):
+Date:
+File opened:
+Refresh / power-saving settings, if known:
+Actors / scenery / HUD / Reduced Effects:
+
+RECORDS / UPDATE
+Best time and completed-run count before:
+Backup JSON downloaded successfully: yes / no
+New copy: blank records / shared matching records / other
+Review cancelled safely: yes / no / not tried
+Restore into a separate context: passed / failed / not exercised
+Best/count + recognizable history/preset/Bestiary match:
+Reopened same file/browser and records remained:
+Any missing records or save warning:
+
+NATURAL RUN
+Portrait active play time:
+Landscape active play time:
+Reached real exit: yes / no
+Chose Stay then extracted: yes / no (actual outcome: __)
+Upgrade choices stayed paused and deliberate:
+Joystick + second-finger Dash/Pause:
+Phone Back / rotation / background required explicit Resume:
+Held results/tools and fresh replay worked:
+Normal portrait report attached/copied: yes / no
+Normal landscape report attached/copied: yes / no
+
+WARM PRESSURE TESTS
+Approximate total active play before tests:
+Phone felt: cool / warm / unusually hot
+Crowded landscape: smooth / brief hitches / persistent slowdown
+Overtime landscape: smooth / brief hitches / persistent slowdown
+Crowded report attached/copied: yes / no
+Overtime report attached/copied: yes / no
+Practice left real records/settings intact:
+
+ISSUES
+What happened, and where in the menus/run:
+Steps that reproduce it:
+Expected behavior:
+Screenshot/report filename if available:
+
+Notes:
+Do not include your records-backup JSON unless you want its contents inspected.

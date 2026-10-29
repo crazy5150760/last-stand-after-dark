@@ -1,0 +1,10 @@
+{
+  "version": "Alpha 0.86",
+  "htmlSha256": "e7f98eefc50112f0a975f8ce869524d6223e291d9f67336f5ad08f1ad1bda92f",
+  "sourceSha256": "9a35581bb575ef9575f8643a4fab015c70e5bd303c3283d75bddc60be5d2bdc3",
+  "webBuild": "7cf8f34890269ad6",
+  "baselineGameTests": 1368,
+  "baselinePwaTests": 32,
+  "lastExplicitPhoneAcceptedVersion": "Alpha 0.85",
+  "note": "Alpha 0.86 is published and CI-verified; phone acceptance of 0.86 was not separately reported. Baseline files are immutable."
+}

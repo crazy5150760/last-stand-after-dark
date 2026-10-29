@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-29",
+  "sourceBaselineCommit": "eedabcf9ac85951671e9e0c20f0b7794ce6fc4c9",
+  "sourceBaselineTree": "e2c72ad1bb0adf1fefa88f7632f43bf89df99dfb",
+  "node": "24.19.0",
+  "parser": "8.17.0",
+  "baselineGame": {
+    "tests": 1368,
+    "pass": 1368,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 354489.896405
+  },
+  "baselinePwa": {
+    "tests": 32,
+    "pass": 32,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 607.35837
+  },
+  "restructuredGame": {
+    "tests": 1368,
+    "pass": 1368,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 368076.775045
+  },
+  "restructuredPwa": {
+    "tests": 32,
+    "pass": 32,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 500.893366
+  },
+  "preservation": {
+    "tests": 7,
+    "pass": 7,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 1394.020732
+  },
+  "server": {
+    "tests": 3,
+    "pass": 3,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 96.406408
+  },
+  "standaloneSha256": "e7f98eefc50112f0a975f8ce869524d6223e291d9f67336f5ad08f1ad1bda92f",
+  "productionFiles": {
+    "_headers": "ab8648c6fe614f64b44762655399fac3923b7e14bedc5e0bcfa1b285aecb7916",
+    "build-info.json": "99cd98b96e9fc557f7bfd3e055f08a4f93adbee4bac31a5f489d1203ce69d149",
+    "icons/icon-192.png": "54e96a02f204149c4e2259eb57fefebaee32eb8090454a2c527ecef8207e2cbd",
+    "icons/icon-512.png": "a7672e7ad3908d3e5128b12ff842f421aefd5f105843360e8cf30b809c2f9e53",
+    "icons/maskable-512.png": "93ced22688953195b913fbf79539a5214f208372294b6367feb5928f9e06f3f0",
+    "index.html": "b9d8be78be19c39c94937973e6c88de80a5fc9bd2562d1c9dae02913096cc95a",
+    "install.css": "92883a7b09185a7e327f7da7ded2d603bc3a8eea01e7b85d9778b7ec8d6a637b",
+    "install.js": "ff085ba753cd74d1b18a0a1775c5cc393684df494219f8982a35e899b761e221",
+    "install/index.html": "61286e591e45f5f59f2db04b622840ab87e478527819bbdb0aa1211adc31eab8",
+    "manifest.webmanifest": "3caa780fff809b1cb37efa7099601d4fdd7c9c323d249e5e67cab021d6dd108e",
+    "sw.js": "4e6f73e90c71f83ee01d4a53ae1819d8fc04b9d20e6bfd64a2422f4512fa0610"
+  },
+  "allProductionBytesMatchBaseline": true,
+  "probes": {
+    "intersection": {
+      "identical": true,
+      "bytes": 26844,
+      "sha256": "27aea01ac9224a1a1dc699358f8ebd94e5e5b5f3e14c88e2e6c98f209359e89a",
+      "rows": 6
+    },
+    "progression": {
+      "identical": true,
+      "bytes": 7257,
+      "sha256": "7e265d7f8fb1213de5ac55f58f96dfabae12e5aabb9a46f62d660a64654fbc06",
+      "rows": 12
+    },
+    "upgrade-draw": {
+      "identical": true,
+      "bytes": 1995,
+      "sha256": "afa3d93d33f2507bec7ac3a4be87e73aedc17c0ce566b8097ba83d8e14d16813",
+      "rows": 2
+    }
+  },
+  "browser": {
+    "status": "blocked",
+    "reason": "Chromium crashpad setsockopt: Operation not permitted",
+    "realBrowserPageOpened": false,
+    "scope": "local workspace only; remote evidence recorded separately"
+  },
+  "localHttpListen": {
+    "status": "blocked",
+    "reason": "listen EPERM 127.0.0.1:8000"
+  },
+  "gitPush": "unavailable/unverified; proxy failure and aborted permission check",
+  "remoteBranchCreate": "confirmed; refactor/modular-development",
+  "newCiRun": {
+    "initialCoreRunId": 40933415231,
+    "initialCoreCommit": "804f563299cbaeebc8b267a4005a63a25f43451f",
+    "coreTestsPassed": 1410,
+    "coreFailures": 0,
+    "browserStepEvidenceRunId": 40939796438,
+    "browserStepConclusion": "success",
+    "latestReviewHeadChecks": "https://github.com/crazy5150760/last-stand-after-dark/pull/6/checks",
+    "note": "Initial fixture failures retained in CI history. Latest full gate is observed separately; this records already completed step evidence."
+  },
+  "newDeploy": "not performed",
+  "physicalPhone": "owner-reported functional pass on S21 Ultra / Brave; see ../PHONE_ACCEPTANCE.md; no instrumented performance claim",
+  "gameplayEquivalentEvidence": "Exact readable source, standalone and all 11 production files; native behavior suites and seeded probe equality. No device FPS or browser acceptance inferred.",
+  "publisherCopyFixture": {
+    "status": "passed",
+    "productionFiles": 11,
+    "customDomainRetained": true,
+    "existingContentRetained": true,
+    "remotePublishTested": false
+  },
+  "npmRunnerFocusedSmoke": {
+    "pass": 14,
+    "fail": 0
+  },
+  "freshSourceArchive": {
+    "members": 241,
+    "crc": "passed",
+    "setup": "passed",
+    "checks": "passed",
+    "baselineTests": 7,
+    "pwaTests": 32,
+    "serverTests": 3,
+    "buildAndStaleChecks": "passed",
+    "browser": "not run; known socket block"
+  },
+  "gitObjectConnectivity": {
+    "status": "passed",
+    "note": "No missing/corrupt objects reported; dangling objects from prior local staging are not errors."
+  },
+  "remoteBrowser": {
+    "step": "passed",
+    "imageDecodes": 21,
+    "audioDecode": "48 second stereo original OGG",
+    "mobileViewports": [
+      [
+        412,
+        915
+      ],
+      [
+        915,
+        412
+      ]
+    ],
+    "mobileChecks": [
+      "startup",
+      "width",
+      "touch joystick with second-finger Pause",
+      "frozen clock",
+      "Settings return"
+    ],
+    "offlineChecks": [
+      "standard Chromium offline reload",
+      "fresh offline page at both viewport sizes"
+    ],
+    "setup": "Wait fully activated/ready, use normal online reload before offline if uncontrolled; no claim/skipWaiting/unregister",
+    "physicalAndroid": "not tested"
+  },
+  "phoneAcceptanceFile": "docs/validation/phone-acceptance.json",
+  "integrationReview": {
+    "pr": 6,
+    "base": "main",
+    "status": "pending final main-targeted CI/review; no merge performed"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "./",
+  "name": "Last Stand: After Dark",
+  "short_name": "Last Stand",
+  "description": "Survive the night. Build your weapons. Choose when to extract.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090d19",
+  "theme_color": "#090d19",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Setup & Updates",
+      "short_name": "Setup",
+      "description": "Prepare offline play or check for an update after finishing your run.",
+      "url": "./install/",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

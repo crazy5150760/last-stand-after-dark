@@ -1,0 +1,9 @@
+{
+  "name": "Last Stand After Dark",
+  "image": "node:24.19.0-bookworm",
+  "remoteUser": "node",
+  "postCreateCommand": "bash scripts/setup.sh",
+  "forwardPorts": [8000],
+  "portsAttributes": {"8000": {"label": "Last Stand browser build", "onAutoForward": "notify"}},
+  "customizations": {"vscode": {"settings": {"files.exclude": {"web-dist": true, "dist": true}, "editor.tabSize": 2}}}
+}
