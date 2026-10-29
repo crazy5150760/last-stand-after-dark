@@ -98,12 +98,14 @@ authentication are available, the intended push is:
 git push -u origin refactor/modular-development
 ```
 
-Check the remote branch first: an earlier connector create-branch request was
-unconfirmed. If it exists at eedabcf9ac85951671e9e0c20f0b7794ce6fc4c9, a normal
-fast-forward is expected; if it changed, inspect rather than force-push. Review
-this work against alpha-0.86-health-feedback (the latest source branch), not the
-outdated main snapshot. Reconcile the existing source PR chain separately before
-a main merge. See docs/REVIEW.md for the ready draft PR body and remaining gates.
+The remote development branch and draft PR #6 now exist. Inspect the current
+remote head before pushing; never force-push over intervening work. The local
+tracking branch was aligned to the exact remote commit using SHA-verified public
+commit metadata because the proxy prevents a normal fetch. Ordinary Git network
+and CLI authentication are still unverified here. Review this work against
+alpha-0.86-health-feedback (the latest source branch), not the outdated main
+snapshot. Reconcile the existing source PR chain separately before a main merge.
+See docs/REMOTE_REVIEW.md and docs/REVIEW.md for actual review/CI evidence.
 
 The environment and Git delivery limits are in docs/ENVIRONMENT.md. This task's
 full earlier development notes are preserved byte-for-byte in docs/history/.

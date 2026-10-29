@@ -24,6 +24,21 @@ const {root,json}=require('../scripts/lib/project.cjs');
    assert.match(await page.locator('.title-footer').innerText(),/ALPHA 0\.86/);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'mobile width overflow');
    const canvas=await page.locator('#game').boundingBox();assert.ok(canvas.width>0&&canvas.height>0);
+   const media=await page.evaluate(async()=>{
+    const images=[...Object.entries(JSON.parse(document.getElementById('sampleAssets').textContent)),['title',JSON.parse(document.getElementById('titleAsset').textContent)]];
+    const decoded=[];
+    for(const [id,meta]of images){
+     const image=new Image();image.src=meta.src;await image.decode();
+     if(image.naturalWidth!==meta.width||image.naturalHeight!==meta.height)throw Error('Decoded image dimensions differ: '+id);
+     decoded.push({id,width:image.naturalWidth,height:image.naturalHeight});
+    }
+    const music=JSON.parse(document.getElementById('musicAsset').textContent),raw=atob(music.data.split(',')[1]);
+    const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
+    const audio=new AudioContext();
+    try{const track=await audio.decodeAudioData(bytes.buffer);return{images:decoded,audio:{duration:track.duration,channels:track.numberOfChannels}}}
+    finally{await audio.close()}
+   });
+   assert.equal(media.images.length,21);assert.equal(media.audio.channels,2);assert.ok(Math.abs(media.audio.duration-48)<.1);
    await page.locator('#start').tap();await page.locator('#deploy').tap();
    await page.waitForTimeout(1200);
    // Native multi-touch: hold the joystick, then press Pause with a second finger.
@@ -44,15 +59,23 @@ const {root,json}=require('../scripts/lib/project.cjs');
    await page.screenshot({path:path.join(output,'game-'+width+'x'+height+'.png')});
    await page.locator('#pause').tap();
    assert.deepEqual(errors,[],'no initialization/loading errors');
-   results.push({width,height,launch:true,touchJoystickAndPause:true,pauseClockFrozen:true,settingsReturn:true,errors});
+   results.push({width,height,launch:true,touchJoystickAndPause:true,pauseClockFrozen:true,settingsReturn:true,media,errors});
    // Verify actual browser registration, cache population and offline navigation.
    await page.goto(base+'install/',{waitUntil:'networkidle'});
    await page.locator('#prepare').click();
-   await page.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return !!r?.active},{timeout:90000});
+   await page.waitForFunction(async()=>{
+    const registration=await navigator.serviceWorker.getRegistration();
+    return registration?.active?.state==='activated'&&document.getElementById('status').textContent.includes('Offline play is ready');
+   },undefined,{timeout:90000});
    const expected=json('web-dist/build-info.json').build;
    await page.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
-   await context.setOffline(true);await page.goto(base,{waitUntil:'load'});await page.locator('#start').waitFor();
-   results.at(-1).offlineLaunch=true;await context.close();
+   // The installer deliberately does not claim its open client. Navigate online
+   // once after activation, confirm control, then test offline reload/new launch.
+   await page.goto(base,{waitUntil:'networkidle'});
+   await page.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
+   await context.setOffline(true);await page.reload({waitUntil:'load'});await page.locator('#start').waitFor();
+   const coldPage=await context.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
+   results.at(-1).offlineReload=true;results.at(-1).offlineLaunch=true;await context.close();
   }
   fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({results,limits:'Synthetic Chromium touch; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
   console.log(JSON.stringify({browser:'Chromium',viewports:results.length,results}));

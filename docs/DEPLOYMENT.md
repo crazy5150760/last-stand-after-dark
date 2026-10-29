@@ -12,7 +12,7 @@ requests, and manual dispatch. It checks the pinned toolchain, builds, runs the
 native/PWA/preservation/URL suites, runs real Chromium mobile/offline tests, then
 packages output. Its artifacts include web-dist and browser evidence. Uploads
 marked always() can contain partial output after failure: only a fully successful
-run is a release candidate. This revised workflow has NOT run remotely yet.
+run is a release candidate. The revised workflow is running on the development branch; see docs/REMOTE_REVIEW.md for the verified outcome.
 
 publish-pages.yml is manual only, not a push trigger. After the reviewed source
 has passed the Android checklist, it takes a 40-character immutable source commit,
@@ -42,7 +42,7 @@ casually or activate two publishing paths.
 ## What has and has not changed
 
 No new deployment was performed. Existing source/main/live branches and domain
-settings were not overwritten. A remote dev-branch create request is unconfirmed.
+settings were not overwritten. The remote dev branch/source and draft PR #6 are confirmed; direct shell Git remains unavailable.
 The local production build is byte-identical to the current Alpha 0.86 and has
 the same PWA build ID. This is intentionally not Alpha 0.87 or a waiting update.
 
@@ -53,9 +53,9 @@ use the downloadable validated package or normal local server for review.
 
 ## Review and publication checklist
 
-1. Restore working normal Git network/authentication, inspect the remote dev ref,
-   and push the dev branch normally. Do not force-push if the remote changed.
-2. Open the draft PR against alpha-0.86-health-feedback; run the new full CI,
+1. The dev source and draft PR #6 are uploaded. Future pushes should use normal
+   authorized Git when the workspace proxy/authentication is working; never force.
+2. Review PR #6 against alpha-0.86-health-feedback and its new full CI,
    including Chromium. Resolve every failure before promotion.
 3. Export the owner's JSON backup, then complete docs/MANUAL_TEST.md on S21 Ultra /
    Brave. Automated browser contexts must remain disposable.

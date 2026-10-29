@@ -18,12 +18,15 @@ bypass was attempted.
 
 - Direct git ls-remote failed connecting to the required proxy on port 8080. An
   additional-network-permission attempt stalled and was aborted without success.
-- A GitHub connector create-branch request also stalled and was aborted; whether
-  the remote branch was created is unconfirmed. No commit upload, merge or live
-  publication was confirmed. Do not repeatedly retry invisible approvals.
+- The first GitHub connector create-branch request stalled and did not create a
+  branch. A later authorized attempt succeeded: the development branch/source and
+  draft PR #6 are confirmed. One batched request transferred about 668 KB of changed
+  text and reused existing artwork/release blobs. No merge/live publication was
+  performed. Do not repeatedly retry a stalled approval request.
 - System Chromium launch and the optional Playwright launch both failed at
-  crashpad socket.cc setsockopt: Operation not permitted. No real browser page,
-  local HTTP socket, GPU, touch device, FPS or service-worker lifecycle was tested.
+  crashpad socket.cc setsockopt: Operation not permitted. No browser page or HTTP
+  socket can launch locally. Remote Chromium evidence is tracked separately in
+  docs/REMOTE_REVIEW.md; physical touch, GPU/heat/FPS and Android remain device gates.
 - GitHub connector access does not supply a normal Git CLI credential. This
   session cannot change the account's repository permissions or the Codex
   workspace attachment/persistence settings using available tools.
@@ -49,7 +52,7 @@ is lost by making dist a generated directory.
 ## Future Codex sessions
 
 Prefer starting a repository-attached task against crazy5150760/last-stand-after-dark,
-selecting the development branch after it is uploaded. Configure the environment's
+selecting the now-published development branch. Configure the environment's
 setup command to run `bash scripts/setup.sh` and provide Node 24.19.0. Reuse/cache
 packages or Playwright browsers only through supported environment controls.
 AGENTS.md and the setup scripts travel with Git; they do not guarantee the same
@@ -65,12 +68,12 @@ bash scripts/setup.sh
 npm test
 ```
 
-Until the branch is uploaded, import the delivered incremental Git bundle in
-a normal clone rather than downloading/uploading a generated HTML through a
-connector. Its only prerequisite is the actual Alpha 0.86 GitHub source commit, which a normal full repository clone already has. Its dev branch starts from that commit.
-Use `git fetch /path/to/Last_Stand_Restructure.bundle refs/heads/refactor/modular-development:refs/heads/refactor/modular-development`,
-then switch to that branch. If it already exists locally, inspect first rather
-than overwriting it. The source ZIP is another full editable fallback.
+The earlier source ZIP, incremental Git bundle and verified mail patch remain
+archival/offline fallbacks. Prefer the latest GitHub development branch: those
+archives record the earlier local commit identity, while GitHub has a separate
+SHA with the same initial source tree. Do not push an archival branch over newer
+remote work. Public commit metadata was SHA-verified before aligning this local
+checkout to the actual remote head; no game bytes changed during that alignment.
 
 The optional devcontainer config describes a standard Node container and port
 8000. Container image pulling/building and real-browser setup were not tested in

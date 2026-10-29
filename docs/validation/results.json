@@ -90,15 +90,22 @@
   "browser": {
     "status": "blocked",
     "reason": "Chromium crashpad setsockopt: Operation not permitted",
-    "realBrowserPageOpened": false
+    "realBrowserPageOpened": false,
+    "scope": "local workspace only; remote evidence recorded separately"
   },
   "localHttpListen": {
     "status": "blocked",
     "reason": "listen EPERM 127.0.0.1:8000"
   },
   "gitPush": "unavailable/unverified; proxy failure and aborted permission check",
-  "remoteBranchCreate": "unconfirmed; connector write stalled/aborted",
-  "newCiRun": "not run",
+  "remoteBranchCreate": "confirmed; refactor/modular-development",
+  "newCiRun": {
+    "initialRunId": 40933415231,
+    "sourceCommit": "804f563299cbaeebc8b267a4005a63a25f43451f",
+    "coreSuites": "passed",
+    "initialBrowser": "failed offline navigation; fixture activation/control race corrected; follow-up pending",
+    "prUrl": "https://github.com/crazy5150760/last-stand-after-dark/pull/6"
+  },
   "newDeploy": "not performed",
   "physicalPhone": "pending",
   "gameplayEquivalentEvidence": "Exact readable source, standalone and all 11 production files; native behavior suites and seeded probe equality. No device FPS or browser acceptance inferred.",

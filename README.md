@@ -67,7 +67,10 @@ docs/VALIDATION.md for evidence/limits, docs/DEPLOYMENT.md for Pages, and
 docs/ANDROID.md for future APK preparation. AGENTS.md carries persistent Codex
 instructions. Prior documentation is preserved under docs/history/.
 
-Local restructuring is committed on `refactor/modular-development`. A remote
-branch/PR and new deployment are not confirmed: direct Git proxy access failed
-and a connector write stalled. The existing live URL is not a newly published
-restructured preview. See docs/ENVIRONMENT.md and docs/REVIEW.md.
+Development review: [draft PR #6](https://github.com/crazy5150760/last-stand-after-dark/pull/6)
+on `refactor/modular-development`. The remote source tree was verified against
+the local restructuring commit. See docs/REMOTE_REVIEW.md for current CI evidence
+and remaining device/environment gates. Main and the live game remain unchanged.
+Direct shell Git still cannot reach this workspace's required proxy; the initial
+source transfer used one batched tree request with about 668 KB of changed text
+and reused existing artwork/release blobs. No complete game HTML was re-uploaded.

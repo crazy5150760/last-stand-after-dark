@@ -2,7 +2,8 @@
 
 The locally restructured project is validated for review, not declared a completed
 browser/Android release. No gameplay change, new version or live replacement was
-performed. Machine-readable evidence is in validation/results.json; full raw logs
+performed. The source is now on GitHub in draft PR #6; follow-up remote browser
+validation is tracked in REMOTE_REVIEW.md. Machine-readable evidence is in validation/results.json; full raw logs
 and probe outputs are retained in the separate validation artifact bundle.
 
 | Check | Baseline | Restructured result |
@@ -22,9 +23,9 @@ and probe outputs are retained in the separate validation artifact bundle.
 | npm offline core lock/setup | n/a | npm ci --ignore-scripts --offline passed |
 | Clean source archive extraction | n/a | CRC, setup, build, 42 fast tests and stale checks passed |
 | Local Git object connectivity | n/a | Passed |
-| Chromium / real browser / phone | Not available here | Blocked, not passed |
+| Chromium / real browser / phone | Blocked locally | Remote portrait/touch passed; corrected offline fixture pending; phone pending |
 | Local HTTP socket listen | Not available here | EPERM, not passed |
-| New remote CI / normal Git push / deployment | Existing Alpha 0.86 CI/deploy succeeded | Not performed/confirmed |
+| New remote CI / normal Git push / deployment | Existing Alpha 0.86 CI/deploy succeeded | Core CI passed; browser follow-up pending; shell Git blocked; no deployment |
 
 There are **1,410 passing tests** in the four full restructured suites, plus the
 separate focused runner smoke. Three independent deterministic probes emitted six
@@ -75,18 +76,19 @@ permission workaround or sandbox bypass was used to make those checks appear to
 pass. No browser screenshot, physical touch, Android frame rate, GPU/memory/heat,
 audio perception, OS lifecycle, persistent storage durability or APK was verified.
 
-The optional real-browser test is prepared to check initialization/loading errors,
+The real-browser test now runs on GitHub Actions and checks initialization/loading errors,
 portrait/landscape width, multi-touch joystick with second-finger Pause, frozen
 clock, Settings return and real service-worker offline launch in disposable
-Chromium contexts. It fails if unavailable; it is not skipped as a success. Its
-functional paths and the revised GitHub Actions jobs still need their first run
-on a browser-capable host. Do not merge based on syntax/VM checks alone.
+Chromium contexts. It fails if unavailable; it is not skipped as a success. The first remote run
+launched Chromium and passed portrait/input/Pause/Settings checks, then exposed a
+fixture activation race at offline navigation. The corrected fixture and full
+media decoding checks are under follow-up validation. Do not merge based on
+syntax/VM checks alone; see REMOTE_REVIEW.md for the final observed outcome.
 
 ## Remaining gates
 
-1. Push the local development branch through an authorized normal Git connection;
-   a prior connector branch-creation request is unconfirmed. No remote PR exists
-   that this task can verify.
+1. The source/dev branch and draft PR #6 are confirmed. Normal shell Git still
+   needs working proxy access/authentication in a repository-based environment.
 2. Run the new CI and Chromium checks; fix any real-browser fixture or runtime
    failures before treating the new workflow as verified.
 3. Complete docs/MANUAL_TEST.md on S21 Ultra / Brave against the candidate bytes.

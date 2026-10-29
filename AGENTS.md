@@ -50,8 +50,9 @@ filesystem permissions or make a cloud workspace permanent.
 - Source checkout currently: /workspace/sites/last-stand-restructure. The path can
   change in future sessions; repository config, not that path, is authoritative.
 - Direct proxy access and Chromium sockets were blocked in the initial session;
-  write connector requests stalled without confirmed completion. Do not repeatedly
-  retry an unavailable approval flow or transfer generated 12 MB HTML through it.
+  initial write requests stalled. A later branch/source transfer succeeded and
+  draft PR #6 is open; see docs/REMOTE_REVIEW.md. Do not repeatedly retry a stalled
+  approval flow or transfer generated 12 MB HTML through it.
   Finish reviewable local work, report limits, and use a normal authorized checkout
   or the delivered Git bundle. Repository instructions cannot bypass permissions.
 - CI builds/tests and saves artifacts; it does not automatically publish. The

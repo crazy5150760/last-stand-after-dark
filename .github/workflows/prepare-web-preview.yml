@@ -22,7 +22,6 @@ jobs:
       - run: npm run doctor
       - run: npm run check
       - run: npm run build
-      - run: npm test
       - run: npm run build:check
       - name: Install pinned optional browser test tooling
         run: npm run setup:browser
@@ -30,6 +29,8 @@ jobs:
         run: npx playwright install-deps chromium
       - name: Real browser launch, mobile touch and offline checks
         run: npm run test:browser
+      - name: Full gameplay, offline and preservation regressions
+        run: npm test
       - name: Package verified browser output
         run: python3 tools/package_web_preview.py --output "$RUNNER_TEMP/last-stand-release"
       - name: Retain build and browser evidence
