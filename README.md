@@ -1,32 +1,73 @@
 # Last Stand: After Dark
 
-Zombie survival roguelite for Android and web.
+A Canvas 2D survival game for Android browsers and desktop browsers. This branch
+reorganizes the existing Alpha 0.86 source without changing its playable output.
+The original game and Site identity are retained; no engine or gameplay redesign
+is included.
 
-## Current baseline
+Live game: https://crazy5150760.github.io/last-stand-after-dark/
 
-`Last_Stand_After_Dark_Alpha_0_82.html` is the original Alpha 0.82 file, imported without changes. It contains the game, JavaScript, and embedded art/audio assets in one HTML file. No package installation or build is required for this baseline.
+## Develop
 
-Verified import: 12,579,589 bytes; Git blob SHA `fd9e098f4a8d91449bf594ad126b25e5d190b538` matches the owner-supplied file exactly.
-
-## Run locally
-
-From the repository folder, with Python 3 installed:
+Use Node **24.19.0**. Builds and the existing VM regression suites have no package
+download requirement:
 
 ```sh
-python3 -m http.server 8000
+bash scripts/setup.sh
+npm test
+npm run serve
 ```
 
-Open `http://localhost:8000/Last_Stand_After_Dark_Alpha_0_82.html` in a browser. To test on an Android phone on the same Wi-Fi, open the computer's local network address on port 8000 with the same filename. Local firewall settings may need to allow the server. Stop the server when finished.
+Open http://127.0.0.1:8000/last-stand-after-dark/ . The root index.html is a build
+template, not the playable output. `web-dist/` is the production website;
+`dist/index.html` is the generated standalone. Both retain the existing game bytes.
+Optional real-browser checks: `npm run setup:browser`, then `npm run test:browser`.
+Browser installation needs network access and a host that permits Chromium.
 
-Game saves remain in the browser's local storage; importing the source does not transfer existing player saves. Use the game's backup/export feature before changing browser or address.
+## Project structure
 
-## Branches and next development
+```text
+index.html                    Page and embedded-asset metadata template
+src/main.js                   Original frame loop and startup
+src/modules.json              Explicit assembly order and private-scope wrapper
+src/core/                     State, update loop, training and developer tools
+src/player/                   Deployment, native player defaults and health cues
+src/enemies/                  Horde, specialists and three bosses
+src/weapons/                  Projectiles, lightning, blades, fire and rendering
+src/combat/                   Damage, hostile shots, barricades, shock, fuel, decoys
+src/progression/              Survivors, routes, contracts, upgrades, saves, goals
+src/rendering/                Actors, environment, animation, street preview
+src/input/                    Keyboard, touch, choice guards and lifecycle
+src/audio/                    Mix, music, effects and art-preview cues
+src/ui/                       Menus, navigation, HUD, results and unchanged CSS
+assets/images/                Original PNG and runtime WebP artwork
+assets/audio/                 Original OGG track
+assets/metadata/              Original artwork/audio metadata
+assets/catalog.json           Hash-verified original-path mapping
+assets/embedded.json          Runtime media embedding inputs
+pwa/                          Unchanged installation, icons and worker sources
+scripts/                      Setup, checks, local server and build helpers
+tools/                        Compatible builders and optional art utilities
+tests/                        Existing regressions plus preservation/browser tests
+legacy/alpha-0.86/             Immutable playable release, source and provenance
+Last_Stand_...Alpha_0_82.html   Original imported game, unchanged
+.devcontainer/                Reusable optional container configuration
+.github/workflows/            Verification and manual guarded publication
+benchmarks/                   Existing phone observations, unchanged
+```
 
-- `main`: preserve the imported Alpha 0.82 baseline.
-- `threejs-conversion`: starting branch for the planned Three.js conversion, with shared browser and Android builds.
+Source files are **ordered build-time modules sharing the original private
+closure**, not independent ES modules. This is a deliberate preservation boundary:
+assembling them reconstructs the original readable source exactly. Future state
+encapsulation can be tested separately. No empty multiplayer/controller/engine
+folders are created for features that are not implemented.
 
-The conversion and APK packaging have not been implemented. Keep the original HTML as a reference, preserve gameplay and mobile controls, and make conversion changes on `threejs-conversion` before reviewing them for merge.
+See DEVELOPMENT.md for commands, docs/ARCHITECTURE.md for systems and saves,
+docs/VALIDATION.md for evidence/limits, docs/DEPLOYMENT.md for Pages, and
+docs/ANDROID.md for future APK preparation. AGENTS.md carries persistent Codex
+instructions. Prior documentation is preserved under docs/history/.
 
-## Validation
-
-The supplied HTML parsed successfully; embedded asset JSON and JavaScript syntax checks passed during import. Full gameplay and Android device testing are still required before claiming runtime compatibility for future changes.
+Local restructuring is committed on `refactor/modular-development`. A remote
+branch/PR and new deployment are not confirmed: direct Git proxy access failed
+and a connector write stalled. The existing live URL is not a newly published
+restructured preview. See docs/ENVIRONMENT.md and docs/REVIEW.md.

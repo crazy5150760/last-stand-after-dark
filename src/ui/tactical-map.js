@@ -1,0 +1,17 @@
+function showTacticalMap(){
+ if(mode!=='paused')return;mode='map';mapRange=600;
+ show(`<div class="eyebrow">${routeById(runRoute).name.toUpperCase()} · TIME IS PAUSED</div><h1 style="font-size:44px">TACTICAL MAP</h1><p>Local positions around you. No objectives are collected here.</p><canvas id="tacticalCanvas" width="640" height="640" style="width:min(100%,320px);height:auto;margin:0 auto;border:1px solid #657b8c;border-radius:12px" aria-label="Local tactical map; objectives are listed below"></canvas><div class="contract-picker"><label for="mapRangePick">MAP RANGE</label><select id="mapRangePick"><option value="300">300 units</option><option value="600">600 units</option><option value="1000">1000 units</option></select></div><p class="muted">You: teal crosshair. Enemies: red dots; bosses: gold rings. Orange: fuel. Cyan: shock drums. Brown: solid wood. Gray scenery is decorative.</p><p>${mapObjectives().map(t=>`${t.label}: ${Math.round(dist(t,p))} units`).join(' · ')||'No active objectives nearby.'}</p><button class="btn secondary" id="mapBack">BACK TO PAUSE</button>`);
+ const picker=document.getElementById('mapRangePick');picker.value='600';picker.addEventListener('change',()=>{if(mode==='map'&&picker.isConnected&&['300','600','1000'].includes(picker.value)){mapRange=Number(picker.value);drawTacticalMap()}});bindPress(document.getElementById('mapBack'),()=>{if(mode==='map'){mode='play';pause()}});drawTacticalMap();
+}
+function mapObjectives(){return [...objectiveTargets().filter(t=>t.id!=='patrol'),...patrol.filter(b=>!b.visited).map(b=>({...b,id:'patrol',label:'PATROL '+b.number,color:'#84d7ff'}))]}
+function mapPoint(point){const x=(point.x-p.x)*145/mapRange,y=(point.y-p.y)*145/mapRange;return Math.abs(x)<=145&&Math.abs(y)<=145?{x:x+160,y:y+160}:null}
+function drawTacticalMap(){
+ if(mode!=='map')return;const ctx=document.getElementById('tacticalCanvas').getContext('2d');ctx.setTransform(2,0,0,2,0,0);ctx.clearRect(0,0,320,320);ctx.fillStyle='#101b29';ctx.fillRect(0,0,320,320);ctx.save();ctx.beginPath();ctx.rect(10,10,300,300);ctx.clip();const scale=145/mapRange;
+ for(const o of obstacles){ctx.fillStyle='#344251';ctx.fillRect(160+(o.x-p.x)*scale,160+(o.y-p.y)*scale,o.w*scale,o.h*scale)}
+ for(const b of barricades)if(b.hp>0){ctx.fillStyle='#cea06c';ctx.fillRect(160+(b.x-p.x)*scale,160+(b.y-p.y)*scale,Math.max(2,b.w*scale),Math.max(2,b.h*scale))}
+ const dot=(point,color,r)=>{const v=mapPoint(point);if(!v)return;ctx.fillStyle=color;ctx.beginPath();ctx.arc(v.x,v.y,r,0,Math.PI*2);ctx.fill()};
+ for(const b of barrels)if(!b.spent)dot(b,'#ffb76b',3);for(const b of shockDrums)if(!b.spent)dot(b,'#77f2ed',3);
+ for(const e of enemies)if(e.hp>0&&!e.convoy){dot(e,'#ed7e91',2);if(e===activeBoss){const v=mapPoint(e);if(v){ctx.strokeStyle='#ffdf93';ctx.lineWidth=2;ctx.beginPath();ctx.arc(v.x,v.y,6,0,Math.PI*2);ctx.stroke()}}}
+ for(const t of mapObjectives()){const v=mapPoint(t);if(!v)continue;dot(t,t.color,4);ctx.fillStyle=t.color;ctx.font='bold 8px system-ui';ctx.textAlign='center';ctx.fillText(t.label,v.x,Math.max(20,v.y-8))}
+ ctx.fillStyle='#75f1ce';ctx.beginPath();ctx.arc(160,160,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d5fff0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(151,160);ctx.lineTo(169,160);ctx.moveTo(160,151);ctx.lineTo(160,169);ctx.stroke();ctx.fillStyle='#d5fff0';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('YOU',160,182);ctx.restore();ctx.fillStyle='#b4c5d2';ctx.font='bold 10px system-ui';ctx.textAlign='center';ctx.fillText('N ↑',160,12);
+}

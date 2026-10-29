@@ -1,30 +1,16 @@
-// Offline standalone builder. Uses the JavaScript parser shipped inside Node.
-// Keeps token text and required gaps; removes comments and redundant punctuation gaps.
-// The readable source stays in src/game.js. No asset conversion or network work.
+// Compatibility entry point. Preserve the original private closure.
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'..'),input=path.join(root,'src/game.js'),output=path.join(root,'dist/index.html');
-const bundled=process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'];
-if(!bundled)throw Error('This offline builder needs a Node release with bundled Acorn. See BUILDING.md.');
-const parserModule={exports:{}};new Function('exports','module',bundled)(parserModule.exports,parserModule);const parser=parserModule.exports;
-const source=fs.readFileSync(input,'utf8'),options={ecmaVersion:'latest',sourceType:'script'};
-let compact='',previous=0,previousLabel='';
-const scanner=parser.tokenizer(source,options);
-for(;;){
- const token=scanner.getToken();
- if(token.type.label==='eof')break;
- const gap=source.slice(previous,token.start);
- // These punctuation tokens already separate the next token. Preserve all
- // other gaps/newlines, including those needed by automatic semicolons.
- if(compact&&gap&&![';','{',','].includes(previousLabel))compact+=/[\r\n]/.test(gap)?'\n':' ';
- compact+=source.slice(token.start,token.end);previous=token.end;previousLabel=token.type.label;
+const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
+const {resolve, read, json, render, hash} = require('../scripts/lib/project.cjs');
+const result = render(), check = process.argv.includes('--check');
+assert.ok(result.length < 12 * 1024 * 1024, 'Standalone exceeds 12 MiB');
+if (check) assert.deepEqual(read('dist/index.html'), result, 'Build is stale: npm run build');
+else { fs.mkdirSync(resolve('dist'), {recursive:true}); fs.writeFileSync(resolve('dist/index.html'), result); }
+// Recreate original reference paths for unchanged tests and optional art tools.
+// These reference files are NOT shipped in production web-dist.
+for (const asset of json('assets/catalog.json').files) {
+  const bytes = read(asset.file); assert.equal(hash(bytes), asset.sha256, asset.file);
+  if (check) assert.deepEqual(read(asset.legacy), bytes, asset.legacy + ' is stale');
+  else { fs.mkdirSync(path.dirname(resolve(asset.legacy)), {recursive:true}); fs.writeFileSync(resolve(asset.legacy), bytes); }
 }
-const normalize=tree=>JSON.stringify(tree,(key,value)=>['start','end','loc','range'].includes(key)?undefined:value);
-assert.equal(normalize(parser.parse(compact,options)),normalize(parser.parse(source,options)),'Compaction changed JavaScript syntax/semantics.');
-new vm.Script(compact,{filename:'standalone-game.js'});
-assert.ok(!/<\/script/i.test(compact),'Inline script must not contain an HTML closing-script token.');
-const html=fs.readFileSync(output,'utf8'),match=html.match(/<script>([\s\S]*?)<\/script>/);assert.ok(match,'Expected one main inline script.');
-const result=html.slice(0,match.index)+'<script>'+compact+'</script>'+html.slice(match.index+match[0].length);
-assert.ok(Buffer.byteLength(result)<12*1024*1024,'Standalone exceeds 12 MiB.');
-if(process.argv.includes('--check'))assert.equal(html,result,'dist/index.html is stale: run node tools/build_game.cjs');else fs.writeFileSync(output,result);
-console.log(JSON.stringify({node:process.version,parser:parser.version,sourceBytes:Buffer.byteLength(source),compactBytes:Buffer.byteLength(compact),standaloneBytes:Buffer.byteLength(result),headroomBytes:12*1024*1024-Buffer.byteLength(result),astEquivalent:true,checkOnly:process.argv.includes('--check')}));
+console.log(JSON.stringify({standaloneBytes:result.length,sha256:hash(result),checkOnly:check}));
