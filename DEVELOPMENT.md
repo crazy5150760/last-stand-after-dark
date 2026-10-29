@@ -106,6 +106,8 @@ and CLI authentication are still unverified here. Review this work against
 alpha-0.86-health-feedback (the latest source branch), not the outdated main
 snapshot. Reconcile the existing source PR chain separately before a main merge.
 See docs/REMOTE_REVIEW.md and docs/REVIEW.md for actual review/CI evidence.
+docs/INTEGRATION.md records the checked source ancestry, proposed main review
+and verification-only Pages rehearsal; none of those steps publishes implicitly.
 
 The environment and Git delivery limits are in docs/ENVIRONMENT.md. This task's
 full earlier development notes are preserved byte-for-byte in docs/history/.

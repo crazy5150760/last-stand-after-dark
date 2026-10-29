@@ -12,7 +12,7 @@ on:
         required: true
         type: string
       publish_verified_build:
-        description: 'Publish after validation and Android checklist acceptance'
+        description: 'Publish after Android acceptance; false runs verification only'
         required: true
         type: boolean
         default: false
@@ -22,8 +22,20 @@ concurrency:
   group: last-stand-pages-production
   cancel-in-progress: false
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Require immutable commit identifiers before checkout
+        env:
+          SOURCE_SHA: ${{ inputs.source_ref }}
+          LIVE_SHA: ${{ inputs.expected_live_commit }}
+        run: |
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$LIVE_SHA" =~ ^[0-9a-f]{40}$ ]]
   verify:
-    if: ${{ inputs.publish_verified_build == true }}
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -31,13 +43,10 @@ jobs:
         with:
           ref: ${{ inputs.source_ref }}
           persist-credentials: false
-      - name: Require immutable commit identifiers
+      - name: Confirm the exact source checkout
         env:
           SOURCE_SHA: ${{ inputs.source_ref }}
-          LIVE_SHA: ${{ inputs.expected_live_commit }}
         run: |
-          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$LIVE_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
       - uses: actions/setup-node@v4
         with:
@@ -52,8 +61,26 @@ jobs:
           name: verified-pages-output
           path: web-dist/
           if-no-files-found: error
+      - name: Record verification and publication mode
+        env:
+          SOURCE_SHA: ${{ inputs.source_ref }}
+          LIVE_SHA: ${{ inputs.expected_live_commit }}
+          PUBLISH_REQUESTED: ${{ inputs.publish_verified_build }}
+        run: |
+          {
+            echo '### Pages candidate verification passed'
+            echo "Source: $SOURCE_SHA"
+            echo "Expected live branch: $LIVE_SHA"
+            if [ "$PUBLISH_REQUESTED" = 'true' ]; then
+              echo 'Publication requested; the separate protected publish job must still succeed.'
+            else
+              echo 'Verification only. No publishing identity was used and no live files were changed.'
+              echo 'The expected live SHA was validated as input, but live branch equality is checked only by the publish job.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
   publish:
     needs: verify
+    if: ${{ inputs.publish_verified_build == true }}
     runs-on: ubuntu-latest
     environment: pages-production
     permissions:

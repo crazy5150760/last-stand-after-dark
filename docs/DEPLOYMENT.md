@@ -23,6 +23,13 @@ commit on gh-pages. It retains existing files, custom-domain CNAME and history.
 An identical production output causes no publication commit. It never uploads
 source HTML through connector blob/tree requests.
 
+With publish_verified_build false, the workflow performs verification and saves
+the candidate artifact but skips the entire publish job. It does not use the
+publishing secret or check the live branch for equality in this mode. This is a
+prepared rehearsal path, not a deployed preview. Immutable identifiers are
+validated before source checkout. See INTEGRATION.md for the verified source
+ancestry and the required default-branch/phone/identity gates.
+
 Native branch-based Pages does not rebuild for commits pushed by GITHUB_TOKEN.
 Therefore the publisher deliberately requires PAGES_PUBLISH_TOKEN, stored in
 GitHub repository secrets, with repository Contents write permission. It stops

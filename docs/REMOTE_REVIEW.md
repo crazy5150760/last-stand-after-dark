@@ -13,6 +13,11 @@ only test/CI/documentation text. No complete game HTML or artwork was re-uploade
 
 ## Verified remote evidence
 
+- Final source-head runs 40940466132 (push) and 40940480987 (PR) both completed
+  successfully on 248547a100a3c6873fb5d40bde95de054b296348. Each passed all
+  1,410 core cases and the real Chromium checks described below. Both conclusions
+  were rechecked during continuation; the failed/cancelled experiments below are
+  historical fixture evidence, not the final result.
 - Run 40933415231 completed all 1,410 core tests with zero failures, as well as
   setup, syntax/assets, build and stale-output checks. Its first browser fixture
   failed during offline navigation; it is not reported as an entirely passed run.
@@ -29,6 +34,10 @@ Core evidence:
 https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40933415231
 Browser-step evidence:
 https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40939796438
+Final complete push gate:
+https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40940466132
+Final complete PR gate:
+https://github.com/crazy5150760/last-stand-after-dark/actions/runs/40940480987
 
 The offline fixture now waits for full worker activation/readiness and performs
 an ordinary online reload if its new document is still uncontrolled, before
@@ -56,3 +65,17 @@ devcontainer. Container startup and future APK packaging remain untested.
 Normal direct Git and the optional Pages publishing identity/default-branch
 integration remain separate environment/hosting setup work. No new consent is
 needed for the already-authorized source work or approved public game/source.
+
+## Continuation preparation
+
+The current remote PR discussion/reviews contained no owner phone acceptance.
+The five earlier source PRs are still drafts; their commit parents were checked
+and form the complete main-to-Alpha-0.86 chain. Main's original two blobs are
+preserved in the source tree (the README under docs/history). See INTEGRATION.md
+for the concrete default-branch review order and one-time publishing setup.
+
+The manual publisher now supports a verification-only rehearsal when its publish
+input is false, instead of skipping all work. It checks/builds/tests and saves
+an artifact without entering the publish job or using a publishing identity.
+This path remains undispatched until default-branch integration; local workflow
+checks and normal source CI do not establish successful Pages publication.
