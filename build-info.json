@@ -1,13 +1,13 @@
 {
-  "version": "Alpha 0.84",
-  "build": "f615328d53b060e9",
-  "standaloneSha256": "74a705e625d061cb77e9276dbda37a322f6a87c479cc53987663e5115dc67307",
-  "hostedGameSha256": "c301be35ec2f61816acd4372f64eec43bb70fc01b1dda5cc7f7ec3ec1588954a",
+  "version": "Alpha 0.85",
+  "build": "be3eb7e18dd18c1f",
+  "standaloneSha256": "a5350026a58262e4d8efe7019747030ef5e9976088c5cd09eaf308168693e709",
+  "hostedGameSha256": "e9710c1da137dd426fcbced8c3e31418d60d2c3a019a9f7fe667357c17d033c2",
   "cacheAssets": [
     {
       "key": "index.html",
       "url": "./",
-      "sha256": "c301be35ec2f61816acd4372f64eec43bb70fc01b1dda5cc7f7ec3ec1588954a",
+      "sha256": "e9710c1da137dd426fcbced8c3e31418d60d2c3a019a9f7fe667357c17d033c2",
       "types": [
         "text/html"
       ]
