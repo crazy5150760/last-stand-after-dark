@@ -1,4 +1,4 @@
-> Current release: Alpha 0.85 · Clear Upgrade Choices. The 0.84 active/downloaded labels and Brave restart help stay unchanged. Update the existing home-screen app at the same public Pages address, then follow PLAYTEST.md. Robert confirmed the 0.84 update worked. No manifest/save change, forced activation or reinstall is added; the original Site remains untouched. The historical Alpha 0.80 implementation policy below still applies.
+> Current release: Alpha 0.86 · Health Awareness. The 0.84 active/downloaded labels and Brave restart help stay unchanged. Update the existing app at the same public Pages address, then follow PLAYTEST.md. No manifest/save change, forced activation or reinstall is added. The original Site remains untouched; the historical Alpha 0.80 implementation policy below still applies.
 
 # Alpha 0.80 — installable web preview for review
 

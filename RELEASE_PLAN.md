@@ -1,7 +1,7 @@
 # Last Stand: After Dark — first-release plan
 
 Owner and lead tester: Robert Kenny. Development/design lead: Codex.
-Updated: 2026-10-29. Current build: **Alpha 0.85 · Clear Upgrade Choices**. Robert confirmed 0.84 updated successfully and asked to proceed. Improve card rank progress, immediate support-stat changes and the optional current-build reference. Preserve random draws, gesture guards, combat, balance and saves. Publish at the same approved public Pages address after source CI. Actual 0.85 phone layout and natural choice readability remain owner checks; main/conversion history and original Site remain unchanged.
+Updated: 2026-10-29. Current build: **Alpha 0.86 · Health Awareness**. Robert reported 0.85 worked great and authorized the next part. Add accepted-hit HP-loss text, LOW HP at the existing quarter-health threshold, and Second Wind status using existing HUD space and active clocks. Preserve all damage/healing/armor/protection/difficulty and save rules. Publish to the same approved public Pages address after source CI. Actual 0.86 phone readability/lifecycle remains an owner check; no quantitative FPS result is inferred.
 
 ## Product goal
 

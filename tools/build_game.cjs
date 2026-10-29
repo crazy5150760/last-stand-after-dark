@@ -1,5 +1,5 @@
 // Offline standalone builder. Uses the JavaScript parser shipped inside Node.
-// Keeps token text and every inter-token newline; removes comments/indentation.
+// Keeps token text and required gaps; removes comments and redundant punctuation gaps.
 // The readable source stays in src/game.js. No asset conversion or network work.
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
@@ -8,14 +8,16 @@ const bundled=process.binding('natives')['internal/deps/acorn/acorn/dist/acorn']
 if(!bundled)throw Error('This offline builder needs a Node release with bundled Acorn. See BUILDING.md.');
 const parserModule={exports:{}};new Function('exports','module',bundled)(parserModule.exports,parserModule);const parser=parserModule.exports;
 const source=fs.readFileSync(input,'utf8'),options={ecmaVersion:'latest',sourceType:'script'};
-let compact='',previous=0;
+let compact='',previous=0,previousLabel='';
 const scanner=parser.tokenizer(source,options);
 for(;;){
  const token=scanner.getToken();
  if(token.type.label==='eof')break;
  const gap=source.slice(previous,token.start);
- if(compact&&gap)compact+=/[\r\n]/.test(gap)?'\n':' ';
- compact+=source.slice(token.start,token.end);previous=token.end;
+ // These punctuation tokens already separate the next token. Preserve all
+ // other gaps/newlines, including those needed by automatic semicolons.
+ if(compact&&gap&&![';','{',','].includes(previousLabel))compact+=/[\r\n]/.test(gap)?'\n':' ';
+ compact+=source.slice(token.start,token.end);previous=token.end;previousLabel=token.type.label;
 }
 const normalize=tree=>JSON.stringify(tree,(key,value)=>['start','end','loc','range'].includes(key)?undefined:value);
 assert.equal(normalize(parser.parse(compact,options)),normalize(parser.parse(source,options)),'Compaction changed JavaScript syntax/semantics.');

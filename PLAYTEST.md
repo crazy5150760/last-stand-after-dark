@@ -1,29 +1,29 @@
-# Alpha 0.85 — Clear Upgrade Choices
+# Alpha 0.86 — Health Awareness
 
-Target: S21 Ultra / Brave, portrait and landscape. Robert confirmed the 0.84 update worked and authorized the next part. This is a three-part choice-screen presentation batch, not new weapons, altered odds or combat tuning.
+Target: S21 Ultra / Brave, portrait and landscape. Robert reported 0.85 worked great and authorized the next part. This small combat-clarity batch uses the existing health fields; no damage, healing, armor, enemy, odds, protection or save rule changes.
 
 ## What changed
 
-- Weapon cards separate their name from current → next rank. Evolution cards show rank 3/3 → evolved.
-- Stackable support cards show the immediate current → next stat. Field Medic shows both maximum HP and actual capped healing. Dash uses the survivor's current recharge and two decimal places; Rapid Fire respects the existing interval floor. One-time abilities keep their native descriptions. Rapid Fire copy now describes its existing interval reduction accurately.
-- Current build and evolution guidance move into YOUR BUILD & EVOLUTIONS below the cards, initially collapsed for each offer. Choices stay prominent; every retained reroll/banish control remains below the reference.
+- After an accepted hit, the health area briefly shows actual HP lost after armor, such as −9 HP. It lasts 0.7 active seconds. Ignored hits and safe training cannot create a false loss cue.
+- At the existing 25%-of-maximum threshold, LOW HP adds a text warning in both composed and Classic HUDs. It clears when health rises above that ratio. A fresh hit temporarily takes priority.
+- When the existing Second Wind perk triggers, SECOND WIND appears for its existing two-second protection window. A later Dash cannot falsely retrigger that label. All new cue time freezes with Pause/choices/backgrounding. Reduced Effects keeps these static cues; no new flash, animation or sound is added.
 
 ## Update
 
-Keep a real JSON backup. Open https://crazy5150760.github.io/last-stand-after-dark/install/ and Check for Updates. A downloaded 0.85 is not active yet. Finish the current run, close all Last Stand game/setup windows and reopen the icon. If Brave retains 0.84, use Android Settings → Apps → Brave → Force stop, then reopen; leave storage/data untouched. Confirm ALPHA 0.85 at the game main menu and Active offline copy: Alpha 0.85 in setup. The 0.84 active/downloaded labels and restart help remain available while waiting.
+Keep a JSON backup. Open https://crazy5150760.github.io/last-stand-after-dark/install/ and Check for Updates. A downloaded 0.86 is not active yet. Finish the run, close all game/setup windows and reopen the icon. If Brave keeps 0.85, use Settings → Apps → Brave → Force stop, then reopen; leave storage/data untouched. Confirm ALPHA 0.86 on the main menu and Active offline copy: Alpha 0.86 in setup.
 
 ## Phone checklist
 
-- [ ] Reach the first upgrade. Four familiar weapon cards show their names and RANK 0/3 → 1/3. Read without rushing; time stays paused and no card chooses itself. Scroll and rotate safely. Which orientation makes the cards easier to read?
-- [ ] Open YOUR BUILD & EVOLUTIONS beneath the cards. It shows the existing build and explains the rank-three evolution requirement. Opening/closing it does not grant or select an upgrade. A later offer starts with the reference closed.
-- [ ] When a support card appears, read its current → next value. Choose one deliberately and check the corresponding HUD/build-inspection value where available. Medic healing is capped; Dash recharge depends on your survivor. One-time ability cards keep their original explanation. No particular card is guaranteed.
-- [ ] Later rank/evolution cards show the correct progress when offered. Reroll and optional banish still work with fresh taps and ordinary randomness; do not expect a chosen path every time. Hold the joystick while tapping Pause after returning to play; check normal results/retry and unchanged records/settings.
-- [ ] Finish/close, enable airplane mode, reopen and play briefly. Confirm 0.85 and reconnect afterward.
+- [ ] Play an ordinary run and take a hit when convenient. The existing health area briefly reports HP lost; health numbers stay visible. Check portrait/landscape and report any cramped text. Hits blocked by Dash should not show a new HP-loss cue.
+- [ ] If health reaches a quarter or less, LOW HP appears after the brief loss cue. Healing above a quarter clears it. Readability should improve without a distracting flash or sound. Do not risk a valuable run solely to force this check.
+- [ ] Pause soon after a hit; inspect Settings and return. The cue should remain frozen until Resume. Try Reduced Effects and the Classic/composed HUD comparison: both retain clear health information. Joystick + second-finger Pause, background/return and normal results/retry still work.
+- [ ] If Second Wind is offered and triggers, its label accompanies the existing recovery/protection, then settles to LOW HP if still critical. Skip this optional phone case if the perk does not appear; its timing and non-retriggering are tested automatically. New runs start without old hit or recovery cues; HP-safe training keeps HP SAFE.
+- [ ] Check records/settings, then finish/close, enable airplane mode, reopen and play briefly. Reconnect afterward.
 
-Does this make upgrade decisions quicker to understand without making the phone cards too crowded? Combat and difficulty should feel the same as 0.84; report any change.
+Are the new cues noticeable without getting in the way? Damage and difficulty should feel identical to 0.85; report any difference. No new quantitative performance claim follows from a functional pass.
 
-## Verification and limits
+## Verification
 
-Local targeted game checks: 53 passed, including 21 new preview/purity cases and existing random-choice/reroll/banish/input guards. Offline/UI checks: 32 passed. Both generated builders pass. An AST comparison protects every other main-game node and all existing choice callbacks, eligibility, effects, RNG, combat, saves and input; only the new read-only helper, upgrade render HTML, explanatory copy, six labels and one CSS rule differ. Embedded media and the entire HTML shell are otherwise exact. Manifest, worker and original Site identity are unchanged.
+187 focused game checks and 32 offline cases pass locally, including 14 new health-cue checks. Both builders pass. An AST comparison removes only the new bounded cue/helper, three cue/reset assignments, two health-text expressions, three style writes and one local presentation reference; every other main AST node matches 0.85 after six label substitutions. Native damage math, armor, Second Wind trigger/recovery/invulnerability, counters, RNG, effects, choices, callbacks, saves and progression are unchanged. The HTML shell, CSS and embedded media are exact. A packaging refinement removes redundant punctuation whitespace, guarded by the builder’s full-AST equivalence check; readable game logic and all literals remain unchanged. No new asset, DOM element, saved option, timer or rendering loop is added.
 
-The full existing native suite plus new cases runs in GitHub before publication. Final CI counts, package/hash checks and actual deployment provenance accompany the release artifacts. VM assertions do not establish real phone layout, natural balance or device performance. No new image, audio, per-frame subsystem, save key, cloud service, engine or forced update activation is introduced.
+Full GitHub CI and packaging run before publication; final counts and deployment provenance accompany the artifacts. Device text layout, touch/lifecycle behavior and natural-play balance require the owner checklist. The cue is one overwritten transient object and is cleared on every native start, including training/performance/previews.

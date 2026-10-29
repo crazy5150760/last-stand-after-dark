@@ -1,4 +1,4 @@
-> Current release: Alpha 0.85 · Clear Upgrade Choices. Back up source, run full CI, then publish verified static output to existing gh-pages at the same approved public game address. Public source is accepted by the owner. Main/conversion history and the original Site remain unchanged. Earlier 0.82 backup hashes are historical; current release manifests and Git trees record this build.
+> Current release: Alpha 0.86 · Health Awareness. Back up source, run full CI, then publish verified static output to existing gh-pages at the same approved public game address. Public source is accepted. Main/conversion history and original Site remain unchanged. Earlier 0.82 backup hashes are historical; current release manifests/Git trees record this build.
 
 # Alpha 0.82 source backup and web deployment preparation
 

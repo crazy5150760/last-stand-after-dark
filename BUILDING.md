@@ -1,4 +1,4 @@
-> Current release: Alpha 0.85 · Clear Upgrade Choices. Local targeted checks and the source AST comparison cover a read-only preview helper and upgrade presentation; all native choice effects/odds/guards remain unchanged. See PLAYTEST.md and release artifacts for current counts and publication status. Older validation sections below describe their named snapshots.
+> Current release: Alpha 0.86 · Health Awareness. Local targeted checks and an AST comparison protect native damage, armor, healing, Second Wind and all other mechanics around the new bounded health text. The shell/CSS/media remain exact. Use PLAYTEST.md and release artifacts for current counts/publication; older sections describe their named snapshots.
 
 # Building the standalone game
 
@@ -28,7 +28,7 @@ Edit JavaScript in src/game.js, then rebuild. Edit layout/CSS/embedded-media sec
 
 ## What the builder does
 
-The offline helper uses the JavaScript parser already shipped within Node. It retains every token's original text and inter-token line breaks, removes comments, and compresses indentation/extra whitespace. It compares the full original and compact syntax trees while ignoring source positions, compiles the result with Node, rejects a raw closing-script token, and enforces the existing 12 MiB standalone limit before writing. No string/data literal, artwork, metadata, audio, CSS or gameplay value is reencoded. `--check` verifies the artifact is current without writing it; repeated builds are byte-identical.
+The offline helper uses the JavaScript parser already shipped within Node. It retains every token's original text and required gaps, removes comments, and omits redundant whitespace after semicolons, opening braces and commas. Other inter-token newlines are retained for automatic-semicolon safety. It compares the full original and compact syntax trees while ignoring source positions, compiles the result with Node, rejects a raw closing-script token, and enforces the existing 12 MiB standalone limit before writing. No string/data literal, artwork, metadata, audio, CSS or gameplay value is reencoded. `--check` verifies the artifact is current without writing it; repeated builds are byte-identical.
 
 Node's bundled-parser path is an internal API. If a Node release does not provide it, the helper stops with a clear error instead of silently producing a file. Use the tested runtime or deliberately review a future builder update. No parser code is vendored or fetched, and no external package is installed. The exported HTML itself needs no Node or builder to play.
 
