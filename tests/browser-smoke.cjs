@@ -15,21 +15,24 @@ const {root,json}=require('../scripts/lib/project.cjs');
   const base='http://127.0.0.1:'+server.address().port+'/last-stand-after-dark/';
   // Independent control experiment: the default worker lifecycle must attach
   // a worker to a new page without claim/skipWaiting before testing game offline.
+  let probeNoStore=false;
   const probe=http.createServer((req,res)=>{
-   if(req.url==='/sw.js')res.writeHead(200,{'Content-Type':'text/javascript'}).end("self.addEventListener('fetch',event=>event.respondWith(new Response('<title>controlled</title>',{headers:{'Content-Type':'text/html'}})));");
+   if(probeNoStore)res.setHeader('Cache-Control','no-store');
+   if(req.url.endsWith('/sw.js'))res.writeHead(200,{'Content-Type':'text/javascript'}).end("self.addEventListener('fetch',event=>event.respondWith(new Response('<title>controlled</title>',{headers:{'Content-Type':'text/html'}})));");
    else res.writeHead(200,{'Content-Type':'text/html'}).end('<title>worker control probe</title>');
   });
   let probeContext;
   try{
    await new Promise((ok,fail)=>{probe.once('error',fail);probe.listen(0,'127.0.0.1',ok)});
    const url='http://127.0.0.1:'+probe.address().port+'/';
-   const modes=[['desktop',{}],['mobile-emulation',{viewport:{width:412,height:915},hasTouch:true,isMobile:true,deviceScaleFactor:1.75}],['touch-viewport',{viewport:{width:412,height:915},hasTouch:true,isMobile:false,deviceScaleFactor:1.75}]];
-   for(const [mode,options]of modes){
+   const modes=[['desktop',{},'/',false],['no-store',{},'/',true],['subdirectory',{},'/last-stand-after-dark/',false],['subdirectory-no-store',{},'/last-stand-after-dark/',true]];
+   for(const [mode,options,prefix,noStore]of modes){
+    probeNoStore=noStore;
     probeContext=await browser.newContext({...options,serviceWorkers:'allow'});
-    const installer=await probeContext.newPage();await installer.goto(url);
+    const installer=await probeContext.newPage();await installer.goto(url+prefix.slice(1));
     await installer.evaluate(async()=>{await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready});
     await installer.waitForFunction(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
-    const client=await probeContext.newPage();const response=await client.goto(url);
+    const client=await probeContext.newPage();const response=await client.goto(url+prefix.slice(1));
     const controlled=await client.evaluate(()=>!!navigator.serviceWorker.controller);
     console.log(JSON.stringify({phase:'independent-worker-probe',mode,controlled,fromServiceWorker:response.fromServiceWorker()}));
     if(mode==='desktop')assert.ok(controlled&&response.fromServiceWorker(),'Independent worker control failed in this browser runner; not a game-code result');
@@ -110,7 +113,9 @@ const {root,json}=require('../scripts/lib/project.cjs');
     registrations:(await navigator.serviceWorker.getRegistrations()).map(r=>({scope:r.scope,active:r.active?.scriptURL,state:r.active?.state})),
     caches:await caches.keys()
    }));
-   console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state,workerVersions}));
+   const worker=offlineContext.serviceWorkers().find(w=>w.url().endsWith('/sw.js'));
+   const workerState=worker?await worker.evaluate(async()=>({scope:self.registration.scope,routes:[...routes],clients:(await self.clients.matchAll({includeUncontrolled:true,type:'window'})).map(c=>({url:c.url,id:c.id,frameType:c.frameType}))})):null;
+   console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state,workerVersions,workerState}));
    await controlledPage.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
    await offlineContext.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
    const coldPage=await offlineContext.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
