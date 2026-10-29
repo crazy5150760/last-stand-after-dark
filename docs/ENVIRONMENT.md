@@ -85,9 +85,9 @@ has already adopted it or that Docker is available on an Android phone.
 No new consent is needed for the owner's already-authorized repository work or
 public game/source. Actual platform network/Git credential permissions remain
 mandatory. Use supported Git authentication in a working repository environment;
-never put a PAT in chat, Git remotes or project files. The optional branch-based
-Pages publisher needs a repository secret PAGES_PUBLISH_TOKEN with Contents write,
-or an approved GitHub App identity with equivalent capability. A GITHUB_TOKEN push
-does not trigger the native Pages build. Configuring that credential or switching
-to official Actions Pages hosting is a one-time hosting setup decision, not a
-reason to resume huge connector uploads. No such secret was created/read here.
+never put a PAT in chat, Git remotes or project files. The preferred Pages publisher now uses GitHub Actions' built-in identity,
+with reviewed release requests committed through the connected source tools.
+The old token-based branch publisher is inactive under deployment/history.
+The remaining one-time account action is GitHub Settings -> Pages -> Source ->
+GitHub Actions. No available tool can make that setting change. No PAT is needed,
+and no credential was created/read. See docs/DEPLOYMENT.md for the concrete route.

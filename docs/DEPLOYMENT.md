@@ -1,94 +1,75 @@
-# Browser deployment and stable release protection
+# One game address, verified Pages releases
 
-The current approved public URL is
-https://crazy5150760.github.io/last-stand-after-dark/ . Pages uses gh-pages/(root).
-Main now contains the verified modular source through merged PR #6; merging source
-does not publish the game. The live branch remains separate.
-The original ChatGPT Site and its hosting project ID are unchanged.
+Game: https://crazy5150760.github.io/last-stand-after-dark/
+Settings: https://github.com/crazy5150760/last-stand-after-dark/settings/pages
+The existing custom domain/Site identity must not change. gh-pages remains the
+preserved original deployment at ac9580725c4b25bfe74c653f51b09603b1a519f5.
 
-## Prepared automation
+## Prepared route without a personal token
 
-prepare-web-preview.yml runs on main, alpha-* and refactor/** pushes, all pull
-requests, and manual dispatch. It checks the pinned toolchain, builds, runs the
-native/PWA/preservation/URL suites, runs real Chromium mobile/offline tests, then
-packages output. Its artifacts include web-dist and browser evidence. Uploads
-marked always() can contain partial output after failure: only a fully successful
-run is a release candidate. The revised workflow now runs on the development branch. Core and real-browser step evidence has passed; see docs/REMOTE_REVIEW.md and the latest PR checks for full-gate results.
+.github/workflows/publish-pages.yml uses official upload-pages-artifact and
+deploy-pages actions with GitHub's built-in token/OIDC permissions. No PAT,
+PAGES_PUBLISH_TOKEN or account credential is created/read. The old branch-based
+publisher is preserved outside .github/workflows under deployment/history.
+Do not activate both publishing paths.
 
-publish-pages.yml is manual only, not a push trigger. After the reviewed source
-has passed the Android checklist, it takes a 40-character immutable source commit,
-the expected live gh-pages commit, and an explicit publish_verified_build input
-(default false). It builds/tests that source again, publishes only the resulting
-artifact, rejects a changed live baseline, and makes a normal fast-forward Git
-commit on gh-pages. It retains existing files, custom-domain CNAME and history.
-An identical production output causes no publication commit. It never uploads
-source HTML through connector blob/tree requests.
+A reviewed change to deployment/pages-release.json on main starts the release
+workflow. It validates immutable source/archive SHAs, expected PWA build and game
+hash, checks out that exact source, runs its complete native/browser validation,
+then composes the generated eleven production files with all existing unrelated
+site content and CNAME from the preserved branch. Symlinks, unexpected payloads,
+wrong hashes, stale archive SHAs and destructive output overlap are rejected.
+The baseline is never overwritten or deleted.
 
-With publish_verified_build false, the workflow performs verification and saves
-the candidate artifact but skips the entire publish job. It does not use the
-publishing secret or check the live branch for equality in this mode. This is a
-prepared rehearsal path, not a deployed preview. Immutable identifiers are
-validated before source checkout. See INTEGRATION.md for the verified source
-ancestry and the required default-branch/phone/identity gates.
+Release-workflow/config changes also run a rehearsal on pull requests. The deploy
+job explicitly rejects pull_request events even if that PR sets publish=true.
+Only the non-privileged verification job runs there; no publishing token/OIDC
+permission is available to it. This tests the complete preparation before merge.
 
-Native branch-based Pages does not rebuild for commits pushed by GITHUB_TOKEN.
-Therefore the publisher deliberately requires PAGES_PUBLISH_TOKEN, stored in
-GitHub repository secrets, with repository Contents write permission. It stops
-before publication if missing; no fallback silently claims success. An approved
-GitHub App credential can be used instead by updating the checkout identity.
-Do not paste tokens into a chat or repository. The pages-production environment
-may additionally be configured for required reviewers using GitHub settings.
+With publish=false, it uploads a verified Pages artifact and skips deployment.
+With publish=true, the separate github-pages environment job rechecks the archive
+SHA and deploys using pages:write/id-token:write. Existing required reviewers and
+platform permissions still apply. An actual deployment result is needed before
+claiming the public address changed. Source CI itself never publishes a game.
 
-The manual workflow is now committed on default main through PR #6. GitHub Actions
-workflow metadata can be checked without changing Pages. No manual dispatch was
-performed: the connected tool set does not expose workflow dispatch. A repository
-operator can use Run workflow in GitHub Actions on a supported authenticated client. An alternative future
-setup is official upload-pages-artifact/deploy-pages with Pages source switched
-to GitHub Actions; the old deployment/github-pages.yml is only a historical
-template, not the active configuration. Do not switch sources/custom domains
-casually or activate two publishing paths.
+The initial request deliberately targets accepted source a415ecc891c366efcec05476399145c99f7cb4e3,
+PWA build 7cf8f34890269ad6, with publish=false. This rehearses the original live
+Alpha 0.86 bytes. It does not publish the newer automatic-update shell or assert
+new-flow phone acceptance. Consult the release workflow's actual result.
 
-## What has and has not changed
+## One-time account setting after the rehearsal passes
 
-No new deployment was performed. PR #6 was merged into main with owner authorization;
-the actual merge tree exactly matches the tested candidate. The live branch, domain
-and original Site remain unchanged. Direct shell Git remains unavailable.
-The local production build is byte-identical to the current Alpha 0.86 and has
-the same PWA build ID. This is intentionally not Alpha 0.87 or a waiting update.
+This is a setting in GitHub itself, not a Codex approval prompt. Open the settings
+link above. Under Build and deployment, change Source from Deploy from a branch
+to GitHub Actions. Keep the custom domain and other settings unchanged.
 
-For this preservation release, the existing HTTPS game is the same playable
-payload; it is not a newly deployed preview proving this new CI configuration.
-Browser CI has passed and owner phone acceptance is recorded in PHONE_ACCEPTANCE.md.
-The source and main-targeted checks passed and source integration is complete.
-No publishing identity or live deployment is established by those gates.
+The connected tools can edit/merge release requests and inspect/re-run jobs, but
+cannot change Pages settings, manage repository secrets or dispatch a manual
+workflow. They also do not supply local shell Git credentials. Do not repeat
+stalled permission prompts or ask for tokens in chat. The account setting needs
+a repository administrator using a normal authenticated GitHub client.
 
-## Publication checklist after completed integration
+Prepare and verify the workflow before asking for that one setting change. No
+source setting change or actual successful Pages deployment is claimed merely
+because the workflow file exists. Preserve the last working branch so that the
+existing hosting source can be restored if needed. Do not switch a domain.
 
-1. Start from the exact reviewed main source commit; inspect the current source
-   and gh-pages heads. Never force-push historical output over newer live content.
-2. Owner functional acceptance and all 1,410 core/Chromium checks passed for the
-   unchanged Alpha 0.86 payload. A later changed playable candidate needs its
-   appropriate verification and phone checklist, not a recycled acceptance claim.
-3. On a supported authenticated GitHub client, dispatch a rehearsal with
-   publish_verified_build false. Verify the actual result/artifact. This connection
-   cannot dispatch it and no successful rehearsal is claimed here.
-4. Configure/verify PAGES_PUBLISH_TOKEN or an approved publishing identity once.
-   Keep it in repository/environment secrets, never chat/source/remotes. Required
-   reviewer settings depend on actual repository administration access.
-5. When publication is needed, dispatch the guarded workflow with the reviewed
-   source SHA, freshly read expected live SHA and publish_verified_build true.
-   Verify the actual subsequent Pages deployment and normal HTTPS URL.
-6. Check the deployed version, records/settings, orientations and offline behavior.
-   Identical Alpha 0.86 output causes no publication commit or new waiting update.
+## Routine release after setup
 
-The owner permits routine verified source merges without repeated approval.
-Required platform permissions, hosting credentials and game verification still
-apply. A merge or artifact alone is not evidence of a successful deployment.
+1. Choose the exact source commit after its actual tests/review and applicable
+   owner phone checks. Never label an untested phone flow accepted.
+2. Review/update the manifest's source_ref, expected_live_commit, expected_build
+   and expected_game_sha256. Use publish=false for a rehearsal if needed.
+3. After the one-time account setting, merge a reviewed publish=true release
+   request using the owner's standing authority. That source event triggers the
+   workflow, so no manual dispatch control or repeated owner action is required.
+4. Verify the deploy-pages result and the public build-info.json, required assets
+   and game link. Give the owner a short S21 Ultra / Brave checklist.
+5. Roll out the newer automatic-check shell only through its verified release;
+   do not mistake the initial old-build rehearsal for that update.
 
-The owner subsequently requested automatic updates from the normal game link.
-The hosted-only shell now registers/checks its own worker on launch and visible
-returns, with throttling and silent offline fallback. See AUTOMATIC_UPDATES.md.
-This authorized wrapper changes the hosted HTML/PWA build identity, while the
-standalone game and worker lifecycle remain unchanged. Publishing this candidate
-still needs the real hosting path and applicable device testing; earlier Alpha
-0.86 acceptance does not establish acceptance of the new automatic update flow.
+Once the new shell is actually received, the same game link/home-screen icon
+checks/downloads updates automatically. A ready version takes effect after all
+old game/setup windows close and the game reopens normally. It never reloads a
+run or changes saved records. See AUTOMATIC_UPDATES.md for first-migration limits
+and the new-flow phone checklist. No second player-facing update link is required.

@@ -11,7 +11,7 @@
     "check": "node scripts/check.cjs",
     "build": "node tools/build_game.cjs && node tools/build_pwa.cjs",
     "build:check": "node tools/build_game.cjs --check && node tools/build_pwa.cjs --check",
-    "test": "npm run test:game && npm run test:pwa && npm run test:server && npm run test:baseline",
+    "test": "npm run test:game && npm run test:pwa && npm run test:server && npm run test:baseline && npm run test:release",
     "test:game": "node --expose-gc --max-old-space-size=512 scripts/test-game.cjs",
     "test:pwa": "node tests/pwa.test.cjs && node tests/game-updates.test.cjs",
     "test:baseline": "node tests/restructure.test.cjs",
@@ -20,6 +20,7 @@
     "serve": "node scripts/serve.cjs",
     "package": "python3 tools/package_web_preview.py --output artifacts/release",
     "setup:browser": "npm install --no-save --package-lock=false --ignore-scripts playwright@1.62.1 && npx playwright install chromium",
-    "test:server": "node tests/server.test.cjs"
+    "test:server": "node tests/server.test.cjs",
+    "test:release": "node tests/pages-release.test.cjs && node tests/browser-state.test.cjs"
   }
 }

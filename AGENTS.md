@@ -60,10 +60,14 @@ filesystem permissions or make a cloud workspace permanent.
   approval flow or transfer generated 12 MB HTML through it.
   Finish reviewable local work, report limits, and use a normal authorized checkout
   or the delivered Git bundle. Repository instructions cannot bypass permissions.
-- CI builds/tests and saves artifacts; it does not automatically publish. The
-  separate publish-pages workflow is manual, requires reviewed commit identifiers
-  and PAGES_PUBLISH_TOKEN (Contents write) to trigger native branch-based Pages.
-  It preserves gh-pages history and existing CNAME/content; never use --delete.
+- Ordinary source CI never publishes. The Pages release workflow is driven by a
+  reviewed deployment/pages-release.json update on main, with publish=false for
+  rehearsal. It uses GitHub's built-in pages/id-token permissions, not a PAT.
+  GitHub Pages must first be configured for GitHub Actions by a repository admin;
+  this connection cannot change that account setting. Do not claim it is done.
+  Pin the source/build/game hash and preserved gh-pages SHA; retain CNAME and all
+  unrelated archived site content. Never delete the baseline or use --delete.
+  The old PAT/branch publisher is preserved under deployment/history and inactive.
 - Owner authorization, 2026-10-29: "yes you are allowed to merge automatically..
   i want you to be free to do what you need for this game without my constant input".
   Routine development, commits and automatic merges of verified changes are

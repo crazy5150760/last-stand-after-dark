@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "source_ref": "a415ecc891c366efcec05476399145c99f7cb4e3",
+  "expected_live_commit": "ac9580725c4b25bfe74c653f51b09603b1a519f5",
+  "expected_build": "7cf8f34890269ad6",
+  "expected_game_sha256": "e7f98eefc50112f0a975f8ce869524d6223e291d9f67336f5ad08f1ad1bda92f",
+  "publish": false
+}

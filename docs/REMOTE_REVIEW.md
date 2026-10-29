@@ -51,3 +51,27 @@ No manual Pages rehearsal or publishing run was dispatched in this session;
 the connected tools do not expose workflow dispatch. The existing Pages source,
 URL and custom domain remain unchanged. The publishing identity is unverified;
 no credential was created/read. See DEPLOYMENT.md for the concrete remaining setup.
+
+## Current publication preparation
+
+PR #8 merged automatic game-link checks after run 40958278633 passed 1,429 tests
+and real Chromium migration. The later main run 40959559006 failed in the migration
+fixture while re-reading a worker slot. The release preparation branch now retains
+the observed waiting-worker object and verifies its installed state throughout
+the paused run, instead of re-reading a changing registration proxy. Do not claim
+that correction passed until its actual CI gate is observed. Production code and
+worker activation rules are unchanged by this test correction.
+
+The preferred release path is now official Pages actions driven by a reviewed
+release request; the old token-based branch workflow is archived. The first
+rehearsal is non-publishing and uses the accepted original game. No personal token
+is needed. The remaining account operation is Pages Source -> GitHub Actions; no
+connected tool exposes that setting. See DEPLOYMENT.md before any switch/release.
+
+The first attempted fixture correction still failed (run 40964649334). Inspection
+of the pinned Playwright poller showed that an async predicate's Promise is tested
+for truthiness before its resolved boolean. The corrected fixture now awaits each
+browser evaluation explicitly via tests/lib/browser-state.cjs. Three focused
+regressions prove false/null cannot pass, timeouts fail and exceptions are not
+swallowed. Earlier registration-proxy timing explanations were provisional and
+are superseded by this verified polling cause. No production code changed.
