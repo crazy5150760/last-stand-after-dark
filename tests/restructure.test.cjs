@@ -32,8 +32,11 @@ test('moved artwork and historical documents retain original file hashes',()=>{
 test('build rejects missing and escaping module paths',()=>{
  const {resolve}=require('../scripts/lib/project.cjs');assert.throws(()=>resolve('../outside'),/escapes/);assert.throws(()=>read('src/does-not-exist.js'),/ENOENT/);
 });
-test('production preserves the exact previously published PWA build identity',()=>{
- const info=json('web-dist/build-info.json');assert.equal(info.build,json('legacy/alpha-0.86/preservation.json').webBuild);
+test('hosted update shell is the only authorized change around the preserved game',()=>{
+ const original=read('legacy/alpha-0.86/index.html').toString();
+ const expected=original.replace('</head>','<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png"><meta name="application-name" content="Last Stand: After Dark"></head>').replace('</body>','<script id="lsad-auto-updates">'+read('pwa/game-updates.js')+'</script></body>');
+ assert.equal(read('web-dist/index.html').toString(),expected);
+ const info=json('web-dist/build-info.json');assert.notEqual(info.build,json('legacy/alpha-0.86/preservation.json').webBuild);
  assert.equal(info.standaloneSha256,hash(read('legacy/alpha-0.86/index.html')));
  for(const asset of info.cacheAssets){const file=asset.key==='install/'?'install/index.html':asset.key;assert.equal(hash(read('web-dist/'+file)),asset.sha256,file);assert.ok(new URL(asset.url,'https://example.test/last-stand-after-dark/').pathname.startsWith('/last-stand-after-dark/'));}
 });

@@ -1,5 +1,11 @@
 # Restructuring validation — 2026-10-29
 
+This table records the completed, byte-preserving infrastructure baseline. The
+later owner-authorized automatic-update shell changes the hosted HTML/PWA build,
+while retaining the exact standalone/gameplay. See AUTOMATIC_UPDATES.md and PR #8
+for that separate candidate's tests and publication status; do not apply the old
+all-production-byte-identity claim to the new hosted wrapper.
+
 The locally restructured project is validated for review, not declared a completed
 browser/Android release. No gameplay change, new version or live replacement was
 performed. The source is merged into main through PR #6; successful remote browser-step

@@ -80,3 +80,8 @@ hosting/environment limits. Direct shell Git still cannot reach this workspace's
 required proxy; small source transfers through the connected GitHub app and
 Actions checkout/build/browser verification work. No complete game HTML/artwork
 was re-uploaded for the restructuring.
+
+Automatic game-link updates are implemented in the hosted-only PWA shell; see
+docs/AUTOMATIC_UPDATES.md for behavior, validation and publication status. This
+changes the web build identity while preserving the Alpha 0.86 standalone and all
+gameplay. It does not imply the new shell has been deployed to the public game.

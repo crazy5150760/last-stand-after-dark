@@ -84,3 +84,11 @@ No publishing identity or live deployment is established by those gates.
 The owner permits routine verified source merges without repeated approval.
 Required platform permissions, hosting credentials and game verification still
 apply. A merge or artifact alone is not evidence of a successful deployment.
+
+The owner subsequently requested automatic updates from the normal game link.
+The hosted-only shell now registers/checks its own worker on launch and visible
+returns, with throttling and silent offline fallback. See AUTOMATIC_UPDATES.md.
+This authorized wrapper changes the hosted HTML/PWA build identity, while the
+standalone game and worker lifecycle remain unchanged. Publishing this candidate
+still needs the real hosting path and applicable device testing; earlier Alpha
+0.86 acceptance does not establish acceptance of the new automatic update flow.

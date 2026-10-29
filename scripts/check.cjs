@@ -6,7 +6,7 @@ const manifest = json('src/modules.json');
 const walk = dir => fs.readdirSync(path.join(root,dir),{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(dir+'/'+e.name):[dir+'/'+e.name]);
 const sourceFiles = walk('src').filter(file=>file.endsWith('.js'));
 assert.deepEqual(sourceFiles.sort(),[...manifest.files].sort(),'Every source module must be in the ordered manifest');
-for(const file of [...sourceFiles,...walk('scripts').filter(f=>f.endsWith('.cjs')),...walk('tools').filter(f=>f.endsWith('.cjs')),...walk('tests').filter(f=>f.endsWith('.cjs')),'pwa/install.js']){
+for(const file of [...sourceFiles,...walk('scripts').filter(f=>f.endsWith('.cjs')),...walk('tools').filter(f=>f.endsWith('.cjs')),...walk('tests').filter(f=>f.endsWith('.cjs')),'pwa/install.js','pwa/game-updates.js']){
  const text=read(file).toString();new vm.Script(text,{filename:file});
  const tree=acorn().parse(text,{ecmaVersion:'latest',sourceType:'script'}),localRequire=createRequire(path.join(root,file));
  function visit(node){

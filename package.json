@@ -13,7 +13,7 @@
     "build:check": "node tools/build_game.cjs --check && node tools/build_pwa.cjs --check",
     "test": "npm run test:game && npm run test:pwa && npm run test:server && npm run test:baseline",
     "test:game": "node --expose-gc --max-old-space-size=512 scripts/test-game.cjs",
-    "test:pwa": "node tests/pwa.test.cjs",
+    "test:pwa": "node tests/pwa.test.cjs && node tests/game-updates.test.cjs",
     "test:baseline": "node tests/restructure.test.cjs",
     "test:browser": "node tests/browser-smoke.cjs",
     "validate": "npm run check && npm run build && npm test && npm run build:check",
