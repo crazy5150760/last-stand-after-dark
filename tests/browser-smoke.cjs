@@ -15,7 +15,7 @@ const {root,json}=require('../scripts/lib/project.cjs');
   const base='http://127.0.0.1:'+server.address().port+'/last-stand-after-dark/';
   for(const [width,height]of [[412,915],[915,412]]){
    // Disposable storage: never point this fixture at the owner's installed profile.
-   const context=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:true,deviceScaleFactor:1.75});
+   const context=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:true,deviceScaleFactor:1.75,serviceWorkers:'allow'});
    const page=await context.newPage(),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
    page.on('requestfailed',r=>errors.push(r.url()+': '+r.failure()?.errorText));
@@ -72,14 +72,19 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const expected=json('web-dist/build-info.json').build;
    await setupPage.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
    const controlledPage=await context.newPage();
+   const offlineCdp=await context.newCDPSession(controlledPage);
+   await offlineCdp.send('Network.enable');
+   await offlineCdp.send('Network.setBypassServiceWorker',{bypass:false});
+   await offlineCdp.send('ServiceWorker.enable');
+   const workerVersions=[];offlineCdp.on('ServiceWorker.workerVersionUpdated',event=>workerVersions.push(...event.versions));
    const response=await controlledPage.goto(base,{waitUntil:'networkidle'});
    const state=await controlledPage.evaluate(async()=>({
-    url:location.href,controller:navigator.serviceWorker.controller?.scriptURL||null,
+    url:location.href,origin:location.origin,secure:isSecureContext,controller:navigator.serviceWorker.controller?.scriptURL||null,
     controllerState:navigator.serviceWorker.controller?.state||null,
     registrations:(await navigator.serviceWorker.getRegistrations()).map(r=>({scope:r.scope,active:r.active?.scriptURL,state:r.active?.state})),
     caches:await caches.keys()
    }));
-   console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state}));
+   console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state,workerVersions}));
    await controlledPage.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
    await context.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
    const coldPage=await context.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
