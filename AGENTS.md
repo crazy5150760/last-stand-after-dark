@@ -7,8 +7,10 @@ filesystem permissions or make a cloud workspace permanent.
 
 ## Protect the working game
 
-- Infrastructure task: preserve Alpha 0.86 gameplay, art, audio, timing, saves and
-  performance characteristics. No engine migration, rebalancing or new features.
+- Preserve Alpha 0.86 gameplay, art, audio, timing and saves. The owner has now
+  requested automatic updates through the normal game link. This authorizes the
+  hosted-only PWA update shell and its tests/docs, not gameplay redesign or an
+  engine migration. Standalone/core game bytes and immutable legacy stay exact.
 - Work on a dedicated branch and integrate verified changes through reviewed PRs.
   Keep gh-pages, the original root Alpha 0.82 HTML and legacy/alpha-0.86 protected.
   Never force-push or delete working builds. A source merge does not deploy a game.
@@ -39,7 +41,9 @@ filesystem permissions or make a cloud workspace permanent.
 - Run bash scripts/setup.sh; npm test; npm run build:check. Browser-capable hosts
   also run npm run setup:browser and npm run test:browser. See the real limits in
   docs/VALIDATION.md. Do not present mock Canvas tests as browser/device tests.
-- Frozen baseline tests deliberately reject game/art changes in this refactor.
+- Baseline tests still reject game/art changes. The authorized hosted update shell
+  is checked as an exact, explicit wrapper around the preserved standalone; its
+  PWA build ID is expected to change. Never refresh legacy hashes to hide changes.
   For a later authorized feature release, retain immutable legacy fixtures and
   replace the exact-current-byte gate with explicit tests of the approved change;
   do not casually refresh the baseline hashes to make failures disappear.

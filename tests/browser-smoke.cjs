@@ -8,10 +8,16 @@ const {root,json}=require('../scripts/lib/project.cjs');
 (async()=>{
  let browser,server;
  const output=path.join(root,'test-results');fs.mkdirSync(output,{recursive:true});
- const results=[];
+ const results=[];let automaticUpdates;
  try{
   browser=await chromium.launch({headless:true,channel:'chromium',...(process.env.LS_CHROMIUM?{executablePath:process.env.LS_CHROMIUM}:{})});
-  server=createServer();await new Promise((ok,fail)=>{server.once('error',fail);server.listen(0,'127.0.0.1',ok)});
+  let updateWorker=null;
+  const handler=createServer().listeners('request')[0];
+  server=http.createServer((req,res)=>{
+   if(updateWorker&&req.url==='/last-stand-after-dark/sw.js')res.writeHead(200,{'Content-Type':'text/javascript','Cache-Control':'no-store'}).end(updateWorker);
+   else handler(req,res);
+  });
+  await new Promise((ok,fail)=>{server.once('error',fail);server.listen(0,'127.0.0.1',ok)});
   const base='http://127.0.0.1:'+server.address().port+'/last-stand-after-dark/';
   // Independent control experiment: the default worker lifecycle must attach
   // a worker to a new page without claim/skipWaiting before testing game offline.
@@ -124,7 +130,46 @@ const {root,json}=require('../scripts/lib/project.cjs');
    const coldPage=await offlineContext.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
    results.at(-1).offlineReload=true;results.at(-1).offlineLaunch=true;results.at(-1).offlineBrowserMode='standard Chromium, separate from mobile emulation';await offlineContext.close();await context.close();
   }
-  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,limits:'Synthetic mobile Chromium touch plus separate standard Chromium offline integration; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
-  console.log(JSON.stringify({browser:'Chromium',viewports:results.length,results}));
+  // Two real worker versions, installed and updated through the game URL alone.
+  const context=await browser.newContext({serviceWorkers:'allow'});
+  try{
+   const current=json('web-dist/build-info.json').build,older='1111111111111111';assert.notEqual(current,older);
+   updateWorker=fs.readFileSync(path.join(root,'web-dist/sw.js'),'utf8').replace('"build":"'+current+'"','"build":"'+older+'"');
+   const first=await context.newPage();await first.goto(base,{waitUntil:'networkidle'});
+   await first.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.active?.state==='activated'},{},{timeout:90000});
+   await first.close();
+   const game=await context.newPage();await game.goto(base,{waitUntil:'networkidle'});
+   if(!await game.evaluate(()=>!!navigator.serviceWorker.controller))await game.reload({waitUntil:'networkidle'});
+   await game.locator('#start').click();await game.locator('#deploy').click();await game.waitForTimeout(300);await game.locator('#pause').click();
+   const clock=await game.locator('#time').textContent();
+   const saved=await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort()));
+   let navigations=0;game.on('framenavigated',frame=>{if(frame===game.mainFrame())navigations++});
+   updateWorker=null;
+   // Only Date advances; native timers/RAF and the paused gameplay remain real.
+   await game.clock.setFixedTime(Date.now()+16*60*1000);
+   await game.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
+   await game.waitForFunction(async()=>{const r=await navigator.serviceWorker.getRegistration();return r?.waiting?.state==='installed'},undefined,{timeout:90000});
+   const workerBuild=(page,slot)=>page.evaluate(async slot=>{
+    const worker=(await navigator.serviceWorker.getRegistration())[slot];
+    return new Promise((resolve,reject)=>{const c=new MessageChannel();const timer=setTimeout(()=>reject(Error('Worker status timeout')),8000);c.port1.onmessage=e=>{clearTimeout(timer);c.port1.close();c.port2.close();resolve(e.data)};worker.postMessage({type:'LSAD_STATUS'},[c.port2])});
+   },slot);
+   assert.equal((await workerBuild(game,'active')).build,older);
+   const waiting=await workerBuild(game,'waiting');assert.equal(waiting.build,current);assert.equal(waiting.ready,true);
+   assert.equal(navigations,0,'automatic download must not reload an open run');
+   assert.equal(await game.locator('#time').textContent(),clock);await game.locator('#resume').waitFor();
+   assert.equal(await game.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort())),saved,'records unchanged during update');
+   let nextWorker;
+   for(const w of context.serviceWorkers())try{if(await w.evaluate(()=>CONFIG.build)===current)nextWorker=w}catch{}
+   assert.ok(nextWorker,'new real worker is present');
+   await game.close();
+   await nextWorker.evaluate(async()=>{for(let i=0;i<150;i++){if(!self.registration.waiting&&self.registration.active?.state==='activated')return;await new Promise(ok=>setTimeout(ok,100))}throw Error('Worker did not activate after natural client closure')});
+   await context.setOffline(true);
+   const reopened=await context.newPage();await reopened.goto(base,{waitUntil:'load'});await reopened.locator('#start').waitFor();
+   const active=await workerBuild(reopened,'active');assert.equal(active.build,current);assert.equal(active.ready,true);
+   assert.equal(await reopened.evaluate(()=>JSON.stringify(Object.entries(localStorage).sort())),saved);
+   automaticUpdates={gameUrlOnly:true,downloadedWithoutSetupPage:true,openRunNotReloaded:true,recordsUnchanged:true,activatedAfterNaturalClose:true,reopenedOffline:true};
+  }finally{updateWorker=null;await context.close()}
+  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,automaticUpdates,limits:'Synthetic mobile Chromium touch plus separate standard Chromium offline/update integration; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
+  console.log(JSON.stringify({browser:'Chromium',viewports:results.length,results,automaticUpdates}));
  }catch(error){fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'failed',results,error:error.message},null,2)+'\n');throw error;}finally{if(browser)await browser.close();if(server)await new Promise(ok=>server.close(ok));}
 })().catch(error=>{console.error(error);process.exitCode=1});
