@@ -98,13 +98,16 @@ authentication are available, the intended push is:
 git push -u origin refactor/modular-development
 ```
 
-The remote development branch and draft PR #6 now exist. Inspect the current
+The remote development branch and PR #6 now exist. Inspect the current
 remote head before pushing; never force-push over intervening work. The local
 tracking branch was aligned to the exact remote commit using SHA-verified public
 commit metadata because the proxy prevents a normal fetch. Ordinary Git network
-and CLI authentication are still unverified here. Review this work against
-alpha-0.86-health-feedback (the latest source branch), not the outdated main
-snapshot. Reconcile the existing source PR chain separately before a main merge.
+and CLI authentication are still unverified here. For the focused restructuring
+diff, compare alpha-0.86-health-feedback with the development branch. PR #6 now
+targets main for complete integration review: main is an older imported snapshot,
+and the development ancestry includes all five historical source releases. Owner
+phone acceptance is recorded in docs/PHONE_ACCEPTANCE.md. No main merge has been
+performed; final integration checks and review remain required.
 See docs/REMOTE_REVIEW.md and docs/REVIEW.md for actual review/CI evidence.
 docs/INTEGRATION.md records the checked source ancestry, proposed main review
 and verification-only Pages rehearsal; none of those steps publishes implicitly.

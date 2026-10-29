@@ -110,7 +110,7 @@
     "note": "Initial fixture failures retained in CI history. Latest full gate is observed separately; this records already completed step evidence."
   },
   "newDeploy": "not performed",
-  "physicalPhone": "pending",
+  "physicalPhone": "owner-reported functional pass on S21 Ultra / Brave; see ../PHONE_ACCEPTANCE.md; no instrumented performance claim",
   "gameplayEquivalentEvidence": "Exact readable source, standalone and all 11 production files; native behavior suites and seeded probe equality. No device FPS or browser acceptance inferred.",
   "publisherCopyFixture": {
     "status": "passed",
@@ -165,5 +165,11 @@
     ],
     "setup": "Wait fully activated/ready, use normal online reload before offline if uncontrolled; no claim/skipWaiting/unregister",
     "physicalAndroid": "not tested"
+  },
+  "phoneAcceptanceFile": "docs/validation/phone-acceptance.json",
+  "integrationReview": {
+    "pr": 6,
+    "base": "main",
+    "status": "pending final main-targeted CI/review; no merge performed"
   }
 }

@@ -33,3 +33,7 @@ The root repository index.html is a template; it is not the file to open directl
 Actual phone results, natural balance, high-refresh/thermal performance, audio
 perception, storage durability and Android operating-system events remain owner
 test gates. No checkbox is pre-marked based on mock/byte-comparison evidence.
+
+The owner reported a passing Alpha 0.86 phone test after receiving this checklist.
+See PHONE_ACCEPTANCE.md for the exact report. These unmarked template checkboxes
+remain reusable for future builds; they do not supersede the recorded acceptance.

@@ -1,8 +1,8 @@
 # Remote restructuring review — 2026-10-29
 
-Draft PR: https://github.com/crazy5150760/last-stand-after-dark/pull/6
+Integration PR: https://github.com/crazy5150760/last-stand-after-dark/pull/6
 Branch: refactor/modular-development
-Base: alpha-0.86-health-feedback
+Base: main (retargeted after owner phone acceptance; originally Alpha 0.86)
 Latest checks: https://github.com/crazy5150760/last-stand-after-dark/pull/6/checks
 
 The development source is confirmed on GitHub. Its initial tree
@@ -13,6 +13,10 @@ only test/CI/documentation text. No complete game HTML or artwork was re-uploade
 
 ## Verified remote evidence
 
+- Runs 40949339693 (push) and 40949350128 (PR) both succeeded on
+  d8ee87bad0fad5b639573777cec9a3f2480a64a8: 1,410 core tests, zero failures/skips,
+  builds/package verification and the Chromium mobile/media/offline checks below.
+  These ran before the main-targeted integration; its latest checks are separate.
 - Final source-head runs 40940466132 (push) and 40940480987 (PR) both completed
   successfully on 248547a100a3c6873fb5d40bde95de054b296348. Each passed all
   1,410 core cases and the real Chromium checks described below. Both conclusions
@@ -49,8 +53,8 @@ The final gate repeats browser and full core tests on the review head.
 All production game/PWA files retain Alpha 0.86 bytes and build ID
 7cf8f34890269ad6. Main, alpha-0.86-health-feedback, gh-pages, the existing domain,
 original Site and protected releases are unchanged. No game update or replacement
-preview was deployed. The PR remains draft for owner phone acceptance and review
-of the older source PR chain before any main merge.
+preview was deployed. Owner phone acceptance is now recorded in PHONE_ACCEPTANCE.md.
+The remaining source gate is the main-targeted integration check/review.
 
 ## Environment boundary
 
@@ -68,11 +72,20 @@ needed for the already-authorized source work or approved public game/source.
 
 ## Continuation preparation
 
-The current remote PR discussion/reviews contained no owner phone acceptance.
-The five earlier source PRs are still drafts; their commit parents were checked
+Before the latest owner reply, the remote PR discussion/reviews contained no
+phone acceptance. The owner has now reported passing tests in this conversation;
+PHONE_ACCEPTANCE.md records the exact statement and its limits. The five earlier
+source PRs are still drafts; their commit parents were checked
 and form the complete main-to-Alpha-0.86 chain. Main's original two blobs are
 preserved in the source tree (the README under docs/history). See INTEGRATION.md
 for the concrete default-branch review order and one-time publishing setup.
+
+GitHub's main-to-development comparison on d8ee87b showed 15 commits ahead,
+zero behind and main itself as the merge base. Its file list contains additions
+and only the new root README as a modification; no original main file is removed.
+The original README blob is retained under docs/history and the Alpha 0.82 HTML
+is unchanged. PR #6 was retargeted to main without rewriting source history or
+changing main/live. The final main-targeted CI must pass before merge review.
 
 The manual publisher now supports a verification-only rehearsal when its publish
 input is false, instead of skipping all work. It checks/builds/tests and saves

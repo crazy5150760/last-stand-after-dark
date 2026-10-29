@@ -2,7 +2,7 @@
 
 The locally restructured project is validated for review, not declared a completed
 browser/Android release. No gameplay change, new version or live replacement was
-performed. The source is now on GitHub in draft PR #6; successful remote browser-step
+performed. The source is now on GitHub in integration PR #6; successful remote browser-step
 evidence and final pipeline checks are tracked in REMOTE_REVIEW.md. Machine-readable evidence is in validation/results.json; full raw logs
 and probe outputs are retained in the separate validation artifact bundle.
 
@@ -23,7 +23,7 @@ and probe outputs are retained in the separate validation artifact bundle.
 | npm offline core lock/setup | n/a | npm ci --ignore-scripts --offline passed |
 | Clean source archive extraction | n/a | CRC, setup, build, 42 fast tests and stale checks passed |
 | Local Git object connectivity | n/a | Passed |
-| Chromium / real browser / phone | Blocked locally | Remote mobile portrait/landscape touch/media and separate offline tests passed; phone pending |
+| Chromium / real browser / phone | Blocked locally | Remote mobile portrait/landscape touch/media and separate offline tests passed; owner phone test reported passing |
 | Local HTTP socket listen | Not available here | EPERM, not passed |
 | New remote CI / normal Git push / deployment | Existing Alpha 0.86 CI/deploy succeeded | Core and browser-step evidence passed; latest full gate in PR checks; shell Git blocked; no deployment |
 
@@ -74,8 +74,9 @@ not permitted. Playwright using the installed Chromium reproduced that failure.
 The local server also failed to bind 127.0.0.1:8000 with listen EPERM. No network
 permission workaround or sandbox bypass was used to make those checks appear to
 pass. No browser screenshot was produced locally. Remote Chromium now produces
-screenshots/evidence through CI. Physical touch, Android frame rate/GPU/memory/
-heat, audio perception, OS lifecycle, storage durability and APK remain unverified.
+screenshots/evidence through CI. Owner-reported functional phone acceptance is recorded in PHONE_ACCEPTANCE.md.
+Instrumented Android frame rate/GPU/memory/heat, storage durability and APK
+behavior remain unverified; the owner report is not a measured performance result.
 
 The real-browser test now runs on GitHub Actions and checks initialization/loading errors,
 portrait/landscape width, multi-touch joystick with second-finger Pause, frozen
@@ -87,16 +88,20 @@ online reload before cutting network access; no worker force-activation or claim
 was added. Early failed fixture runs remain in CI history. See REMOTE_REVIEW.md
 and the latest PR checks for exact evidence and the complete review-head gate.
 
-## Remaining gates
+## Acceptance and remaining gates
 
-1. The source/dev branch and draft PR #6 are confirmed. Normal shell Git still
-   needs working proxy access/authentication in a repository-based environment.
-2. Review the latest complete PR gate, including the now-successful browser
-   fixture. Retain draft status for remaining device/default-branch review gates.
-3. Complete docs/MANUAL_TEST.md on S21 Ultra / Brave against the candidate bytes.
-4. Review the source PR chain/default-branch setup and publishing identity. Only
-   then publish a changed candidate, retaining the current live game and domain.
+The owner has explicitly reported that the Alpha 0.86 checklist test works well
+on the established S21 Ultra / Brave setup. See PHONE_ACCEPTANCE.md for the exact
+statement and scope. This satisfies the preservation task's owner functional
+acceptance gate, without inventing individual observations or measured FPS.
 
-The owner previously phone-accepted Alpha 0.85. Alpha 0.86 is the latest published
-and previously CI-verified release, not a separately recorded phone acceptance.
-No pending checklist item is silently promoted to a passed result.
+1. PR #6 now targets main. Require its final complete integration CI and review
+   of the broader source-history diff before merging. Do not merge automatically.
+2. Normal shell Git still needs working proxy/authentication in a repository-based
+   environment; local edits/commits and the GitHub app/Actions fallback work.
+3. Default-branch integration and the publishing identity are still required for
+   the manual Pages rehearsal/publisher. No live replacement is performed here.
+
+The immutable legacy provenance records the earlier Alpha 0.85 acceptance because
+that was the last known result when the snapshot was protected. It is retained
+unchanged; the later Alpha 0.86 owner report is recorded separately.

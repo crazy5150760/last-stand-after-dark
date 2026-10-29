@@ -49,18 +49,19 @@ casually or activate two publishing paths.
 ## What has and has not changed
 
 No new deployment was performed. Existing source/main/live branches and domain
-settings were not overwritten. The remote dev branch/source and draft PR #6 are confirmed; direct shell Git remains unavailable.
+settings were not overwritten. The remote dev branch/source and PR #6 are confirmed; direct shell Git remains unavailable.
 The local production build is byte-identical to the current Alpha 0.86 and has
 the same PWA build ID. This is intentionally not Alpha 0.87 or a waiting update.
 
 For this preservation release, the existing HTTPS game is the same playable
 payload; it is not a newly deployed preview proving this new CI configuration.
-Until browser-capable CI and phone acceptance pass, keep the draft unmerged and
-use the downloadable validated package or normal local server for review.
+Browser CI has passed and owner phone acceptance is recorded in PHONE_ACCEPTANCE.md.
+Keep the PR unmerged until its main-targeted integration checks and review are
+complete. No publishing identity or live deployment is established by those gates.
 
 ## Review and publication checklist
 
-1. The dev source and draft PR #6 are uploaded. Future pushes should use normal
+1. The dev source and PR #6 are uploaded. Future pushes should use normal
    authorized Git when the workspace proxy/authentication is working; never force.
 2. Review PR #6 against alpha-0.86-health-feedback and its new full CI,
    including Chromium. Resolve every failure before promotion.

@@ -1,15 +1,16 @@
 # Default-branch integration and Pages rehearsal
 
-This is a preparation plan, not authorization to merge or publish. On
-2026-10-29, PR #6 was open, draft and mergeable against Alpha 0.86. Its final
-source-head push and PR runs both passed. There were no conversation comments or
-review submissions recording owner phone acceptance. The continuation request
-does not supply that acceptance.
+This is an integration review plan, not authorization to merge automatically or
+publish. The owner has now reported passing the phone checks; PHONE_ACCEPTANCE.md
+records the exact statement. PR #6 was retargeted from Alpha 0.86 to main. Its
+previous source-head push and PR runs both passed; the final main-targeted checks
+and review remain required before merging.
 
 ## Verified source ancestry
 
 GitHub commit metadata confirms that each release below directly parents the
-next release. All six PRs are still open drafts; no source merge was performed.
+next release. The five historical PRs remain open drafts; no source merge was
+performed. PR #6's current review state/checks are authoritative on GitHub.
 
 | PR | Source branch | Exact head | Current base |
 |---|---|---|---|
@@ -18,7 +19,7 @@ next release. All six PRs are still open drafts; no source merge was performed.
 | #3 | alpha-0.84-update-status | 35cbcbcfad6e0e8d26a295e4470e49ef0db3b61d | alpha-0.83-update-check |
 | #4 | alpha-0.85-upgrade-clarity | 7dbaf94e3823449e585e3b09bd9ac5abd86387ff | alpha-0.84-update-status |
 | #5 | alpha-0.86-health-feedback | eedabcf9ac85951671e9e0c20f0b7794ce6fc4c9 | alpha-0.85-upgrade-clarity |
-| #6 | refactor/modular-development | See the current PR head | alpha-0.86-health-feedback |
+| #6 | refactor/modular-development | See the current PR head | main |
 
 Main is still 0478a42c73c1ff63b6b86d49b71b11cacd3c4ca1. Its complete two-file tree
 was inspected: the original Alpha 0.82 HTML is retained at its original path;
@@ -34,23 +35,24 @@ the restructuring head into main can therefore include the complete source
 history; merging each historical draft separately is unnecessary. Before doing
 so:
 
-1. Record the owner's Alpha 0.86 S21 Ultra / Brave result using MANUAL_TEST.md.
-   Do not turn an unspecified "continue" into acceptance.
+1. Owner Alpha 0.86 S21 Ultra / Brave acceptance is recorded in PHONE_ACCEPTANCE.md.
+   It followed the checklist and is not inferred from an unspecified continuation.
 2. Review PR #6's focused restructuring diff and the historical PR descriptions.
    Confirm no unexpected source changes, failed checks or unresolved review.
 3. Re-read main, development, baseline and gh-pages heads. If any moved, compare
    the intervening changes before proceeding; never force a branch back.
-4. Prepare a main-targeted integration review (retarget #6 or create a linked
-   integration PR). Inspect its broader diff, verify original files and Site
-   identity, and run CI on that new merge candidate. Current mergeability against
-   Alpha 0.86 is not proof of mergeability against a future main.
+4. PR #6 now provides the main-targeted integration review. GitHub's comparison
+   confirmed main is the merge base, zero commits behind, and no removed original
+   main files. Review the broader diff, original files and Site identity, then
+   require CI on this actual main merge candidate. Re-read all heads at merge time.
 5. Merge only after the required acceptance and review gates are met. Prefer a
    normal merge retaining source ancestry. Do not delete release/baseline
    branches. Close superseded historical PRs only after confirming their work
    and history are present in main.
 
-No retargeting, main merge, branch deletion or automatic closure is included in
-this preparation. An actual main merge and its resulting tree are not tested yet.
+Retargeting only changed the PR base. No main merge, branch deletion or automatic
+closure was performed. A completed main merge is not claimed; consult PR checks
+for the final integration candidate's actual test results.
 
 ## Rehearse publication without publishing
 

@@ -67,10 +67,12 @@ docs/VALIDATION.md for evidence/limits, docs/DEPLOYMENT.md for Pages, and
 docs/ANDROID.md for future APK preparation. AGENTS.md carries persistent Codex
 instructions. Prior documentation is preserved under docs/history/.
 
-Development review: [draft PR #6](https://github.com/crazy5150760/last-stand-after-dark/pull/6)
+Development review: [PR #6](https://github.com/crazy5150760/last-stand-after-dark/pull/6)
 on `refactor/modular-development`. The remote source tree was verified against
 the local restructuring commit. See docs/REMOTE_REVIEW.md for current CI evidence
-and remaining device/environment gates. Main and the live game remain unchanged.
+and remaining integration/environment gates. The owner reported passing S21
+Ultra / Brave testing; see docs/PHONE_ACCEPTANCE.md. PR #6 now targets main for
+integration review. Main and the live game remain unchanged pending that review.
 Direct shell Git still cannot reach this workspace's required proxy; the initial
 source transfer used one batched tree request with about 668 KB of changed text
 and reused existing artwork/release blobs. No complete game HTML was re-uploaded.
