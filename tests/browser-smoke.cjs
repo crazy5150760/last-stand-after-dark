@@ -23,14 +23,18 @@ const {root,json}=require('../scripts/lib/project.cjs');
   try{
    await new Promise((ok,fail)=>{probe.once('error',fail);probe.listen(0,'127.0.0.1',ok)});
    const url='http://127.0.0.1:'+probe.address().port+'/';
-   probeContext=await browser.newContext({serviceWorkers:'allow'});
-   const installer=await probeContext.newPage();await installer.goto(url);
-   await installer.evaluate(async()=>{await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready});
-   await installer.waitForFunction(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
-   const client=await probeContext.newPage();const response=await client.goto(url);
-   const controlled=await client.evaluate(()=>!!navigator.serviceWorker.controller);
-   console.log(JSON.stringify({phase:'independent-worker-probe',controlled,fromServiceWorker:response.fromServiceWorker()}));
-   assert.ok(controlled&&response.fromServiceWorker(),'Independent worker control failed in this browser runner; not a game-code result');
+   const modes=[['desktop',{}],['mobile-emulation',{viewport:{width:412,height:915},hasTouch:true,isMobile:true,deviceScaleFactor:1.75}],['touch-viewport',{viewport:{width:412,height:915},hasTouch:true,isMobile:false,deviceScaleFactor:1.75}]];
+   for(const [mode,options]of modes){
+    probeContext=await browser.newContext({...options,serviceWorkers:'allow'});
+    const installer=await probeContext.newPage();await installer.goto(url);
+    await installer.evaluate(async()=>{await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready});
+    await installer.waitForFunction(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
+    const client=await probeContext.newPage();const response=await client.goto(url);
+    const controlled=await client.evaluate(()=>!!navigator.serviceWorker.controller);
+    console.log(JSON.stringify({phase:'independent-worker-probe',mode,controlled,fromServiceWorker:response.fromServiceWorker()}));
+    if(mode==='desktop')assert.ok(controlled&&response.fromServiceWorker(),'Independent worker control failed in this browser runner; not a game-code result');
+    await probeContext.close();probeContext=null;
+   }
   }finally{if(probeContext)await probeContext.close();await new Promise(ok=>probe.close(ok));}
   for(const [width,height]of [[412,915],[915,412]]){
    // Disposable storage: never point this fixture at the owner's installed profile.
@@ -81,7 +85,10 @@ const {root,json}=require('../scripts/lib/project.cjs');
    results.push({width,height,launch:true,touchJoystickAndPause:true,pauseClockFrozen:true,settingsReturn:true,media,errors});
    fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'running',results},null,2)+'\n');
    // Use fresh tabs: keep the gameplay History/Back drill out of installer setup.
-   const setupPage=await context.newPage();
+   // Worker integration uses a standard engine context. Mobile touch/layout
+   // above remains a separate assertion; Android offline still needs the phone.
+   const offlineContext=await browser.newContext({viewport:{width,height},serviceWorkers:'allow'});
+   const setupPage=await offlineContext.newPage();
    await setupPage.goto(base+'install/',{waitUntil:'networkidle'});
    await setupPage.locator('#prepare').click();
    await setupPage.waitForFunction(async()=>{
@@ -90,8 +97,8 @@ const {root,json}=require('../scripts/lib/project.cjs');
    },undefined,{timeout:90000});
    const expected=json('web-dist/build-info.json').build;
    await setupPage.waitForFunction(async build=>(await caches.keys()).some(k=>k.includes(build)),expected,{timeout:90000});
-   const controlledPage=await context.newPage();
-   const offlineCdp=await context.newCDPSession(controlledPage);
+   const controlledPage=await offlineContext.newPage();
+   const offlineCdp=await offlineContext.newCDPSession(controlledPage);
    await offlineCdp.send('Network.enable');
    await offlineCdp.send('Network.setBypassServiceWorker',{bypass:false});
    await offlineCdp.send('ServiceWorker.enable');
@@ -105,11 +112,11 @@ const {root,json}=require('../scripts/lib/project.cjs');
    }));
    console.log(JSON.stringify({phase:'before-offline',width,height,fromServiceWorker:response.fromServiceWorker(),state,workerVersions}));
    await controlledPage.waitForFunction(()=>navigator.serviceWorker.controller?.state==='activated');
-   await context.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
-   const coldPage=await context.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
-   results.at(-1).offlineReload=true;results.at(-1).offlineLaunch=true;await context.close();
+   await offlineContext.setOffline(true);await controlledPage.reload({waitUntil:'load'});await controlledPage.locator('#start').waitFor();
+   const coldPage=await offlineContext.newPage();await coldPage.goto(base,{waitUntil:'load'});await coldPage.locator('#start').waitFor();
+   results.at(-1).offlineReload=true;results.at(-1).offlineLaunch=true;results.at(-1).offlineBrowserMode='standard Chromium, separate from mobile emulation';await offlineContext.close();await context.close();
   }
-  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,limits:'Synthetic Chromium touch; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
+  fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'passed',results,limits:'Synthetic mobile Chromium touch plus separate standard Chromium offline integration; no physical Android FPS, heat, battery, controller or APK claim.'},null,2)+'\n');
   console.log(JSON.stringify({browser:'Chromium',viewports:results.length,results}));
  }catch(error){fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'failed',results,error:error.message},null,2)+'\n');throw error;}finally{if(browser)await browser.close();if(server)await new Promise(ok=>server.close(ok));}
 })().catch(error=>{console.error(error);process.exitCode=1});
