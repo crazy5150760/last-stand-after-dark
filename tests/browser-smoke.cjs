@@ -1,6 +1,6 @@
 // Real Chromium tests. A missing/blocked browser is a failure, never a silent pass.
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 let chromium;
 try{({chromium}=require('playwright'))}catch{throw Error('Browser tooling missing. Run npm run setup:browser in an environment with approved network access.');}
 const {createServer}=require('../scripts/serve.cjs');
@@ -10,9 +10,28 @@ const {root,json}=require('../scripts/lib/project.cjs');
  const output=path.join(root,'test-results');fs.mkdirSync(output,{recursive:true});
  const results=[];
  try{
-  browser=await chromium.launch({headless:true,...(process.env.LS_CHROMIUM?{executablePath:process.env.LS_CHROMIUM}:{})});
+  browser=await chromium.launch({headless:true,channel:'chromium',...(process.env.LS_CHROMIUM?{executablePath:process.env.LS_CHROMIUM}:{})});
   server=createServer();await new Promise((ok,fail)=>{server.once('error',fail);server.listen(0,'127.0.0.1',ok)});
   const base='http://127.0.0.1:'+server.address().port+'/last-stand-after-dark/';
+  // Independent control experiment: the default worker lifecycle must attach
+  // a worker to a new page without claim/skipWaiting before testing game offline.
+  const probe=http.createServer((req,res)=>{
+   if(req.url==='/sw.js')res.writeHead(200,{'Content-Type':'text/javascript'}).end("self.addEventListener('fetch',event=>event.respondWith(new Response('<title>controlled</title>',{headers:{'Content-Type':'text/html'}})));");
+   else res.writeHead(200,{'Content-Type':'text/html'}).end('<title>worker control probe</title>');
+  });
+  let probeContext;
+  try{
+   await new Promise((ok,fail)=>{probe.once('error',fail);probe.listen(0,'127.0.0.1',ok)});
+   const url='http://127.0.0.1:'+probe.address().port+'/';
+   probeContext=await browser.newContext({serviceWorkers:'allow'});
+   const installer=await probeContext.newPage();await installer.goto(url);
+   await installer.evaluate(async()=>{await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready});
+   await installer.waitForFunction(async()=>(await navigator.serviceWorker.getRegistration())?.active?.state==='activated');
+   const client=await probeContext.newPage();const response=await client.goto(url);
+   const controlled=await client.evaluate(()=>!!navigator.serviceWorker.controller);
+   console.log(JSON.stringify({phase:'independent-worker-probe',controlled,fromServiceWorker:response.fromServiceWorker()}));
+   assert.ok(controlled&&response.fromServiceWorker(),'Independent worker control failed in this browser runner; not a game-code result');
+  }finally{if(probeContext)await probeContext.close();await new Promise(ok=>probe.close(ok));}
   for(const [width,height]of [[412,915],[915,412]]){
    // Disposable storage: never point this fixture at the owner's installed profile.
    const context=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:true,deviceScaleFactor:1.75,serviceWorkers:'allow'});
