@@ -1,13 +1,13 @@
 {
-  "version": "Alpha 0.83",
-  "build": "9af87ff2adc01745",
-  "standaloneSha256": "c88d21d5673c9901b31f28b93d1f94e1d31b60bdc46301548e55a2eef37bce74",
-  "hostedGameSha256": "016275d93949067c8e992ae196fbe292c29a8bb9ef9d53545834f26db230f3ff",
+  "version": "Alpha 0.84",
+  "build": "f615328d53b060e9",
+  "standaloneSha256": "74a705e625d061cb77e9276dbda37a322f6a87c479cc53987663e5115dc67307",
+  "hostedGameSha256": "c301be35ec2f61816acd4372f64eec43bb70fc01b1dda5cc7f7ec3ec1588954a",
   "cacheAssets": [
     {
       "key": "index.html",
       "url": "./",
-      "sha256": "016275d93949067c8e992ae196fbe292c29a8bb9ef9d53545834f26db230f3ff",
+      "sha256": "c301be35ec2f61816acd4372f64eec43bb70fc01b1dda5cc7f7ec3ec1588954a",
       "types": [
         "text/html"
       ]
@@ -24,7 +24,7 @@
     {
       "key": "install/",
       "url": "install/",
-      "sha256": "09876140391bf97c162c3b4f2c8004f2ac172bff818d79afaae5f18043c8957f",
+      "sha256": "61286e591e45f5f59f2db04b622840ab87e478527819bbdb0aa1211adc31eab8",
       "types": [
         "text/html"
       ]
@@ -40,7 +40,7 @@
     {
       "key": "install.js",
       "url": "install.js",
-      "sha256": "656482a69e76436d60313f636f43d543a9fc55b2d0d77593b0a105390294fdf1",
+      "sha256": "ff085ba753cd74d1b18a0a1775c5cc393684df494219f8982a35e899b761e221",
       "types": [
         "text/javascript",
         "application/javascript"

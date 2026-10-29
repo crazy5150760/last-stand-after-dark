@@ -2,7 +2,7 @@
 (()=>{
 'use strict';
 const root=new URL('../',location.href),workerUrl=new URL('sw.js',root).href;
-const ui=Object.fromEntries(['prepare','install','play','status','version','installHint'].map(id=>[id,document.getElementById(id)]));
+const ui=Object.fromEntries(['prepare','install','play','status','version','downloaded','updateHelp','installHint'].map(id=>[id,document.getElementById(id)]));
 const secure=location.protocol==='https:'||(location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname));
 const supported=secure&&globalThis.isSecureContext===true&&!!navigator.serviceWorker;
 let registration=null,promptEvent=null,ready=false,busy=false,installed=!!window.matchMedia?.('(display-mode: standalone)').matches,serial=0,error='';
@@ -22,13 +22,15 @@ async function refresh(){
  try{
   const active=registration?.active?await status(registration.active):null,waiting=registration?.waiting?await status(registration.waiting):null;
   if(token!==serial)return;ready=!!active?.ready;
-  ui.version.textContent=active?.ready?'Offline copy: '+active.version+' · '+active.build.slice(0,8):'';
-  if(waiting?.ready){ui.status.textContent='Update ready: '+waiting.version+'. Finish your run, close this page and every game window, then reopen the home-screen icon.';ui.prepare.textContent='CHECK FOR UPDATES'}
+  ui.version.textContent=active?.ready?'Active offline copy: '+active.version:'Active offline copy: not ready.';
+  ui.downloaded.hidden=!waiting?.ready;ui.updateHelp.hidden=!waiting?.ready;
+  ui.downloaded.textContent=waiting?.ready?'Downloaded update: '+waiting.version+' (not active yet).':'';
+  if(waiting?.ready){ui.status.textContent='Update ready: '+waiting.version+'. Downloaded, not active. Finish your run, close this page and every game window, then reopen the home-screen icon.';ui.prepare.textContent='CHECK FOR UPDATES'}
   else if(registration?.installing){ui.status.textContent='Preparing the complete offline game. Keep this page open; the first download is about 13 MB.'}
   else if(ready){ui.status.textContent=error||'Offline play is ready on this device.';ui.prepare.textContent='CHECK FOR UPDATES'}
   else{ui.status.textContent=error||'Prepare offline play while connected, then add the home-screen icon.';ui.prepare.textContent='PREPARE OFFLINE PLAY'}
   ui.installHint.textContent=installed?'You are running in an installed app window. The home-screen icon opens the game directly.':'After offline setup, use Brave’s menu → Add to Home screen or Install app if a button is not offered.';
- }catch(e){if(token===serial){ready=false;ui.status.textContent='Offline readiness could not be confirmed. Reconnect and try setup again. Your game records have not been changed.'}}
+ }catch(e){if(token===serial){ready=false;ui.version.textContent='Active offline copy: could not be confirmed.';ui.downloaded.hidden=true;ui.updateHelp.hidden=true;ui.status.textContent='Offline readiness could not be confirmed. Reconnect and try setup again. Your game records have not been changed.'}}
  if(token===serial)buttons();
 }
 function watchWorker(worker){
@@ -71,7 +73,10 @@ ui.install.addEventListener('click',async()=>{
 });
 window.addEventListener('beforeinstallprompt',event=>{if(!supported)return;event.preventDefault();promptEvent=event;buttons()});
 window.addEventListener('appinstalled',()=>{installed=true;promptEvent=null;ui.status.textContent='Home-screen installation completed. Open the Last Stand icon to play.';buttons()});
-document.addEventListener('visibilitychange',buttons);
+function refreshVisible(){if(supported&&!document.hidden&&registration)void refresh()}
+document.addEventListener('visibilitychange',()=>{buttons();refreshVisible()});
+window.addEventListener('pageshow',refreshVisible);
+if(supported)navigator.serviceWorker.addEventListener('controllerchange',refreshVisible);
 if(!supported){ui.status.textContent='Home-screen installation needs this package hosted at a secure web address. This downloaded setup page cannot install the app; the standalone HTML still plays offline.';ui.installHint.textContent='Use the secure installation link when it is available.';buttons()}
 else navigator.serviceWorker.getRegistration(root.href).then(reg=>{if(!owned(reg)){ui.status.textContent='Another offline setup already uses this address. This package has not replaced it.';ui.prepare.disabled=true;return}if(reg)watch(reg);void refresh()}).catch(()=>{ui.status.textContent='Offline setup is unavailable in this browser session. You can still open the game online.';ui.prepare.disabled=true});
 })();
