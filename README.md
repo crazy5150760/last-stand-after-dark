@@ -1,9 +1,9 @@
 # Last Stand: After Dark
 
-A Canvas 2D survival game for Android browsers and desktop browsers. This branch
-reorganizes the existing Alpha 0.86 source without changing its playable output.
-The original game and Site identity are retained; no engine or gameplay redesign
-is included.
+A Canvas 2D survival game for Android browsers and desktop browsers. The source
+preserves Alpha 0.86 gameplay and adds an optional Downtown visual pilot for
+review. The original game and Site identity are retained; no engine or gameplay
+redesign is included.
 
 Live game: https://crazy5150760.github.io/last-stand-after-dark/
 
