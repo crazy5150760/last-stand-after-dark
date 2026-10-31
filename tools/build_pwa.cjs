@@ -10,7 +10,8 @@ html=html.replace('</head>','<link rel="manifest" href="manifest.webmanifest"><l
 const updates=fs.readFileSync(path.join(source,'game-updates.js'),'utf8');new vm.Script(updates);
 assert.ok(!updates.includes('</script>'),'Update helper must remain an inline script');
 html=html.replace('</body>','<script id="lsad-auto-updates">'+updates+'</script></body>');
-assert.ok(Buffer.byteLength(html)<12*1024*1024,'Hosted game exceeds the standalone budget');add('index.html',html);
+// Match the standalone's explicit 4 KiB pilot code allowance; media bytes remain pinned.
+assert.ok(Buffer.byteLength(html)<12*1024*1024+4*1024,'Hosted game exceeds pilot code allowance');add('index.html',html);
 for(const name of ['manifest.webmanifest','install/index.html','install.css','install.js','icons/icon-192.png','icons/icon-512.png','icons/maskable-512.png'])add(name,fs.readFileSync(path.join(source,name)));
 const manifest=JSON.parse(files.get('manifest.webmanifest'));assert.equal(manifest.id,'./');assert.equal(manifest.start_url,'./');assert.equal(manifest.scope,'./');assert.equal(manifest.display,'standalone');assert.ok(!manifest.orientation,'Both phone orientations must remain available');
 for(const icon of manifest.icons){const data=files.get(icon.src);assert.equal(data.subarray(1,4).toString(),'PNG');assert.equal(icon.sizes,data.readUInt32BE(16)+'x'+data.readUInt32BE(20));assert.ok(data.length<200000)}
