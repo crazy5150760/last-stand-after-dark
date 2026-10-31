@@ -20,7 +20,7 @@ assert.equal(template.split('__LSAD_CONFIG__').length,2);const worker=template.r
 add('_headers','/sw.js\n  Cache-Control: no-cache\n/manifest.webmanifest\n  Cache-Control: no-cache\n/install/*\n  Cache-Control: no-cache\n/install.js\n  Cache-Control: no-cache\n/install.css\n  Cache-Control: no-cache\n/index.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n');
 add('build-info.json',JSON.stringify({version:config.version,build,standaloneSha256:hash(fs.readFileSync(path.join(root,'dist/index.html'))),hostedGameSha256:hash(files.get('index.html')),cacheAssets:assets,policy:'Automatic game-page update checks/downloads; verified exact static payloads; default waiting lifecycle applies after all game windows close; no forced reload/activation; records remain browser-local.'},null,2)+'\n');
 if(process.argv.includes('--check')){
- const list=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?list(path.join(dir,entry.name)):[path.relative(out,path.join(dir,entry.name))]);
+ const list=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?list(path.join(dir,entry.name)):[path.relative(out,path.join(dir,entry.name)).split(path.sep).join('/')]);
  assert.deepEqual(list(out).sort(),[...files.keys()].sort());for(const [name,data]of files)assert.deepEqual(fs.readFileSync(path.join(out,name)),data,name+' is stale');
 }else{
  // Only this generated output directory is replaced; source/game data is untouched.
