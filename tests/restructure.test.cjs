@@ -19,7 +19,7 @@ test('feature standalone builds from source while immutable Alpha 0.86 remains i
  assert.equal(hash(read('legacy/alpha-0.86/game.js')),info.sourceSha256);
  assert.deepEqual(render(),read('dist/index.html'));
  assert.notEqual(hash(read('dist/index.html')),info.htmlSha256);
- assert.ok(read('dist/index.html').length<12*1024*1024+4*1024);
+ assert.ok(read('dist/index.html').length<12*1024*1024+16*1024);
 });
 test('all 22 runtime media files preserve original encoded bytes and metadata',()=>{
  const before=[...read('legacy/alpha-0.86/index.html').toString().matchAll(/data:([\w/+.-]+);base64,([A-Za-z0-9+/=]+)/g)],assets=json('assets/embedded.json').assets;

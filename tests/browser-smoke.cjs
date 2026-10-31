@@ -94,6 +94,15 @@ const {waitForAsyncState}=require('./lib/browser-state.cjs');
    assert.deepEqual(errors,[],'no initialization/loading errors');
    results.push({width,height,launch:true,touchJoystickAndPause:true,pauseClockFrozen:true,settingsReturn:true,media,errors});
    fs.writeFileSync(path.join(output,'browser-results.json'),JSON.stringify({status:'running',results},null,2)+'\n');
+   const study=await context.newPage();study.on('pageerror',e=>errors.push(e.message));await study.goto(base,{waitUntil:'networkidle'});
+   await study.locator('#previewsOpen').tap();await study.waitForTimeout(500);await study.locator('#shopfrontStudy').tap();
+   await study.waitForFunction(()=>document.getElementById('objective')?.textContent.includes('SHOPFRONT STUDY'));
+   await study.locator('#pause').tap();await study.locator('#shopfrontCompare').tap();
+   assert.match(await study.locator('#objective').textContent(),/SHOPFRONT STUDY · PLAIN/);
+   await study.screenshot({path:path.join(output,'shopfront-plain-'+width+'x'+height+'.png')});
+   await study.locator('#shopfrontCompare').tap();assert.match(await study.locator('#objective').textContent(),/SHOPFRONT STUDY · DRESSED/);
+   await study.screenshot({path:path.join(output,'shopfront-dressed-'+width+'x'+height+'.png')});
+   await study.close();assert.deepEqual(errors,[],'shopfront entry and comparison have no page errors');results.at(-1).shopfrontEntryAndComparison=true;
    // Use fresh tabs: keep the gameplay History/Back drill out of installer setup.
    // Worker integration uses a standard engine context. Mobile touch/layout
    // above remains a separate assertion; Android offline still needs the phone.

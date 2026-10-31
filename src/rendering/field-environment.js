@@ -3,7 +3,7 @@ let fieldWorldCache=freshFieldWorldCache();
 let downtownPilotArt=null;
 function releaseDowntownPilot(){if(downtownPilotArt?.image){downtownPilotArt.image.onload=null;downtownPilotArt.image.onerror=null}downtownPilotArt=null}
 function ensureDowntownPilot(){
- if(!mainPerfTest?.pilot||downtownPilotArt)return;
+ if(!(mainPerfTest?.pilot||mainPerfTest?.shopfront&&mainPerfTest.dressed)||downtownPilotArt)return;
  try{
   const meta=JSON.parse(document.getElementById('sampleAssets').textContent).environment;
   if(!meta||!/^data:image\/(?:png|webp);base64,/.test(meta.src)||meta.width!==1536||meta.height!==1024||meta.frames?.length!==6||meta.width*meta.height*4>7*1024*1024)throw Error('Pilot atlas');
@@ -13,10 +13,10 @@ function ensureDowntownPilot(){
  }catch{downtownPilotArt={failed:true}}
 }
 function drawDowntownPilot(tiles){
- if(!mainPerfTest?.pilot||!downtownPilotArt?.ready||preferences.reduced)return;
+ if(!(mainPerfTest?.pilot||mainPerfTest?.shopfront&&mainPerfTest.dressed)||!downtownPilotArt?.ready||preferences.reduced)return;
  const row=downtownPilotArt;g.save();g.globalAlpha=.32;
  for(const tile of tiles){const x=tile.x,y=tile.y,roadX=Math.abs(((x+100)%400+400)%400-200)<72,roadY=Math.abs(((y+110)%400+400)%400-200)<72,crop=row.frames[roadX||roadY?0:1];g.drawImage(row.image,...crop,x,y,160,160)}
- g.restore();const glow=g.createRadialGradient(-205,-185,8,-205,-185,125);glow.addColorStop(0,'#d9a46b44');glow.addColorStop(1,'#d9a46b00');g.fillStyle=glow;g.fillRect(-330,-310,250,250);
+ g.restore();if(mainPerfTest.pilot){const glow=g.createRadialGradient(-205,-185,8,-205,-185,125);glow.addColorStop(0,'#d9a46b44');glow.addColorStop(1,'#d9a46b00');g.fillStyle=glow;g.fillRect(-330,-310,250,250)}
 }
 function freshFieldWorldCache(){return{key:'',tiles:[]}}
 function releaseFieldWorld(){fieldWorldCache=freshFieldWorldCache()}
@@ -138,6 +138,32 @@ function drawFieldWorldStructure(o){
   // Weathered service pads, inset panels and drains, rather than new solid walls.
   g.fillStyle=o.type?'#344146':'#3b4548';g.fillRect(x,y,w,Hh);g.strokeStyle='#87958f55';g.lineWidth=2;g.strokeRect(x+2,y+2,w-4,Hh-4);g.strokeStyle='#111f2899';g.lineWidth=3;g.strokeRect(x+6,y+6,w-12,Hh-12);g.fillStyle='#17272d';g.fillRect(x+12,y+12,Math.max(10,w*.45),Math.max(7,Hh*.2));g.fillStyle='#7d8c8b55';for(let n=0;n<3;n++)g.fillRect(x+16+n*6,y+15,2,Math.max(3,Hh*.2-6));g.fillStyle='#172b32';g.fillRect(x+w*.56,y+Hh*.48,w*.28,Hh*.32);g.strokeStyle='#82908d55';g.lineWidth=1;g.strokeRect(x+w*.56,y+Hh*.48,w*.28,Hh*.32);g.fillStyle='#8d887d66';g.fillRect(x+9,y+Hh-9,w*.23,2);
   if(w>70){g.fillStyle=h%2?palette.accent:palette.warm;g.globalAlpha=.6;g.fillRect(x+w-15,y+5,8,2);g.globalAlpha=1;drawFieldWorldLight(x+w-11,y+Hh+6,h%2?palette.accent:palette.warm)}
+ }
+ g.restore();return true;
+}
+
+// Overhead shopfront study: every painted pixel stays inside its solid street block.
+function drawShopfrontStudy(o){
+ if(!mainPerfTest?.shopfront||!o.shopfront)return false;
+ const dressed=mainPerfTest.dressed&&!preferences.reduced&&downtownPilotArt?.ready,row=downtownPilotArt,x=o.x,y=o.y,w=o.w,h=o.h;
+ g.save();g.beginPath();g.rect(x,y,w,h);g.clip();g.fillStyle='#354349';g.fillRect(x,y,w,h);
+ if(dressed){g.globalAlpha=.65;g.drawImage(row.image,...row.frames[3],x,y,w,h);g.globalAlpha=1}
+ g.fillStyle='#17242b';g.fillRect(x+9,y+9,w-18,h-18);
+ if(dressed){g.globalAlpha=.74;g.drawImage(row.image,...row.frames[2],x+11,y+11,w-22,h-22);g.globalAlpha=1}
+ g.strokeStyle='#7c8883';g.lineWidth=4;g.strokeRect(x+3,y+3,w-6,h-6);
+ const east=x>0,south=y>0,fx=east?x:x+w-68,fy=south?y:y+h-68;
+ g.fillStyle='#263339';g.fillRect(fx,y+12,68,h-24);g.fillRect(x+12,fy,w-24,68);
+ if(dressed){
+  const window=row.frames[4],metal=row.frames[5];g.globalAlpha=.7;g.drawImage(row.image,...metal,fx,y+13,67,h-26);g.drawImage(row.image,...metal,x+13,fy,w-26,67);g.globalAlpha=1;
+  for(let n=0;n<4;n++){
+   const wy=y+36+n*93,wx=x+36+n*93;
+   g.fillStyle='#0e1d25';g.fillRect(fx+13,wy,42,65);g.fillRect(wx,fy+13,65,42);
+   g.globalAlpha=.65;g.drawImage(row.image,...window,fx+15,wy+2,38,61);g.drawImage(row.image,...window,wx+2,fy+15,61,38);g.globalAlpha=1;
+   g.fillStyle='#d9a46d33';g.fillRect(fx+18,wy+5,31,20);g.fillRect(wx+5,fy+18,24,30);
+   g.strokeStyle='#111c21';g.lineWidth=3;g.strokeRect(fx+13,wy,42,65);g.strokeRect(wx,fy+13,65,42)
+  }
+  if(east&&south){const glow=g.createRadialGradient(x+48,y+95,2,x+48,y+95,85);glow.addColorStop(0,'#edab5966');glow.addColorStop(1,'#edab5900');g.fillStyle=glow;g.fillRect(x,y+10,75,170);const flicker=Math.sin(elapsed*9)*3;g.fillStyle='#873b2e';g.fillRect(x+41,y+103,26,7);g.fillStyle='#ee873d';g.beginPath();g.moveTo(x+43,y+103);g.lineTo(x+48,y+79+flicker);g.lineTo(x+52,y+91);g.lineTo(x+59,y+73-flicker);g.lineTo(x+66,y+103);g.closePath();g.fill();g.fillStyle='#ffd18a';g.beginPath();g.moveTo(x+49,y+102);g.lineTo(x+54,y+87-flicker);g.lineTo(x+61,y+102);g.closePath();g.fill()}
+  g.fillStyle='#0d171d';g.fillRect(fx+5,y+8,58,20);g.fillStyle=o.sign;g.fillRect(fx+10,y+14,45,4);
  }
  g.restore();return true;
 }
