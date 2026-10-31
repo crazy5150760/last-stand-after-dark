@@ -59,7 +59,8 @@ benchmarks/                   Existing phone observations, unchanged
 Source files are **ordered build-time modules sharing the original private
 closure**, not independent ES modules. This is a deliberate preservation boundary:
 the immutable Alpha 0.86 source remains under `legacy/alpha-0.86`; the optional
-Downtown visual pilot is described in docs/VISUAL_PILOT.md. Future state
+Downtown visual pilot and shopfront study are described in docs/VISUAL_PILOT.md
+and docs/SHOPFRONT_STUDY.md. Future state
 encapsulation can be tested separately. No empty multiplayer/controller/engine
 folders are created for features that are not implemented.
 

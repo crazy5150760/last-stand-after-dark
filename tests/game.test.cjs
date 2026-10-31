@@ -6,7 +6,7 @@ const {runInNewContext} = require('node:vm');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 // Historic media tests now use the explicit code-only pilot allowance.
-const GAME_HTML_LIMIT=12*1024*1024+4*1024;
+const GAME_HTML_LIMIT=12*1024*1024+16*1024;
 // The full VM suite loads many embedded-art contexts; optionally collect completed
 // fixtures between tests while retaining the same 512 MiB runner heap ceiling.
 if(process.env.LS_TEST_GC==='1'){
@@ -5027,6 +5027,31 @@ test('Downtown pilot reports the comparison and restores saved settings on exit'
 test('Downtown pilot falls back when artwork fails and ignores late image callbacks',()=>{
  const fail=loadGame({artworkStatus:'error'});fail.el('previewsOpen').click();fail.advanceClock(500);fail.el('downtownPilot').click();assert.equal(fail.pilotState().failed,true);assert.equal(fail.state.mode,'play');fail.render();
  const pending=loadGame({artworkStatus:'pending'});pending.el('previewsOpen').click();pending.advanceClock(500);pending.el('downtownPilot').click();const image=pending.pendingImages.at(-1),ready=image.onload,error=image.onerror;assert.ok(ready&&error);pending.pause();quitForTest(pending);pending.el('resultMenu').click();assert.equal(image.onload,null);assert.equal(image.onerror,null);ready();error();assert.equal(pending.pilotState(),null);
+});
+test('Shopfront study enters separately with four exact solid street blocks and bounded existing art',()=>{
+ const g=loadGame({traceCanvas:true});g.el('previewsOpen').click();g.advanceClock(500);g.el('shopfrontStudy').click();
+ assert.equal(g.state.mode,'play');assert.equal(g.mainPerfState().shopfront,true);assert.equal(g.mainPerfState().dressed,true);
+ assert.deepEqual(g.state.obstacles.map(({x,y,w,h})=>({x,y,w,h})),g.streetBlocks.map(({x,y,w,h})=>({x,y,w,h})));
+ assert.equal(g.state.enemies.length,12);g.state.enemies[0].hp=0;g.update(.21);assert.equal(g.state.enemies.length,12);assert.equal(g.pendingImages.length,6);assert.equal(Object.keys(g.state.sampleArtwork).length,0);
+ assert.equal(g.fieldActorsActive(),true);assert.equal(g.pilotState().ready,true);
+ const data=JSON.parse(sampleAssetText),common=['survivorWalk','survivorAim','shamblerWalk','runnerRun','bruteWalk','environment'].reduce((n,id)=>n+data[id].width*data[id].height*4,0);assert.equal(common,35522632);assert.ok(common<44*1024*1024);
+ g.clearTrace();g.render();const image=g.pilotState().image;assert.ok(g.drawingTrace().some(row=>row[0]==='drawImage'&&row[1]===image&&row[8]===455));
+ assert.match(g.el('objective').textContent,/SHOPFRONT STUDY · DRESSED/);
+});
+test('Shopfront plain/dressed comparison stays paused and preserves solid player and enemy collision',()=>{
+ const g=loadGame({traceCanvas:true});g.el('previewsOpen').click();g.advanceClock(500);g.el('shopfrontStudy').click();
+ g.p.x=175;g.p.y=250;g.touch.x=1;g.update(.1);assert.equal(g.p.x,175);g.touch.x=0;
+ const e=g.state.enemies[0];e.x=175;e.y=250;g.streetResolveBody(e,{x:175,y:250});assert.ok(e.x<195-e.r);
+ g.pause();const frozen=layoutMain73(g),image=g.pilotState().image;g.el('shopfrontCompare').click();assert.equal(g.mainPerfState().dressed,false);assert.equal(g.pilotState(),null);assert.equal(layoutMain73(g),frozen);
+ g.clearTrace();g.render();assert.equal(g.drawingTrace().filter(row=>row[0]==='drawImage'&&row[1]===image).length,0);
+ g.frame(60000);assert.equal(layoutMain73(g),frozen);g.el('shopfrontCompare').click();assert.equal(g.mainPerfState().dressed,true);assert.equal(layoutMain73(g),frozen);
+ g.el('mainPerfRestart').click();assert.equal(g.state.mode,'paused');assert.equal(g.mainPerfState().shopfront,true);assert.equal(g.state.obstacles.length,4);
+});
+test('Shopfront study restores settings and saves, falls back on art errors, and rejects late callbacks',()=>{
+ const stored=JSON.stringify({version:1,actors:'classic',scenery:'classic',hud:'classic'}),g=loadGame({preferencesStored:stored,stored:'900'});g.el('previewsOpen').click();g.advanceClock(500);g.el('shopfrontStudy').click();g.pause();g.el('mainPerfReport').click();assert.match(g.benchmarkText(),/DOWNTOWN SHOPFRONT STUDY/);assert.match(g.benchmarkText(),/Shopfront DRESSED/);g.phoneBack();quitForTest(g);assert.equal(g.pilotState(),null);assert.equal(g.preferencesSaved(),stored);assert.equal(g.saved(),'900');
+ const fail=loadGame({artworkStatus:'error'});fail.el('previewsOpen').click();fail.advanceClock(500);fail.el('shopfrontStudy').click();assert.equal(fail.pilotState().failed,true);fail.render();assert.equal(fail.state.mode,'play');
+ const pending=loadGame({artworkStatus:'pending'});pending.el('previewsOpen').click();pending.advanceClock(500);pending.el('shopfrontStudy').click();const image=pending.pendingImages.at(-1),ready=image.onload,error=image.onerror;pending.pause();quitForTest(pending);pending.el('resultMenu').click();assert.equal(image.onload,null);assert.equal(image.onerror,null);ready();error();assert.equal(pending.pilotState(),null);
+ const ordinary=enterMain73(loadGame(),'early');assert.equal(ordinary.mainPerfState().shopfront,false);assert.equal(JSON.stringify(ordinary.state.obstacles.map(({x,y,w,h})=>({x,y,w,h}))),JSON.stringify([{x:-300,y:-200,w:110,h:70},{x:230,y:-180,w:100,h:80},{x:-310,y:200,w:120,h:70},{x:200,y:220,w:120,h:80}]));
 });
 test('Alpha 0.73 all three direct entries use controlled native-clock populations, loadouts and real main scenery',()=>{
  for(const [id,count,gems,clock,proj]of [['early',12,0,0,1],['crowded',100,160,150,3],['overtime',220,600,600,5]]){const g=enterMain73(loadGame(),id);assert.equal(g.state.enemies.length,count);assert.equal(g.state.gems.length,gems);near(g.state.elapsed,clock);assert.equal(g.p.proj,proj);assert.equal(g.fieldWorldActive(),true);assert.equal(g.fieldActorsActive(),true);assert.equal(g.composedRunHud(),true);assert.equal(g.performanceSnapshot().enabled,true);assert.match(g.el('objective').textContent,/PERFORMANCE TEST.*UNSCORED/);assert.match(g.el('runGoal').textContent,/WARM-UP 5s/);assert.equal(g.el('time').textContent,'00:00');}
