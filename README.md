@@ -1,9 +1,9 @@
 # Last Stand: After Dark
 
-A Canvas 2D survival game for Android browsers and desktop browsers. This branch
-reorganizes the existing Alpha 0.86 source without changing its playable output.
-The original game and Site identity are retained; no engine or gameplay redesign
-is included.
+A Canvas 2D survival game for Android browsers and desktop browsers. The source
+preserves Alpha 0.86 gameplay and adds an optional Downtown visual pilot for
+review. The original game and Site identity are retained; no engine or gameplay
+redesign is included.
 
 Live game: https://crazy5150760.github.io/last-stand-after-dark/
 
@@ -58,7 +58,8 @@ benchmarks/                   Existing phone observations, unchanged
 
 Source files are **ordered build-time modules sharing the original private
 closure**, not independent ES modules. This is a deliberate preservation boundary:
-assembling them reconstructs the original readable source exactly. Future state
+the immutable Alpha 0.86 source remains under `legacy/alpha-0.86`; the optional
+Downtown visual pilot is described in docs/VISUAL_PILOT.md. Future state
 encapsulation can be tested separately. No empty multiplayer/controller/engine
 folders are created for features that are not implemented.
 

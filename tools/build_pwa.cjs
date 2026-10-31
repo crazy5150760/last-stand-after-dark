@@ -10,7 +10,8 @@ html=html.replace('</head>','<link rel="manifest" href="manifest.webmanifest"><l
 const updates=fs.readFileSync(path.join(source,'game-updates.js'),'utf8');new vm.Script(updates);
 assert.ok(!updates.includes('</script>'),'Update helper must remain an inline script');
 html=html.replace('</body>','<script id="lsad-auto-updates">'+updates+'</script></body>');
-assert.ok(Buffer.byteLength(html)<12*1024*1024,'Hosted game exceeds the standalone budget');add('index.html',html);
+// Match the standalone's explicit 4 KiB pilot code allowance; media bytes remain pinned.
+assert.ok(Buffer.byteLength(html)<12*1024*1024+4*1024,'Hosted game exceeds pilot code allowance');add('index.html',html);
 for(const name of ['manifest.webmanifest','install/index.html','install.css','install.js','icons/icon-192.png','icons/icon-512.png','icons/maskable-512.png'])add(name,fs.readFileSync(path.join(source,name)));
 const manifest=JSON.parse(files.get('manifest.webmanifest'));assert.equal(manifest.id,'./');assert.equal(manifest.start_url,'./');assert.equal(manifest.scope,'./');assert.equal(manifest.display,'standalone');assert.ok(!manifest.orientation,'Both phone orientations must remain available');
 for(const icon of manifest.icons){const data=files.get(icon.src);assert.equal(data.subarray(1,4).toString(),'PNG');assert.equal(icon.sizes,data.readUInt32BE(16)+'x'+data.readUInt32BE(20));assert.ok(data.length<200000)}
@@ -20,7 +21,7 @@ assert.equal(template.split('__LSAD_CONFIG__').length,2);const worker=template.r
 add('_headers','/sw.js\n  Cache-Control: no-cache\n/manifest.webmanifest\n  Cache-Control: no-cache\n/install/*\n  Cache-Control: no-cache\n/install.js\n  Cache-Control: no-cache\n/install.css\n  Cache-Control: no-cache\n/index.html\n  Cache-Control: no-cache\n/\n  Cache-Control: no-cache\n');
 add('build-info.json',JSON.stringify({version:config.version,build,standaloneSha256:hash(fs.readFileSync(path.join(root,'dist/index.html'))),hostedGameSha256:hash(files.get('index.html')),cacheAssets:assets,policy:'Automatic game-page update checks/downloads; verified exact static payloads; default waiting lifecycle applies after all game windows close; no forced reload/activation; records remain browser-local.'},null,2)+'\n');
 if(process.argv.includes('--check')){
- const list=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?list(path.join(dir,entry.name)):[path.relative(out,path.join(dir,entry.name))]);
+ const list=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?list(path.join(dir,entry.name)):[path.relative(out,path.join(dir,entry.name)).split(path.sep).join('/')]);
  assert.deepEqual(list(out).sort(),[...files.keys()].sort());for(const [name,data]of files)assert.deepEqual(fs.readFileSync(path.join(out,name)),data,name+' is stale');
 }else{
  // Only this generated output directory is replaced; source/game data is untouched.
