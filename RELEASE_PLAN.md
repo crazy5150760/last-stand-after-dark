@@ -1,5 +1,41 @@
 # Last Stand: After Dark — first-release plan
 
+## Current development status — 2026-10-31
+
+This section is the current handoff. The dated milestone history below remains a
+record of decisions and tests; older "next" and publication notes are not the
+current task list. Codex leads one approved milestone at a time. Robert tests
+playable work and decides whether to advance.
+
+**Completed and accepted:** Alpha 0.86 gameplay and preservation checks were
+accepted on Samsung S21 Ultra / Brave. The modular source and hosted-only update
+shell are integrated in source. The optional Downtown Visual Pilot and Downtown
+Shopfront Study are also source-integrated; Robert reported that both look and
+play well on his phone. These reports establish functional feedback, not measured
+frame pacing or a public release of the studies.
+
+**Current priority:** Improve existing game systems and mechanics, especially
+combat feel, upgrade progression, balance and clear player choices. Continue to
+protect the accepted game and saves. Art and graphics remain important, with the
+optional downtown studies available as visual references. Work in bounded
+milestones and bring gameplay scope to Robert before implementation.
+
+**Known bugs and open limits:** No specific new gameplay bug was reported in the
+latest phone feedback. The public Pages game has not been replaced with the two
+optional studies. Phone FPS, heat and battery effects of the Shopfront Study are
+unmeasured. The repository's one-time GitHub Pages Actions Source setting has not
+been verified here. Treat those as open release/performance limits, not proof of
+a defect. Preserve the current public game until its release gates are met.
+
+**Next recommended milestone (awaiting Robert's approval):** Review the first
+three minutes of a normal Survivor / Downtown / Standard run using existing
+progression reports and one owner playtest. Identify one concrete combat or
+upgrade-pacing issue, propose a bounded change and its phone acceptance check,
+then implement only after Robert agrees to that scope. Do not start this milestone
+from the workflow-transition task alone.
+
+## Historical first-release plan (preserved)
+
 Owner and lead tester: Robert Kenny. Development/design lead: Codex.
 Updated: 2026-10-29. Current build: **Alpha 0.86 · Health Awareness**. Robert reported 0.85 worked great and authorized the next part. Add accepted-hit HP-loss text, LOW HP at the existing quarter-health threshold, and Second Wind status using existing HUD space and active clocks. Preserve all damage/healing/armor/protection/difficulty and save rules. Publish to the same approved public Pages address after source CI. Actual 0.86 phone readability/lifecycle remains an owner check; no quantitative FPS result is inferred.
 
