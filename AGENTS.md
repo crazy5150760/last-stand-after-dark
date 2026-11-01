@@ -12,8 +12,9 @@ filesystem permission.
   and limits, and wait for Robert's playtest and progress decision before
   starting the next milestone.
 - Use separate conversations in Last Stand Master for gameplay; small bugs/UI;
-  major architecture; and testing/docs/maintenance. Robert selects each chat's
-  model and reasoning level manually. Do not change models automatically.
+  major architecture; and testing/docs/maintenance. Follow
+  docs/CODEX_WORKFLOW.md for milestone handoffs. Codex recommends each next
+  chat's model and reasoning level; Robert selects them manually.
 - Do not spawn subagents unless Robert explicitly authorizes them for a specific
   task. The four specialist TOMLs are retained for possible future use, while
   .codex/config.toml disables multi-agent tools by default. See
