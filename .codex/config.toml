@@ -1,0 +1,8 @@
+forced_login_method = "chatgpt"
+
+[features]
+multi_agent = false
+
+[agents]
+enabled = false
+max_concurrent_threads_per_session = 2
