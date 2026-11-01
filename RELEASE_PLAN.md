@@ -1,6 +1,6 @@
 # Last Stand: After Dark — first-release plan
 
-## Current development status — 2026-10-31
+## Current development status — 2026-11-01
 
 This section is the current handoff. The dated milestone history below remains a
 record of decisions and tests; older "next" and publication notes are not the
@@ -27,12 +27,13 @@ unmeasured. The repository's one-time GitHub Pages Actions Source setting has no
 been verified here. Treat those as open release/performance limits, not proof of
 a defect. Preserve the current public game until its release gates are met.
 
-**Next recommended milestone (awaiting Robert's approval):** Review the first
-three minutes of a normal Survivor / Downtown / Standard run using existing
-progression reports and one owner playtest. Identify one concrete combat or
-upgrade-pacing issue, propose a bounded change and its phone acceptance check,
-then implement only after Robert agrees to that scope. Do not start this milestone
-from the workflow-transition task alone.
+**Current milestone (approved 2026-11-01; awaiting validation and phone test):**
+Alpha 0.87 gives the first earned XP choice after 01:00 one card for the opening
+weapon's next rank or ready evolution. It is one of the existing three cards,
+can be declined, and is offered only once per run. Normal random draws resume
+afterward; XP, enemy and boss tuning remain unchanged. See
+docs/FIRST_THREE_MINUTES.md for scope and phone checks. Do not begin another
+milestone until Robert accepts this one.
 
 ## Historical first-release plan (preserved)
 
