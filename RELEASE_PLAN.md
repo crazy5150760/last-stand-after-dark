@@ -8,11 +8,13 @@ current task list. Codex leads one approved milestone at a time. Robert tests
 playable work and decides whether to advance.
 
 **Completed and accepted:** Alpha 0.86 gameplay and preservation checks were
-accepted on Samsung S21 Ultra / Brave. The modular source and hosted-only update
-shell are integrated in source. The optional Downtown Visual Pilot and Downtown
-Shopfront Study are also source-integrated; Robert reported that both look and
-play well on his phone. These reports establish functional feedback, not measured
-frame pacing or a public release of the studies.
+accepted on Samsung S21 Ultra / Brave. Robert reported that the Alpha 0.87
+opening-weapon follow-up review build "works great" after its phone checklist;
+see docs/PHONE_ACCEPTANCE.md. The modular source and hosted-only update shell are
+integrated in source. The optional Downtown Visual Pilot and Downtown Shopfront
+Study are also source-integrated; Robert reported that both look and play well on
+his phone. These reports establish functional feedback, not measured frame pacing
+or a public release of the studies.
 
 **Current priority:** Improve existing game systems and mechanics, especially
 combat feel, upgrade progression, balance and clear player choices. Continue to
@@ -27,13 +29,20 @@ unmeasured. The repository's one-time GitHub Pages Actions Source setting has no
 been verified here. Treat those as open release/performance limits, not proof of
 a defect. Preserve the current public game until its release gates are met.
 
-**Current milestone (approved 2026-11-01; awaiting validation and phone test):**
-Alpha 0.87 gives the first earned XP choice after 01:00 one card for the opening
-weapon's next rank or ready evolution. It is one of the existing three cards,
-can be declined, and is offered only once per run. Normal random draws resume
-afterward; XP, enemy and boss tuning remain unchanged. See
-docs/FIRST_THREE_MINUTES.md for scope and phone checks. Do not begin another
-milestone until Robert accepts this one.
+**Completed milestone — Alpha 0.87:** The first earned XP choice after 01:00
+includes one card for the opening weapon's next rank or ready evolution. It can
+be declined, uses an existing slot and occurs once per run. Pinned CI passed
+1,451 core checks plus real Chromium checks; a matched scripted three-minute
+comparison reached focused rank 3 in 3/12 prior runs and 7/12 candidate runs,
+and evolution in 1/12 and 5/12. These are bot observations, not measured player
+balance. Robert accepted the review build on 2026-11-01. Source integration is
+tracked in PR #14; public publication remains separate.
+
+**Next recommended milestone (awaiting Robert's approval):** Assess first-boss
+combat pressure around 01:30 in a normal Survivor / Downtown / Standard run,
+following the first Blackout and amid the ordinary crowd. Use phone notes and
+existing pace/build reports to identify one concrete fairness or clarity issue
+before proposing a bounded adjustment. Begin with a proposal, not implementation.
 
 ## Historical first-release plan (preserved)
 

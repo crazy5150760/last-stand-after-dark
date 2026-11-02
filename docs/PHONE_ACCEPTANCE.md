@@ -1,4 +1,20 @@
-# Owner phone acceptance — Alpha 0.86
+# Owner phone acceptance
+
+## Alpha 0.87 — opening weapon follow-up
+
+On 2026-11-01, after receiving the Alpha 0.87 review build and S21 Ultra / Brave
+checklist, Robert reported:
+
+> everything works great now what
+
+This accepts the playable milestone without a reported bug. The established
+phone/browser context is Samsung S21 Ultra / Brave; Robert did not restate the
+device, run counts or detailed balance observations in this reply. Pinned CI
+passed 1,451 core checks and real Chromium checks on PR #14. Scripted progression
+probes improved focused rank/evolution availability but do not measure player
+fairness, phone FPS, heat or battery use. No public deployment is implied.
+
+## Alpha 0.86 — preservation baseline
 
 On 2026-10-29, after receiving the restructuring phone checklist, Robert reported:
 
