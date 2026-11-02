@@ -54,7 +54,7 @@ const {waitForAsyncState}=require('./lib/browser-state.cjs');
    page.on('requestfailed',r=>errors.push(r.url()+': '+r.failure()?.errorText));
    page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url())});
    await page.goto(base,{waitUntil:'networkidle'});await page.locator('#start').waitFor();
-   assert.match(await page.locator('.title-footer').innerText(),/ALPHA 0\.86/);
+   assert.match(await page.locator('.title-footer').innerText(),/ALPHA 0\.87/);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'mobile width overflow');
    const canvas=await page.locator('#game').boundingBox();assert.ok(canvas.width>0&&canvas.height>0);
    const media=await page.evaluate(async()=>{
